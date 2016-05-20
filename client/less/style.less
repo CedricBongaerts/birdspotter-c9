@@ -1,0 +1,67 @@
+/* Importing bootstrap.less*/
+
+@import "client/lib/bootstrap/less/bootstrap.less";
+
+/*================ Variables ====================*/
+
+// Scaffolding
+@body-bg:                                #E6E6E6;
+
+
+// Typography
+@font-size-base:                         13px;
+
+//** Unit-less `line-height` for use in components like buttons.
+@line-height-base:        1.5384615; // 20/13
+
+/*================== Navbar =====================*/
+
+// Navbar main
+@navbar-default-color:                   #FFFFFF;
+@navbar-default-bg:                      #0F7000;
+@navbar-default-border:                  darken(@navbar-default-bg, 7.5%);
+
+// Navbar links
+@navbar-default-link-color:              #FFFFFF;
+@navbar-default-link-hover-color:        #F0FFF0;
+@navbar-default-link-hover-bg:           darken(@navbar-default-bg, 1%);
+@navbar-default-link-active-color:       #FFFFFF;
+@navbar-default-link-active-bg:          darken(@navbar-default-bg, 3.5%);
+@navbar-default-link-disabled-color:     #E8E8E8;
+@navbar-default-link-disabled-bg:        transparent;
+
+// Navbar brand label
+@navbar-default-brand-color:             @navbar-default-link-color;
+@navbar-default-brand-hover-color:       darken(@navbar-default-brand-color, 5%);
+@navbar-default-brand-hover-bg:          transparent;
+
+// Navbar toggle
+@navbar-default-toggle-hover-bg:         darken(@navbar-default-bg, 3.5%);
+@navbar-default-toggle-icon-bar-bg:      #F5F5F5;
+@navbar-default-toggle-border-color:     #F5F5F5;
+
+// Basics of a navbar
+@navbar-height:                          40px;
+@navbar-margin-bottom:                   0px;
+
+/*================== Navbar =====================*/
+
+// Small screen / tablet
+@container-tablet:             (720px + @grid-gutter-width);
+
+// Medium screen / desktop
+@container-desktop:            (940px + @grid-gutter-width);;
+
+// Large screen / wide desktop
+@container-large-desktop:      (1140px + @grid-gutter-width);
+
+/*================== Navbar =====================*/
+html,body {
+    height:100%;
+}
+
+#main-container {
+    padding: floor((@grid-gutter-width / 2));
+    background-color: #fff;
+    height: 100%
+}

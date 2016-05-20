@@ -1,0 +1,18 @@
+<form class="well" name="addCapture">
+    <div class="form-group">
+        <label for="birdname">Birdname</label>
+        <input type="text" class="form-control" id="birdname" ng-model="form.birdname" required>
+    </div>
+    <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" class="form-control" id="city" ng-model="form.place.city" required>
+    </div>
+    <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" class="form-control" id="country" ng-model="form.place.country" >
+    </div>
+    <div class="row">
+        <button type="submit" class="btn btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid">Add Customer</button>
+    </div>
+    <br>
+</form>

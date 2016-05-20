@@ -1,0 +1,21 @@
+{
+  "name": "Birdspotter",
+  "description": "REST API - Birdspotter",
+  "main": "server.js",
+  "authors": [
+    "Cedric Bongaerts"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "angular": "^1.5.5",
+    "bootstrap": "^3.3.6",
+    "gulp": "^3.9.1",
+    "angular-route": "^1.5.5",
+    "angular-resource": "^1.5.5",
+    "angular-jwt": "^0.0.9",
+    "angular-cookies": "^1.5.5",
+    "a0-angular-storage": "^0.0.15",
+    "angular-ui-router": "^0.3.0"
+  }
+}
