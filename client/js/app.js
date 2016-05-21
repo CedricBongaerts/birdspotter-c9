@@ -6,7 +6,8 @@ var app = angular.module('app',
                             'auth0',
                             'angular-storage',
                             'angular-jwt',
-                            'ui.router.title'
+                            'ui.router.title',
+                            'ngAutocomplete'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {

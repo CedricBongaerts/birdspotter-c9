@@ -1,6 +1,6 @@
 /* global app */
 
-app.controller('captureCtrl',[ '$scope', 'Api', function($scope, Api, auth){
+app.controller('captureCtrl',[ '$scope', 'Api', function($scope, Api){
     $scope.form = {};
 
     $scope.addToDatabase = function() {

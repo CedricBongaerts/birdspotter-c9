@@ -21,6 +21,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "jit-grunt": "^0.10.0",
     "mongoose": "^4.4.17",
+    "ng-autocomplete": "^1.0.0",
     "nodemon": "^1.9.2"
   }
 }
