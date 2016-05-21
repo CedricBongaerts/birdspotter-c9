@@ -59,7 +59,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li ng-if="!isAuthenticated"><a href="/" ng-click="login()">Login</a></li>
-            <li ng-if="isAuthenticated" ng-class="{active: isActive('/profile')}"><a href="/profile"><img src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.name}}</a></li>
+            <li ng-if="isAuthenticated" ng-class="{active: isActive('/profile')}"><a href="/profile"><img src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.given_name}}</a></li>
             <li ng-if="isAuthenticated"><a href="/" ng-click="logout()">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->

@@ -4,6 +4,10 @@
 
 /*================ Variables ====================*/
 
+// Colors
+
+@brand-primary:                          #0F7000;
+
 // Scaffolding
 @body-bg:                                #E6E6E6;
 
@@ -55,13 +59,34 @@
 // Large screen / wide desktop
 @container-large-desktop:      (1140px + @grid-gutter-width);
 
-/*================== Navbar =====================*/
+/*================ Thumbnail ===================*/
+
+@thumbnail-padding:           4px;
+@thumbnail-bg:                #fff;
+@thumbnail-border:            #D0D0D0;
+
+/*============= Custom Additions ================*/
+
 html,body {
     height:100%;
 }
 
 #main-container {
     padding: floor((@grid-gutter-width / 2));
-    background-color: #fff;
-    height: 100%
+}
+
+.no-padding-right {
+    padding-right: 0px!important;
+}
+
+.no-padding-left {
+    padding-left: 0px!important;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0px!important;
+}
+
+.no-border {
+    border: none!important;
 }
