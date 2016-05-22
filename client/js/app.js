@@ -7,7 +7,8 @@ var app = angular.module('app',
                             'angular-storage',
                             'angular-jwt',
                             'ui.router.title',
-                            'ngAutocomplete'
+                            'ngAutocomplete',
+                            'ui.bootstrap',
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
@@ -38,7 +39,7 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
           }
           return refreshingToken;
         } else {
-          $location.path('/login');
+          $location.path('/');
         }
       }
     }
@@ -128,4 +129,10 @@ app.config(function($stateProvider, authProvider, $httpProvider,
   }   
   
   $httpProvider.interceptors.push('jwtInterceptor');
+});
+
+app.filter('startFrom', function() {
+  return function(data, currentPage, pageSize) {
+    return data.slice(((currentPage-1)*pageSize), ((currentPage)*pageSize));
+  }
 });

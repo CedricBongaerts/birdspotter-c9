@@ -1,9 +1,12 @@
 /* global app */
 
-app.controller('profileCtrl', function($scope, auth, $http) {
+app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function($scope, auth, $http, captureApi) {
     
     $scope.auth = auth;
     $scope.date = auth.profile.created_at;
+    $scope.captures = [];
+    $scope.pageSize = 4;
+    $scope.currentPage = 1;
     
     $scope.profilePic = function(pic) {
         if(auth.profile.identities[0].provider === "facebook"){
@@ -23,11 +26,12 @@ app.controller('profileCtrl', function($scope, auth, $http) {
         return social;
     }
     
-    $http.get('https://birdspotter-cedricbongaerts.c9users.io/api/captures')
-        .then(function(result) {
-            $scope.captures = result.data;
-            console.log($scope.captures);
+   captureApi.getCaptures()
+        .then(function(res) {
+            $scope.captures = res.data.filter(function(captures) {
+                return captures.userId === $scope.auth.profile.user_id
+        }, function(err) {
+            //do something
+        });
     });
-    
-    
-});
+}]);

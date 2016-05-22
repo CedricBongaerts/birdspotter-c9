@@ -16,7 +16,7 @@
 @font-size-base:                         13px;
 
 //** Unit-less `line-height` for use in components like buttons.
-@line-height-base:        1.5384615; // 20/13
+@line-height-base:        2; // 20/13
 
 /*================== Navbar =====================*/
 
@@ -74,19 +74,47 @@ html,body {
 #main-container {
     padding: floor((@grid-gutter-width / 2));
 }
-
-.no-padding-right {
-    padding-right: 0px!important;
-}
-
-.no-padding-left {
-    padding-left: 0px!important;
-}
-
 .no-margin-bottom {
     margin-bottom: 0px!important;
 }
 
+.no-margin-top {
+    margin-top: 0px!important;
+}
+
 .no-border {
     border: none!important;
+}
+
+@media screen and (min-width: 991px) {
+
+    .no-padding-right {
+        padding-right: 0px!important;
+    }
+    
+    .no-padding-left {
+        padding-left: 0px!important;
+    }
+}
+/*================= Home Page ===================*/
+#intro {
+    background: url(/img/Background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; 
+    min-height: 750px;
+    margin-top: -15px;
+}
+
+@media screen and (max-width: 990px) {
+
+    .no-padding-right {
+        padding-left: 0px!important;
+        padding-right: 0px!important;
+    }
+    
+    .no-padding-left {
+        padding-left: 0px!important;
+        padding-right: 0px!important;
+    }
 }

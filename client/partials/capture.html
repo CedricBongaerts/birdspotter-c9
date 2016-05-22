@@ -1,13 +1,15 @@
+<div class="alert alert-success" ng-show="captureMessage"><strong>Capture added!</strong></div>
 <form class="well" name="addCapture">
     <div class="form-group">
         <label for="birdname">Birdname</label>
-        <input type="text" class="form-control" id="birdname" ng-model="form.birdname" required>
+        <input type="text" class="form-control" id="birdname" ng-model="birdname" required>
     </div>
     <div class="form-group move-down">
         <label for="place">Picture taken in:</label>
-        <input type="text" class="form-control" id="place" ng-model="form.place" ng-autocomplete required>
+        <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete required>
     </div>
     <div class="form-group">
         <button type="submit" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid">Add Customer</button>
    </div>
 </form>
+

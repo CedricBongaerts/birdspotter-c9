@@ -4,6 +4,8 @@ module.exports = function(router) {
         var capture = new Capture();
         capture.birdname = req.body.birdname;
         capture.place =  req.body.place;
+        capture.userId = req.body.userId;
+        capture.created_at = new Date();
         
         capture.save(function(err, data){
             if(err)
@@ -19,11 +21,11 @@ module.exports = function(router) {
         });
     });
     
-    // router.delete('/captures', function(req, res){
-    //      Capture.remove({}, function(err){
-    //          res.json({result: err ? 'error' : 'ok'});
-    //      });
-    //  });
+     router.delete('/captures', function(req, res){
+          Capture.remove({}, function(err){
+              res.json({result: err ? 'error' : 'ok'});
+          });
+      });
     
     // router.get('/captures/:id', function(req, res){
     //     Capture.findOne({_id: req.params.id}, function(err, data){
@@ -31,11 +33,11 @@ module.exports = function(router) {
     //     });
     // });
     
-    // router.delete('/captures/:id', function(req, res){
-    //     Capture.remove({_id: req.params.id}, function(err){
-    //         res.json({result: err ? 'error' : 'ok'});
-    //     });
-    // });
+     router.delete('/captures/:id', function(req, res){
+         Capture.remove({_id: req.params.id}, function(err){
+             res.json({result: err ? 'error' : 'ok'});
+         });
+     });
     
     // router.post('/captures/:id', function(req, res){
     //     Capture.findOne({_id: req.params.id}, function(err, data){

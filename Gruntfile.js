@@ -5,13 +5,13 @@ module.exports = function(grunt) {
     less: {
       development: {
         files: {
-          "client/lib/bootstrap/dist/css/bootstrap.css": "client/less/style.less"
+          "client/lib/bootstrap/dist/css/bootstrap.css": "client/layout/style.less"
         }
       }
     },
     watch: {
       styles: {
-        files: ['client/less/style.less'],
+        files: ['client/layout/style.less'],
         tasks: ['less'],
         options: {
           nospawn: true

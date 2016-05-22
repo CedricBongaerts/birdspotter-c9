@@ -1,15 +1,15 @@
 <div class="col-md-4 no-padding-left">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
-            <h4>{{auth.profile.name}}</h4>
+            <h4 class="no-margin-top no-margin-bottom">{{auth.profile.name}}</h4>
         </div>
         <div class="thumbnail no-border no-margin-bottom">
             <img class="img-rounded" src="{{profilePic()}}" alt="profile-{{auth.profile.nickname}}" width="200" height="200"/>
         </div>
         <ul class="list-group">
-            <li class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{auth.profile.nickname}}</li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{auth.profile.email}}</li>
-            <li class="list-group-item"><strong>Account created on: </strong> {{date | date:'yyyy-MM-dd'}}</li>
+            <li class="list-group-item text-center"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{auth.profile.nickname}}</li>
+            <li class="list-group-item text-center"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{auth.profile.email}}</li>
+            <li class="list-group-item text-center"><strong>Account created on: </strong> {{date | date:'yyyy-MM-dd'}}</li>
         </ul>
         <p class="text-center"><strong>Connected with</strong></p>
         <div class="thumbnail no-border no-margin-bottom">
@@ -21,21 +21,30 @@
 <div class="col-md-8 no-padding-right">
     <div class="panel panel-primary">
         <div class="list-group-item active text-center">
-            <h4>Recent Activity</h4>
+            <h4 class="no-margin-top no-margin-bottom">Recent Activity</h4>
         </div>
         
-        <a href="#" class="list-group-item" ng-repeat="capture in captures">
+        <a href="#" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize ">
             <div class="row">
                 <div class="col-md-4">
                     <div class="thumbnail no-border no-margin-bottom">         
-                        <img src="http://weknowyourdreamz.com/images/bird/bird-05.jpg" alt="bird" width="150" height="150"/>
+                        <img src="https://placehold.it/150x150" alt="bird" width="150" height="150"/>
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <h4><strong>{{capture.birdname}}</strong></h4>
+                    <h4 class="no-margin-top no-margin-bottom"><strong>{{capture.birdname}}</strong></h4>
                     <strong>Picture taken in:</strong> {{capture.place}}
                 </div>
             </div>
         </a>
+        
+        <a href="#" class="list-group-item" ng-if="captures == 0">
+            <p>NOTHING FOUND</p>
+        </a>
+        
+        <uib-pagination total-items="captures.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+        </uib-pagination>
     </div>
 </div>
