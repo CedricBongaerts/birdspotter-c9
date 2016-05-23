@@ -9,6 +9,8 @@ var app = angular.module('app',
                             'ui.router.title',
                             'ngAutocomplete',
                             'ui.bootstrap',
+                            'angular-filepicker',
+                            'underscore'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
@@ -47,7 +49,7 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
 });
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
-  jwtInterceptorProvider, $urlRouterProvider, $locationProvider){
+  jwtInterceptorProvider, $urlRouterProvider, $locationProvider, filepickerProvider){
     
   authProvider.init({
     domain: 'cedricbongaerts.eu.auth0.com',
@@ -55,9 +57,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
     loginUrl: '/'
   });  
   
-  $urlRouterProvider.otherwise("/");
-      
-  $stateProvider
+ $stateProvider
 
     .state('home', {
       url: '/',
@@ -71,7 +71,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         }
     })
     
-    .state('dash', {
+    .state('dashboard', {
       url: '/dashboard',
       templateUrl: 'partials/dashboard.html',
       controller: 'dashCtrl',
@@ -94,12 +94,23 @@ app.config(function($stateProvider, authProvider, $httpProvider,
           $title: function() { return 'Capture'; }
         }
     })
+    
+    .state('detail', {
+      url: '/detail/{id}',
+      templateUrl: 'partials/viewCapture.html',
+      controller: 'viewCaptureCtrl',
+      data: {
+            requiresLogin: true
+        },
+      resolve: {
+          $title: function() { return 'Detail'; }
+				}
+    })
 
     .state('profile', {
       url: '/profile',
       templateUrl: 'partials/profile.html',
       controller: 'profileCtrl',
-      pageTitle: 'Homepage',
         data: {
             requiresLogin: true
         },
@@ -107,8 +118,11 @@ app.config(function($stateProvider, authProvider, $httpProvider,
           $title: function() { return 'Profile'; }
         }
     });
+    
+    $urlRouterProvider.otherwise("/");
+    filepickerProvider.setKey('A0KU8DpZ3Tai1uHSmwevwz');
 
-    $locationProvider.html5Mode({enabled:true, requireBase: false});
+    // $locationProvider.html5Mode({enabled:true, requireBase: false});
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');

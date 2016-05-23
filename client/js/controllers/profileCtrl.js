@@ -8,6 +8,7 @@ app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function
     $scope.pageSize = 4;
     $scope.currentPage = 1;
     
+    
     $scope.profilePic = function(pic) {
         if(auth.profile.identities[0].provider === "facebook"){
             pic = "https://graph.facebook.com/" + auth.profile.identities[0].user_id + "/picture?width=9999";
@@ -26,12 +27,10 @@ app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function
         return social;
     }
     
-   captureApi.getCaptures()
+   captureApi.getAllCaptures()
         .then(function(res) {
-            $scope.captures = res.data.filter(function(captures) {
+              $scope.captures = res.data.filter(function(captures) {
                 return captures.userId === $scope.auth.profile.user_id
-        }, function(err) {
-            //do something
+            });
         });
-    });
 }]);

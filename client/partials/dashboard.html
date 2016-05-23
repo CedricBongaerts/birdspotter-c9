@@ -1,9 +1,32 @@
 <div class="col-md-6 no-padding-left">
     <div class="panel panel-primary">
-        <div class="panel-heading text-center">
-            <h4 class="no-margin-top no-margin-bottom">Top rated captures</h4>
+        <div class="list-group-item active text-center">
+            <h4 class="no-margin-top no-margin-bottom">Recent Global Activity</h4>
         </div>
-    </div>    
+        
+        <a href="#" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize ">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="thumbnail no-border no-margin-bottom">         
+                        <img src="https://placehold.it/150x150" alt="bird" width="150" height="150"/>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h4 class="no-margin-top no-margin-bottom"><strong>{{capture.birdname}}</strong></h4>
+                    <strong>Picture taken in:</strong> {{capture.place}}
+                </div>
+            </div>
+        </a>
+        
+        <a href="#" class="list-group-item" ng-if="captures == 0">
+            <p>NOTHING FOUND</p>
+        </a>
+        
+        <uib-pagination total-items="captures.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+        </uib-pagination>
+    </div>
 </div>
 
 <div class="col-md-6 no-padding-right">

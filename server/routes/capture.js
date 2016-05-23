@@ -1,10 +1,13 @@
 var Capture = require('../models/capture');
+
 module.exports = function(router) {
     router.post('/captures', function(req, res){
         var capture = new Capture();
         capture.birdname = req.body.birdname;
         capture.place =  req.body.place;
         capture.userId = req.body.userId;
+        capture.author = req.body.author;
+        capture.picture = req.body.picture;
         capture.created_at = new Date();
         
         capture.save(function(err, data){
@@ -27,11 +30,11 @@ module.exports = function(router) {
           });
       });
     
-    // router.get('/captures/:id', function(req, res){
-    //     Capture.findOne({_id: req.params.id}, function(err, data){
-    //         res.json(data);
-    //     });
-    // });
+    router.get('/captures/:id', function(req, res){
+         Capture.findOne({_id: req.params.id}, function(err, data){
+             res.json(data);
+         });
+     });
     
      router.delete('/captures/:id', function(req, res){
          Capture.remove({_id: req.params.id}, function(err){

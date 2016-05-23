@@ -21,14 +21,14 @@
 <div class="col-md-8 no-padding-right">
     <div class="panel panel-primary">
         <div class="list-group-item active text-center">
-            <h4 class="no-margin-top no-margin-bottom">Recent Activity</h4>
+            <h4 class="no-margin-top no-margin-bottom">Your Recent Activity</h4>
         </div>
         
-        <a href="#" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize ">
+        <a ng-href="/capture/{{capture._id}}" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize ">
             <div class="row">
                 <div class="col-md-4">
                     <div class="thumbnail no-border no-margin-bottom">         
-                        <img src="https://placehold.it/150x150" alt="bird" width="150" height="150"/>
+                        <img src="{{capture.picture}}" alt="bird" width="150" height="150"/>
                     </div>
                 </div>
                 <div class="col-md-8">
