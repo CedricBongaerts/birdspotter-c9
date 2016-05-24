@@ -6,7 +6,8 @@ var captureSchema = mongoose.Schema({
     userId: {type: String, required: true},
     author: {type: String, required: true},
     picture: Schema.Types.Mixed,
-    created_at: Date
+    created_at: Date,
+    // comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
 });
 
 module.exports = mongoose.model('Capture', captureSchema)

@@ -122,7 +122,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
     $urlRouterProvider.otherwise("/");
     filepickerProvider.setKey('A0KU8DpZ3Tai1uHSmwevwz');
 
-    $locationProvider.html5Mode({enabled:true, requireBase: false});
+    //$locationProvider.html5Mode({enabled:true, requireBase: false});
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');
