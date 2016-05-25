@@ -1,8 +1,8 @@
 /* global app */
 
-app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', 
-function($scope, captureApi, auth, $http, $timeout, filepickerService){
-
+app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', '$location',
+function($scope, captureApi, auth, $http, $timeout, filepickerService, $location){
+    
     $scope.form = {};
     $scope.auth = auth;
 
@@ -26,24 +26,18 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService){
 
 
     $scope.addToDatabase = function(){      
-        $scope.form = {};
         var dataObj = {
                 birdname: $scope.birdname,
                 place   : $scope.place,
                 userId  : $scope.auth.profile.user_id,
                 author  : $scope.auth.profile.name,
                 picture : $scope.capture.picture.url
-        };  
-
-        $scope.captureMessage = true;
-
+        };
+        
         captureApi.insertCapture(dataObj)
-
-        $scope.birdname = "";   
-        $scope.place = "";
-        $scope.picture = "";
-        $timeout(function() {
-            $scope.captureMessage = false;
-        }, 3000);
+            .then(function(res){
+                var id = res.data._id;
+                $location.path('detail/' + id);
+            });
     };
 }]);

@@ -4,7 +4,7 @@
             <h4 class="no-margin-top no-margin-bottom">{{auth.profile.name}}</h4>
         </div>
         <div class="thumbnail no-border no-margin-bottom">
-            <img class="img-rounded" src="{{profilePic()}}" alt="profile-{{auth.profile.nickname}}" width="200" height="200"/>
+            <img class="img-rounded" ng-src="{{profilePic()}}" alt="profile-{{auth.profile.nickname}}" width="200" height="200"/>
         </div>
         <ul class="list-group">
             <li class="list-group-item text-center"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{auth.profile.nickname}}</li>
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="thumbnail no-border no-margin-bottom">         
-                        <img src="{{capture.picture}}" alt="bird" width="150" height="150"/>
+                        <img ng-src="{{capture.picture}}" alt="bird" width="150" height="150"/>
                     </div>
                 </div>
                 <div class="col-md-8">

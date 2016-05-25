@@ -24,8 +24,6 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
       if (!jwtHelper.isTokenExpired(token)) {
         if (!auth.isAuthenticated) {
           auth.authenticate(store.get('profile'), token);
-
-
           //Store the status in the scope 
           $rootScope.isAuthenticated = auth.isAuthenticated
         }
@@ -121,8 +119,6 @@ app.config(function($stateProvider, authProvider, $httpProvider,
     
     $urlRouterProvider.otherwise("/");
     filepickerProvider.setKey('A0KU8DpZ3Tai1uHSmwevwz');
-
-    //$locationProvider.html5Mode({enabled:true, requireBase: false});
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');
@@ -140,7 +136,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
     } else {
       return idToken;
     }
-  }   
+  };
   
   $httpProvider.interceptors.push('jwtInterceptor');
 });
@@ -148,5 +144,5 @@ app.config(function($stateProvider, authProvider, $httpProvider,
 app.filter('startFrom', function() {
   return function(data, currentPage, pageSize) {
     return data.slice(((currentPage-1)*pageSize), ((currentPage)*pageSize));
-  }
+  };
 });

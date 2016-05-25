@@ -3,6 +3,7 @@
 app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function($scope, auth, $http, captureApi) {
     
     $scope.auth = auth;
+    console.log($scope.auth);
     $scope.date = auth.profile.created_at;
     $scope.captures = [];
     $scope.pageSize = 4;
@@ -16,7 +17,7 @@ app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function
             pic = auth.profile.picture;
         }
         return pic;
-    }
+    };
     
     $scope.connectedWith = function(social) {
         if(auth.profile.identities[0].provider === "facebook"){
@@ -25,7 +26,7 @@ app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function
             social = "img/google-logo.png";
         }
         return social;
-    }
+    };
     
    captureApi.getAllCaptures()
         .then(function(res) {

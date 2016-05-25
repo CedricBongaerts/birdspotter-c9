@@ -14,8 +14,11 @@ app.factory('captureApi', ['$http', function($http){
         },
         
         findCapture : function(id) {
-            console.log(id);
             return $http.get(urlBase + '/' + id);
+        },
+        
+        postComment : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/comments', data);
         }
     };
 }]);

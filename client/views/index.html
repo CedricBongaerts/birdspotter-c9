@@ -69,13 +69,13 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li ng-if="isAuthenticated" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard">Dashboard</a></li>
-            <li ng-if="isAuthenticated" ng-class="{active: isActive('/capture')}"><a ui-sref="capture">Capture</a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard">Dashboard</a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/capture')}"><a ui-sref="capture">Capture</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li ng-if="!isAuthenticated"><a href="/" ng-click="login()">Login</a></li>
-            <li ng-if="isAuthenticated" ng-class="{active: isActive('/profile')}"><a ui-sref="profile"><img src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.given_name}}</a></li>
-            <li ng-if="isAuthenticated"><a href="/" ng-click="logout()">Logout</a></li>
+            <li ng-if="!auth.isAuthenticated"><a href="/" ng-click="login()">Login</a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/profile')}"><a ui-sref="profile"><img ng-src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.given_name}}</a></li>
+            <li ng-if="auth.isAuthenticated"><a href="/" ng-click="logout()">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

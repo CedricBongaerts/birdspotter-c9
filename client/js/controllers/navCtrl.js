@@ -2,10 +2,11 @@
 app.controller('navCtrl', function($scope, auth, store, $location, $state){
     $scope.auth = auth;
     $scope.authenticated = auth.isAuthenticated;
+    console.log(auth.isAuthenticated);
     
     $scope.isActive = function(destination){
         return destination === $location.path();
-    }
+    };
     
     $scope.login = function doAuth() {
       auth.signin({
@@ -18,7 +19,6 @@ app.controller('navCtrl', function($scope, auth, store, $location, $state){
 
 
         //Store the status in the scope 
-        $scope.isAuthenticated = auth.isAuthenticated
         store.set('profile', profile);
         store.set('token', token);
         store.set('refreshToken', refreshToken);
@@ -30,7 +30,6 @@ app.controller('navCtrl', function($scope, auth, store, $location, $state){
     
     $scope.logout = function() {
         auth.signout();
-        $scope.isAuthenticated = false;
         store.remove('token');
         store.remove('profile');
         store.remove('refreshToken');

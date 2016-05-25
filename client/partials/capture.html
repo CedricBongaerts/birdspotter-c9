@@ -7,10 +7,10 @@
             </button>
             <div style="margin-top:10px;">
                 <!-- Show the thumbnail only when the picture is uploaded -->
-                <a href="{{capture.picture.url}}" class="thumbnail" ng-if="capture.picture">
+                <div class="thumbnail" ng-if="capture.picture">
                 <!-- the picture is rendered with width: 500 and sharpened -->
                 <img ng-src="{{capture.picture.url | fpConvert: {filter:'sharpen'} }}">
-                </a>
+                </div>
             </div>                  
         </div>
     </div>
@@ -20,10 +20,10 @@
     </div>
     <div class="form-group move-down">
         <label for="place">Picture taken in:</label>
-        <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete required>
+        <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete requireMatch required>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid">Add Customer</button>
+        <button type="submit" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid">Place your capture</button>
    </div>
 </form>
 

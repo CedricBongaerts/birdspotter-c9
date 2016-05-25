@@ -4,11 +4,11 @@
             <h4 class="no-margin-top no-margin-bottom">Recent Global Activity</h4>
         </div>
         
-        <a href="#" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize ">
+        <a ui-sref="detail({id: capture._id})" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize">
             <div class="row">
                 <div class="col-md-4">
                     <div class="thumbnail no-border no-margin-bottom">         
-                        <img src="https://placehold.it/150x150" alt="bird" width="150" height="150"/>
+                        <img ng-src="{{capture.picture}}" alt="bird" width="150" height="150"/>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -32,16 +32,7 @@
 <div class="col-md-6 no-padding-right">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
-            <h4 class="no-margin-top no-margin-bottom">Most recent captures</h4>
+            <h4 class="no-margin-top no-margin-bottom">Top voted (coming soon)</h4>
         </div>
-        <div class="thumbnail no-border no-margin-bottom">
-          
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></li>
-            <li class="list-group-item"></li>
-        </ul>
     </div> 
-   
 </div>
