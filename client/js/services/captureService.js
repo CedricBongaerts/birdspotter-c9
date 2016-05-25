@@ -20,5 +20,6 @@ app.factory('captureApi', ['$http', function($http){
         postComment : function(id, data) {
             return $http.post(urlBase + '/' + id + '/comments', data);
         }
+        
     };
 }]);

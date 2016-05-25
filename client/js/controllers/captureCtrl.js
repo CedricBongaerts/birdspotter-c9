@@ -5,7 +5,23 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
     
     $scope.form = {};
     $scope.auth = auth;
-
+    $scope.disable = null;
+    $scope.captureType = 'ok';
+    
+    $scope.options = {};
+    $scope.options.watchEnter = true;
+    
+    $scope.toggleType = function() {
+        if($scope.checked == true)
+        {
+            $scope.birdname = 'Unknown';
+            $scope.captureType = 'question';
+        } else {
+            $scope.birdname = null;
+            $scope.captureType = 'ok';
+        }
+        return $scope.birdname, $scope.type;
+    };
 
     $scope.upload = function(){
         filepickerService.pick(
@@ -25,13 +41,15 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
     };
 
 
-    $scope.addToDatabase = function(){      
+    $scope.addToDatabase = function(){  
+        
         var dataObj = {
-                birdname: $scope.birdname,
-                place   : $scope.place,
-                userId  : $scope.auth.profile.user_id,
-                author  : $scope.auth.profile.name,
-                picture : $scope.capture.picture.url
+                type     : type,
+                birdname : $scope.birdname,
+                place    : $scope.place,
+                userId   : $scope.auth.profile.user_id,
+                author   : $scope.auth.profile.name,
+                picture  : $scope.capture.picture.url
         };
         
         captureApi.insertCapture(dataObj)

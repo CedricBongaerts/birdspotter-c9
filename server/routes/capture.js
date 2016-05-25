@@ -1,11 +1,14 @@
 var Capture = require('../models/capture');
 var Comment = require('../models/comment');
 
+
 module.exports = function(router) {
     router.post('/captures', function(req, res){
         var capture = new Capture();
+        capture.type = req.body.type;
         capture.birdname = req.body.birdname;
         capture.place =  req.body.place;
+        capture.note = req.body.note;
         capture.userId = req.body.userId;
         capture.author = req.body.author;
         capture.picture = req.body.picture;

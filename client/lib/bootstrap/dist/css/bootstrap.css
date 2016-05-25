@@ -6746,6 +6746,9 @@ body {
 .no-border {
   border: none!important;
 }
+.glyphicon-design {
+  font-size: 16px;
+}
 @media screen and (min-width: 991px) {
   .no-padding-right {
     padding-right: 0px!important;

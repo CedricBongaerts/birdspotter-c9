@@ -31,6 +31,7 @@ app.use(bodyParser.json({ type: 'application/json'}));
 app.get('/', function(req, res){
     res.render('index.html');
 });
+
 // API 
 var api = express.Router();
 require('./server/routes/capture')(api);
