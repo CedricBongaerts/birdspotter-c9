@@ -1,0 +1,13 @@
+<h1> USERS LIST</h1>
+
+<div ng-repeat="user in users" class="list-group-item" >
+    <a ui-sref="user-profile({id: user.user_id})">
+            <div class="row">
+                <div class="col-md-4">
+                    {{user.name}}
+                    {{user.email}}
+                    
+                </div>
+            </div>
+            </a>
+        </div>

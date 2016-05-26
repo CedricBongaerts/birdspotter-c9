@@ -6789,3 +6789,7 @@ body {
     padding-right: 0px!important;
   }
 }
+.nav-glyph {
+  line-height: 26px!important;
+  font-size: 16px!important;
+}

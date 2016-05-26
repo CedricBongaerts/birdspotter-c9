@@ -93,17 +93,17 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         }
     })
     
-    .state('detail', {
-      url: '/detail/{id}',
-      templateUrl: 'partials/viewCapture.html',
-      controller: 'viewCaptureCtrl',
-      data: {
-            requiresLogin: true
-        },
-      resolve: {
-          $title: function() { return 'Detail'; }
-				}
-    })
+      .state('detail', {
+        url: '/detail/{id}',
+        templateUrl: 'partials/viewCapture.html',
+        controller: 'viewCaptureCtrl',
+        data: {
+              requiresLogin: true
+          },
+        resolve: {
+            $title: function() { return 'Detail'; }
+  				}
+      })
 
     .state('profile', {
       url: '/profile',
@@ -115,7 +115,31 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         resolve: {
           $title: function() { return 'Profile'; }
         }
-    });
+    })
+    
+      .state('view-profile', {
+        url: '/user-profile/{id}',
+        templateUrl: 'partials/viewProfile.html',
+        controller: 'viewProfileCtrl',
+          data: {
+              requiresLogin: true
+          },
+          resolve: {
+            $title: function() { return 'View Profile'; }
+          }
+      })
+    
+    .state('users', {
+        url: '/users',
+        templateUrl: 'partials/users.html',
+        controller: 'usersCtrl',
+          data: {
+              requiresLogin: true
+          },
+          resolve: {
+            $title: function() { return 'Users List'; }
+          }
+      });
     
     $urlRouterProvider.otherwise("/");
     filepickerProvider.setKey('A0KU8DpZ3Tai1uHSmwevwz');

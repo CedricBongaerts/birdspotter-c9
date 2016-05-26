@@ -1,19 +1,19 @@
 <div class="col-md-4 no-padding-left">
     <div class="panel panel-primary">
         <div class="panel-heading text-center">
-            <h4 class="no-margin-top no-margin-bottom">{{auth.profile.name}}</h4>
+            <h4 class="no-margin-top no-margin-bottom">{{user.name}}</h4>
         </div>
         <div class="thumbnail no-border no-margin-bottom">
-            <img class="img-rounded" ng-src="{{profilePic()}}" alt="profile-{{auth.profile.nickname}}" width="200" height="200"/>
+            <img class="img-rounded" ng-src="{{profilePic()}}" alt="profile-{{user.nickname}}" width="200" height="200"/>
         </div>
         <ul class="list-group">
-            <li class="list-group-item text-center"><span class="glyphicon glyphicon-user"></span> {{auth.profile.nickname}}</li>
-            <li class="list-group-item text-center"><span class="glyphicon glyphicon-envelope"></span> {{auth.profile.email}}</li>
+            <li class="list-group-item text-center"><span class="glyphicon glyphicon-user"></span> {{user.nickname}}</li>
+            <li class="list-group-item text-center"><span class="glyphicon glyphicon-envelope"></span> {{user.email}}</li>
             <li class="list-group-item text-center"><strong>Account created on: </strong> {{date | date:'yyyy-MM-dd'}}</li>
         </ul>
         <p class="text-center"><strong>Connected with</strong></p>
         <div class="thumbnail no-border no-margin-bottom">
-            <img class="img-rounded" src="{{connectedWith()}}" alt="profile-{{auth.profile.identities[0].provider}}" width="50" height="50"/>
+            <img class="img-rounded" src="{{connectedWith()}}" alt="profile-{{user.identities[0].provider}}" width="50" height="50"/>
         </div>
     </div>
 </div>

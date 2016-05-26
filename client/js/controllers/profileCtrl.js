@@ -10,8 +10,8 @@ app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', 'userApi
     $scope.currentPage = 1;
     
     userApi.getUsers().then(function(res) {
-        $scope.users = res.data;
-        console.log(res.data);
+        $scope.users = res.data.users.user_id;
+        console.log($scope.users);
     });
     
     
