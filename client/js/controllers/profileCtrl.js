@@ -1,6 +1,6 @@
 /* global app */
 
-app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function($scope, auth, $http, captureApi) {
+app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', 'userApi', function($scope, auth, $http, captureApi, userApi) {
     
     $scope.auth = auth;
     console.log($scope.auth);
@@ -8,6 +8,11 @@ app.controller('profileCtrl', ['$scope', 'auth', '$http', 'captureApi', function
     $scope.captures = [];
     $scope.pageSize = 4;
     $scope.currentPage = 1;
+    
+    userApi.getUsers().then(function(res) {
+        $scope.users = res.data;
+        console.log(res.data);
+    });
     
     
     $scope.profilePic = function(pic) {

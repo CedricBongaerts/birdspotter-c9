@@ -32,6 +32,10 @@ app.get('/', function(req, res){
     res.render('index.html');
 });
 
+app.get('/birds', function(req, res){
+    res.render('webtest.json');
+});
+
 // API 
 var api = express.Router();
 require('./server/routes/capture')(api);

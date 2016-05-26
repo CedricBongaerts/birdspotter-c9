@@ -10,7 +10,7 @@ var app = angular.module('app',
                             'ngAutocomplete',
                             'ui.bootstrap',
                             'angular-filepicker',
-                            'underscore'
+                            'autocomplete'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {

@@ -1,8 +1,6 @@
 /* global app*/
 app.controller('navCtrl', function($scope, auth, store, $location, $state){
     $scope.auth = auth;
-    $scope.authenticated = auth.isAuthenticated;
-    console.log(auth.isAuthenticated);
     
     $scope.isActive = function(destination){
         return destination === $location.path();
