@@ -16,6 +16,9 @@
             <img class="img-rounded" src="{{connectedWith()}}" alt="profile-{{user.identities[0].provider}}" width="50" height="50"/>
         </div>
     </div>
+    
+     <button type="button" class="btn margin-left btn-success" ng-click="followUser()" ng-if="follow" >Follow User</button>
+     <button type="button" class="btn margin-left btn-danger" ng-click="unfollowUser()"  ng-if="following">Unfollow User</button>
 </div>
 
 <div class="col-md-8 no-padding-right">

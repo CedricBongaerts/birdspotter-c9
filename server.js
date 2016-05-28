@@ -19,6 +19,7 @@ app.use(express.static(path.resolve(__dirname, 'client')));
 var mongoose = require('mongoose');
 var configDB = require('./server/config/database.js');
 require('./server/routes/capture');
+require('./server/routes/follow');
 mongoose.connect(configDB.url);
 
 var bodyParser = require('body-parser');
@@ -39,6 +40,7 @@ app.get('/birds', function(req, res){
 // API 
 var api = express.Router();
 require('./server/routes/capture')(api);
+require('./server/routes/follow')(api);
 app.use('/api', api);
 
 

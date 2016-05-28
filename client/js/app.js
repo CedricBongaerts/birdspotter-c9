@@ -25,7 +25,7 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
         if (!auth.isAuthenticated) {
           auth.authenticate(store.get('profile'), token);
           //Store the status in the scope 
-          $rootScope.isAuthenticated = auth.isAuthenticated
+          $rootScope.isAuthenticated = auth.isAuthenticated;
         }
       } else {
         if (refreshToken) {
@@ -72,7 +72,19 @@ app.config(function($stateProvider, authProvider, $httpProvider,
     .state('dashboard', {
       url: '/dashboard',
       templateUrl: 'partials/dashboard.html',
-      controller: 'dashCtrl',
+      controller: 'dashboardCtrl',
+        data: {
+            requiresLogin: true
+        },
+        resolve: {
+          $title: function() { return 'Dashboard'; }
+        }
+    })
+    
+    .state('following', {
+      url: '/following',
+      templateUrl: 'partials/following.html',
+      controller: 'followingCtrl',
         data: {
             requiresLogin: true
         },
@@ -117,10 +129,10 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         }
     })
     
-      .state('view-profile', {
+      .state('user-profile', {
         url: '/user-profile/{id}',
-        templateUrl: 'partials/viewProfile.html',
-        controller: 'viewProfileCtrl',
+        templateUrl: 'partials/viewUser.html',
+        controller: 'viewUserCtrl',
           data: {
               requiresLogin: true
           },

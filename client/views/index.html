@@ -36,7 +36,7 @@
     <script type="text/javascript" src="/lib/angular-filepicker/dist/angular_filepicker.js"></script>
     
     <!-- Auth0's libraries -->
-    <script type="text/javascript" src="https://cdn.auth0.com/js/lock-9.0.js"></script>
+    <script type="text/javascript" src="https://cdn.auth0.com/js/lock-9.1.js"></script>
     <script type="text/javascript" src="https://cdn.auth0.com/w2/auth0-angular-4.js"></script>
     
     <!-- Third-party libraries -->
@@ -48,11 +48,12 @@
     <!-- Controllers -->
     <script  type="text/javascript" src="/js/controllers/homeCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/navCtrl.js"></script>
-    <script  type="text/javascript" src="/js/controllers/dashCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/dashboardCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/followingCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/captureCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/viewCaptureCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/profileCtrl.js"></script>
-    <script  type="text/javascript" src="/js/controllers/viewProfileCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/viewUserCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/usersCtrl.js"></script>
     
     <!-- Services -->
@@ -76,7 +77,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-list-alt"></span></a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span></a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span></a></li>
             <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span></a></li>
             <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users" aria-hidden="true"></span></a></li>
           </ul>
