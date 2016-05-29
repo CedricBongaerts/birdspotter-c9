@@ -30,6 +30,7 @@
     <script  type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="/lib/allmighty-autocomplete/script/autocomplete.js"></script>
     <script type="text/javascript" src="/lib/allmighty-autocomplete/script/app.js"></script>
+    <script type='text/javascript' src='/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
     
     <!-- Filestack -->
     <script type="text/javascript" src="/lib/filepicker-js/filepicker.js"></script>
@@ -52,9 +53,9 @@
     <script  type="text/javascript" src="/js/controllers/followingCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/captureCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/viewCaptureCtrl.js"></script>
-    <script  type="text/javascript" src="/js/controllers/profileCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/viewUserCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/usersCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/taxonomyCtrl.js"></script>
     
     <!-- Services -->
     <script  type="text/javascript" src="/js/services/captureService.js"></script>
@@ -80,11 +81,12 @@
             <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span></a></li>
             <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span></a></li>
             <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span></a></li>
-            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users" aria-hidden="true"></span></a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span></a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/avian-taxonomy')}"><a ui-sref="taxonomy"><span class="nav-glyph fa fa-book"></span></a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li ng-if="!auth.isAuthenticated"><a href="/" ng-click="login()">Login</a></li>
-            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/profile')}"><a ui-sref="profile"><img ng-src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.given_name}}</a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"><img ng-src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.given_name}}</a></li>
             <li ng-if="auth.isAuthenticated"><a href="/" ng-click="logout()">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->

@@ -7,15 +7,11 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
     $scope.captures = [];
     var i,j;
     
-    
-   
     userApi.findFollow().then(function(res) {
         var follows = res.data;
 
         captureApi.getAllCaptures().then(function(res) {
             var captures = res.data;
-
-            
             for(i=0; i<follows.length; i++) {
                 if(follows[i].follower_id == auth.profile.user_id) {
                     for(j=0; j<captures.length; j++){
@@ -27,5 +23,4 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
             }
         });
     });
-
 }]);

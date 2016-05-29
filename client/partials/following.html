@@ -2,20 +2,18 @@
     <h4><strong>Personal Dashboard:</strong></h4>
     <hr />
     <div class="row">
-        <div class="col-md-4" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true">
-            <a ui-sref="detail({id: capture._id})">
-                <div class="padding">
-                    <div class="thumbnail no-margin-bottom">
-                        <h4 class="no-margin-top no-margin-bottom"><span class="glyphicon glyphicon-{{capture.type}}-sign"></span> <strong>{{capture.birdname}}</strong></h4>
-                        <br />
-                        <img ng-src="{{capture.picture}}" alt="bird" min-height="200"/>
-                        <br />
-                        <strong>Picture taken in:</strong> {{capture.place}}<br />
-                        <strong>Posted on:</strong> {{capture.created_at | date:'yyyy-MM-dd'}}
-                    </div>
-                </div>
-            </a>
-        </div>
+    <div  ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true">
+     <div class="clearfix" ng-if="$index % 3 == 0"></div>
+        <a ui-sref="detail({id: capture._id})" class="padding col-md-4">
+            <div class="thumbnail no-margin-bottom">
+                <h4 class="no-margin-top no-margin-bottom"><span class="glyphicon glyphicon-{{capture.type}}-sign"></span> <strong>{{capture.birdname}}</strong></h4>
+                <br />
+                    <img ng-src="{{capture.picture}}" alt="bird"/>
+                <br />
+                <strong>Picture taken in:</strong> {{capture.place}}<br />
+                <strong>Posted on:</strong> {{capture.created_at | date:'yyyy-MM-dd'}}
+            </div>
+        </a>
     </div>
-    <div class="row">
     </div>
+</div>

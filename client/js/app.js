@@ -10,7 +10,8 @@ var app = angular.module('app',
                             'ngAutocomplete',
                             'ui.bootstrap',
                             'angular-filepicker',
-                            'autocomplete'
+                            'autocomplete',
+                            'infinite-scroll'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
@@ -116,16 +117,13 @@ app.config(function($stateProvider, authProvider, $httpProvider,
             $title: function() { return 'Detail'; }
   				}
       })
-
-    .state('profile', {
-      url: '/profile',
-      templateUrl: 'partials/profile.html',
-      controller: 'profileCtrl',
-        data: {
-            requiresLogin: true
-        },
+    
+    .state('taxonomy', {
+      url: '/avian-taxonomy',
+      templateUrl: 'partials/taxonomy.html',
+      controller: 'taxonomyCtrl',
         resolve: {
-          $title: function() { return 'Profile'; }
+          $title: function() { return 'Avian Taxonomy'; }
         }
     })
     

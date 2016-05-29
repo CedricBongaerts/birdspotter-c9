@@ -3,7 +3,7 @@
 app.factory('birdApi', ['$http', function($http){
     
     var urlBirds = 'https://api.myjson.com/bins/2ncjk';
-    var urlTaxonomy = 'http://birds.faircloth-lab.org/api/v1/species/common/';
+    var urlTaxonomy = 'https://birds.faircloth-lab.org/api/v1/species/common/';
     
     return {
         getBirds : function() {
@@ -15,7 +15,7 @@ app.factory('birdApi', ['$http', function($http){
         },
         
         getDuckEngine : function(data) {
-            return $http.get('http://api.duckduckgo.com/?q=' + data + '&format=json&pretty=1')
+            return $http.jsonp('https://api.duckduckgo.com/?q=' + data + '&format=json&callback=JSON_CALLBACK&pretty=1');
         }
     };
 }]);

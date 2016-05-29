@@ -19,6 +19,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
             if (res.data.users[i].user_id == id) {
                 // Asynchronous Call
                 $scope.user =  res.data.users[i];
+                console.log($scope.user);
                 
                  $scope.profilePic = function(pic) {
                     if($scope.user.identities[0].provider == "facebook"){
