@@ -19,8 +19,10 @@
                 <div class="col-md-5">
                     <strong>Name: </strong><p>{{birdname}}</p>
                     <strong>Preview: </strong><br />
-                    <img ng-src="{{birdImage}}" alt="bird" ng-if="imageShow" />
-                    <img ng-src="img/no_preview.jpg" alt="no preview" ng-hide="imageShow" />
+                    <div class="thumbnail no-border no-margin-bottom"> 
+                        <img ng-src="{{birdImage}}" alt="bird" ng-if="imageShow" />
+                        <img ng-src="img/no_preview.jpg" alt="no preview" ng-hide="imageShow" />
+                    </div>
                 </div>
                 <div class="col-md-7">
                     <strong>General information:</strong>

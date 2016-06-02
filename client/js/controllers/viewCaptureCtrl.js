@@ -1,6 +1,7 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', function($scope, $stateParams, $http, captureApi, auth, voteApi, $location) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox) {
 
      var id = $stateParams.id;
      $scope.auth = auth;
@@ -56,6 +57,10 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         console.log('Deleted Capture');
                 });
             };
+            
+            $scope.cancelDelete = function() {
+                return;
+            };
         });
 
           
@@ -91,17 +96,17 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
      
 }]);
 
-app.directive('ngConfirmClick', [
-        function(){
-            return {
-                link: function (scope, element, attr) {
-                    var msg = attr.ngConfirmClick || "Are you sure?";
-                    var clickAction = attr.confirmedClick;
-                    element.bind('click',function (event) {
-                        if ( window.confirm(msg) ) {
-                            scope.$eval(clickAction);
-                        }
-                    });
-                }
-            };
-    }])
+// app.directive('ngConfirmClick', [
+//         function(){
+//             return {
+//                 link: function (scope, element, attr) {
+//                     var msg = attr.ngConfirmClick || "Are you sure?";
+//                     var clickAction = attr.confirmedClick;
+//                     element.bind('click',function (event) {
+//                         if ( window.confirm(msg) ) {
+//                             scope.$eval(clickAction);
+//                         }
+//                     });
+//                 }
+//             };
+//     }])

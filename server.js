@@ -15,6 +15,12 @@ app.set('views', path.resolve(__dirname, 'client', 'views'));
 
 app.use(express.static(path.resolve(__dirname, 'client')));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Database Connection
 var mongoose = require('mongoose');
 var configDB = require('./server/config/database.js');
@@ -46,7 +52,6 @@ require('./server/routes/comment')(api);
 require('./server/routes/vote')(api);
 require('./server/routes/follow')(api);
 app.use('/api', api);
-
 
 // Port Settings
 app.listen(process.env.PORT || 3000, process.env.IP);

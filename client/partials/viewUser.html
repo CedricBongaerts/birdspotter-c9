@@ -55,7 +55,7 @@
             <p>NOTHING FOUND</p>
         </a>
         
-        <uib-pagination ng-if="captures !== 0"
+        <uib-pagination ng-if="captures.length > pageSize"
                         total-items="captures.length"
                         items-per-page="pageSize"
                         ng-model="currentPage">

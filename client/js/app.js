@@ -12,7 +12,8 @@ var app = angular.module('app',
                             'angular-filepicker',
                             'autocomplete',
                             'infinite-scroll',
-                            'angularMoment'
+                            'angularMoment',
+                            'ngBootbox'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
