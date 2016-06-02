@@ -5,7 +5,7 @@ var commentSchema = Schema({
     userId: String,
     author: String,
     created_at: Date,
-    capture: [{ type: Schema.Types.ObjectId, ref: 'Capture'}]
+    capture: { type: Schema.Types.ObjectId, ref: 'Capture'}
 });
 
 module.exports = mongoose.model('Comment', commentSchema);

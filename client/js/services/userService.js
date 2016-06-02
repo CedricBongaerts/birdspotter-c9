@@ -24,10 +24,6 @@ app.factory('userApi', ['$http', function($http){
         
         findFollow : function() {
             return $http.get(urlBase);
-        },
-        
-        unFollow : function(id) {
-            return $http.delete(urlBase + '/' + id);
-        },
+        }
     };
 }]);

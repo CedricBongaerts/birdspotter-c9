@@ -11,7 +11,8 @@ var app = angular.module('app',
                             'ui.bootstrap',
                             'angular-filepicker',
                             'autocomplete',
-                            'infinite-scroll'
+                            'infinite-scroll',
+                            'angularMoment'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {

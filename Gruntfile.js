@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     less: {
       development: {
         files: {
-          "client/lib/bootstrap/dist/css/bootstrap.css": "client/layout/style.less"
+          "client/lib/bootstrap/dist/css/bootstrap.css": "client/layout/style.less",
         }
       }
     },

@@ -7,16 +7,24 @@
 // Colors
 
 @brand-primary:                          #0F7000;
+@gray-lighter:                           lighten(@gray-base, 80.5%);
 
 // Scaffolding
-@body-bg:                                #E6E6E6;
+@body-bg:                                #E2E6E2;
 
+// Components
+
+@border-radius-base:                     0px;
+@border-radius-large:                    0px;
+@border-radius-small:                    0px;
 
 // Typography
 @font-size-base:                         13px;
+@line-height-base:                       2; // 20/13
 
-//** Unit-less `line-height` for use in components like buttons.
-@line-height-base:        2; // 20/13
+// Wells
+@well-bg:                                #fff;
+@well-border:                            lighten(@gray-lighter, 7.5%);;
 
 /*================== Navbar =====================*/
 
@@ -62,8 +70,16 @@
 /*================ Thumbnail ===================*/
 
 @thumbnail-padding:           4px;
-@thumbnail-bg:                #fff;
+@thumbnail-bg:                none;
 @thumbnail-border:            #D0D0D0;
+
+/*================ List Group ==================*/
+
+@list-group-bg:                 none;
+@list-group-border:             none;
+
+@list-group-hover-bg:           @well-bg;
+@list-group-link-hover-color:   @brand-primary;
 
 /*============= Custom Additions ================*/
 
@@ -72,7 +88,9 @@ html,body {
 }
 
 #main-container {
-    padding: floor((@grid-gutter-width / 2));
+    margin-top: 40px;
+    height:100%;
+    position: relative;
 }
 .no-margin-bottom {
     margin-bottom: 0px!important;
@@ -104,6 +122,66 @@ html,body {
     border-radius: 4px;
 }
 
+.voteComment{
+    display: inline;
+    float: right!important;
+}
+
+.captureLink {
+    cursor: pointer;
+}
+
+.captureLink:hover {
+        text-decoration: none;
+    }
+    
+.captureManage {
+    float:right;
+    font-size: 14px;
+    display: inline;
+    span {
+        padding: 3px;
+        cursor: pointer;
+    }
+}
+    
+hr {
+    margin-top: 5px!important;
+    margin-bottom: 10px!important;
+}
+
+.header-icon {
+    color: #fff;
+    font-size: 25px;
+    position:relative;
+    top: 50px;
+    left: 22px;
+    position:absolute;
+}
+
+.likes-header {
+    position:absolute;
+    right: 23px;
+    top: 19px;
+    color: #fff;
+    border: 1px solid white;
+    background: rgba(15,112,0,.1);
+    padding: 2px;
+}
+
+
+.dash-info {
+    padding: 5px;
+    margin-bottom: 10px;
+    
+}
+
+.header-info {
+    right: 21px;
+    position: absolute;
+    bottom: 4px;
+    color: #fff;
+}
 @media screen and (min-width: 991px) {
 
     .no-padding-right {

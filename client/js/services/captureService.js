@@ -17,9 +17,17 @@ app.factory('captureApi', ['$http', function($http){
             return $http.get(urlBase + '/' + id);
         },
         
+        deleteCapture : function(id) {
+            return $http.delete(urlBase + '/' + id);
+        },
+        
         postComment : function(id, data) {
             return $http.post(urlBase + '/' + id + '/comments', data);
-        }
+        },
+        
+        likeCapture : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/votes', data);
+        },
         
     };
 }]);

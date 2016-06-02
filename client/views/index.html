@@ -18,19 +18,21 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4WM_531qnWnu1lNM824QE0ITMBvzjMqU&libraries=places"></script>
     
     <!-- AngularJS libraries-->
-    <script  type="text/javascript" src="/lib/angular/angular.js"></script>
-    <script  type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
-    <script  type="text/javascript" src="/lib/angular-cookies/angular-cookies.js"></script>
-    <script  type="text/javascript" src="/lib/angular-ui-router/release/angular-ui-router.js"></script>
-    <script  type="text/javascript" src="/lib/a0-angular-storage/dist/angular-storage.js"></script>
-    <script  type="text/javascript" src="/lib/angular-jwt/dist/angular-jwt.js"></script>
-    <script  type="text/javascript" src="/lib/angular-ui-router-title/angular-ui-router-title.js"></script>
-    <script  type="text/javascript" src="/lib/ng-autocomplete/src/ngAutocomplete.js"></script>
-    <script  type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
-    <script  type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="/lib/angular/angular.js"></script>
+    <script type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
+    <script type="text/javascript" src="/lib/angular-cookies/angular-cookies.js"></script>
+    <script type="text/javascript" src="/lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script type="text/javascript" src="/lib/a0-angular-storage/dist/angular-storage.js"></script>
+    <script type="text/javascript" src="/lib/angular-jwt/dist/angular-jwt.js"></script>
+    <script type="text/javascript" src="/lib/angular-ui-router-title/angular-ui-router-title.js"></script>
+    <script type="text/javascript" src="/lib/ng-autocomplete/src/ngAutocomplete.js"></script>
+    <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
+    <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="/lib/allmighty-autocomplete/script/autocomplete.js"></script>
     <script type="text/javascript" src="/lib/allmighty-autocomplete/script/app.js"></script>
     <script type='text/javascript' src='/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
+    <script type='text/javascript' src="/lib/moment/moment.js"></script>
+    <script type='text/javascript' src='/lib/angular-moment/angular-moment.js'></script>
     
     <!-- Filestack -->
     <script type="text/javascript" src="/lib/filepicker-js/filepicker.js"></script>
@@ -61,11 +63,12 @@
     <script  type="text/javascript" src="/js/services/captureService.js"></script>
     <script  type="text/javascript" src="/js/services/birdService.js"></script>
     <script  type="text/javascript" src="/js/services/userService.js"></script>
+    <script  type="text/javascript" src="/js/services/voteService.js"></script>
   </head>
 
   <body>
     <!-- Navbar -->
-      <nav class="navbar navbar-default navbar-static-top" ng-controller="navCtrl">
+      <nav class="navbar navbar-default navbar-fixed-top" ng-controller="navCtrl">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">

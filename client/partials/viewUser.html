@@ -4,22 +4,32 @@
             <h4 class="no-margin-top no-margin-bottom">{{user.name}}</h4>
         </div>
         <div class="thumbnail no-border no-margin-bottom">
-            <img class="img-rounded" ng-src="{{profilePic()}}" alt="profile-{{user.nickname}}" width="200" height="200"/>
+            <img class="img-rounded" ng-src="{{profilePic()}}" alt="{{user.nickname}}" width="200" height="200"/>
         </div>
         <ul class="list-group">
             <li class="list-group-item text-center"><span class="glyphicon glyphicon-user"></span> {{user.nickname}}</li>
             <li class="list-group-item text-center"><span class="glyphicon glyphicon-envelope"></span> {{user.email}}</li>
-            <li class="list-group-item text-center"><strong>Account created on: </strong> {{date | date:'yyyy-MM-dd'}}</li>
+            <li class="list-group-item text-center"><strong>Last login: </strong> <span am-time-ago="user.last_login"></span></li>
         </ul>
-        <p class="text-center"><strong>Connected with</strong></p>
+        <p class="text-center no-margin-bottom"><strong>Connected with</strong></p>
         <div class="thumbnail no-border no-margin-bottom">
-            <img class="img-rounded" src="{{connectedWith()}}" alt="profile-{{user.identities[0].provider}}" width="50" height="50"/>
+            <img class="img-rounded" src="{{connectedWith()}}" alt="{{user.nickname}}" width="50" height="50"/>
         </div>
     </div>
     
      <button type="button" class="btn margin-left btn-success" ng-click="followUser()" ng-if="follow" >Follow User</button>
      <button type="button" class="btn margin-left btn-danger" ng-click="unfollowUser()"  ng-if="following">Unfollow User</button>
+     
+
+    <div class="panel panel-primary">
+        <div class="panel-heading text-center">
+            <h4 class="no-margin-top no-margin-bottom">Followed by: {{followingMe}} people</h4>
+            <hr />
+            <h4 class="no-margin-top no-margin-bottom">Following: {{meFollowing}} people</h4>
+        </div>
+    </div>
 </div>
+
 
 <div class="col-md-8 no-padding-right">
     <div class="panel panel-primary">
@@ -45,7 +55,8 @@
             <p>NOTHING FOUND</p>
         </a>
         
-        <uib-pagination total-items="captures.length"
+        <uib-pagination ng-if="captures !== 0"
+                        total-items="captures.length"
                         items-per-page="pageSize"
                         ng-model="currentPage">
         </uib-pagination>

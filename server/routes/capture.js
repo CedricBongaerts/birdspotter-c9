@@ -1,5 +1,6 @@
 var Capture = require('../models/capture');
 var Comment = require('../models/comment');
+var Vote = require('../models/vote');
 
 
 module.exports = function(router) {
@@ -31,12 +32,6 @@ module.exports = function(router) {
         });
     });
     
-     router.delete('/captures', function(req, res){
-          Capture.remove({}, function(err){
-              res.json({result: err ? 'error' : 'ok'});
-          });
-      });
-      
     // Map logic to route parameter 'capture'
     router.param('capture', function(req, res, next, id) {
     	var query = Capture.findById(id);
@@ -49,6 +44,7 @@ module.exports = function(router) {
     		return next();
     	});
     });
+    
     // Map logic to route parameter 'comment'
     router.param('comment', function (req, res, next, id) {
     	var query = Comment.findById(id);
@@ -62,62 +58,58 @@ module.exports = function(router) {
     	});
     });  
     
-    // router.get('/captures/:capture', function(req, res){
-    //      req.capture.populate('comments');   
-    //      Capture.findOne({_id: req.params.capture}, function(err, data){
-    //         if(err) 
-    //             throw err;
-    //          res.json(data);
-    //     });
-    //  });
+    // // Map logic to route parameter 'vote'
+    // router.param('vote', function (req, res, next, id) {
+    // 	var query = Vote.findById(id);
+    	
+    // 	query.exec(function (err, vote) {
+    // 		if (err) { return next(err); }
+    // 		if (!vote) { return next(new Error("can't find vote")); }
+    		
+    // 		req.vote = vote;
+    // 		return next();
+    // 	});
+    // });
      
     router.get('/captures/:capture', function(req, res) {
-	    req.capture.populate('comments', 
+	    req.capture.populate('comments',
 	        function (err, capture) {
-	            if(err)
-	                throw err;
-		        res.json(capture);
+	            if (err) throw err;
+	            req.capture.populate('votes',
+	                function(err, capture) {
+	                    if(err) throw err;
+	                    
+		            res.json(capture);
+            });
     	});
     });
     
-     router.delete('/captures/:id', function(req, res){
-         Capture.remove({_id: req.params.id}, function(err){
-             res.json({result: err ? 'error' : 'ok'});
-         });
-     });
-     
-    router.post('/captures/:capture/comments', function(req, res, next){
-        var comment = new Comment();
-        comment.body =  req.body.body;
-        comment.userId = req.body.userId;
-        comment.author = req.body.author;
-        comment.created_at = new Date();
-        comment.capture = req.capture;
-        
-        comment.save(function(err, comment) {
-    		if (err) { return next(err); }
-    		
-    		req.capture.comments.push(comment);
-    		req.capture.save(function(err, capture) {
-    			if (err) { return next(err); }
-    			
-    			res.json(comment);
+     router.delete('/captures/:capture', function(req, res){
+         req.capture.comments.forEach(function(id) {
+    		Comment.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
     		});
-        });
-    });
-    
-    // router.post('/captures/:id', function(req, res){
-    //     Capture.findOne({_id: req.params.id}, function(err, data){
-    //         var capture = data;
-    //         capture.birdname = req.body.birdname;
-    //         capture.place.city = req.body.place.city;
-    //         capture.place.country = req.body.place.country;
-            
-    //         capture.save(function(err, data){
-    //             if(err)
-    //                 throw err;
-    //             res.json(data);
-    //         });
-    //     })
-    // })
+    	});
+    	req.capture.votes.forEach(function(id) {
+    		Vote.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
+    		});
+    	});
+         Capture.remove({
+		_id: req.params.capture
+    	}, function(err, captures) {
+    		if (err) { throw err }
+    		
+    		// get and return all the posts after you delete one
+    		Capture.find(function(err, captures) {
+    			if (err) { throw err }
+    			
+    			res.json(captures);
+    		});
+    	});
+     });
 };

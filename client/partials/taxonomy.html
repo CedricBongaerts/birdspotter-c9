@@ -1,10 +1,10 @@
 <form class="col-md-12 well" name="taxonomy">
     <div>
-        <h4><strong>Avian taxonomy:</strong></h4>
+        <h3>Avian taxonomy:</h3>
         <hr />
         <div class="form-group">
             <input type="text" class="form-control" id="birdname" ng-model="birdname" autocomplete="off" placeholder="Enter a birdname" 
-                    uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" required>
+                    uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:15" typeahead-no-results="noResults" required>
         </div>
         <div ng-show="noResults">
           <i class="glyphicon glyphicon-remove"></i> No Results Found - Please Try Again!

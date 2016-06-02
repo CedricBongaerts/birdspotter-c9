@@ -2,7 +2,6 @@
 app.controller('navCtrl', function($scope, auth, store, $location, $state){
     
     $scope.auth = auth;
-    console.log($scope.auth);
     
     $scope.isActive = function(destination){
         return destination === $location.path();
