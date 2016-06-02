@@ -1,23 +1,28 @@
-<div class="well col-md-8">
+<div class="well col-md-9">
     <h3>Recent Global Activity</h3>
     <hr />
     <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item">
         <div class="thumbnail no-border no-margin-bottom"> 
-            <h4 class="no-margin-top"><span class="glyphicon glyphicon-{{capture.type}}-sign header-icon"></span>  <a ui-sref="user-profile({id: capture.userId})" class="captureLink">{{capture.author}}</a> captured a photo in <span class="fa fa-map-marker"></span> {{capture.place}}</h4>
-            <a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" alt="bird"/></a>
-            <h5 class="dash-info"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="capture.created_at"></span></h5>
+            <span><a ui-sref="user-profile({id: capture.userId})" class="captureLink">{{capture.author}}</a> captured a photo in <span class="fa fa-map-marker"></span> {{capture.place}}</h4></span>
+            <span class="glyphicon glyphicon-{{capture.type}}-sign header-icon"></span>
+            <a ui-sref="detail({id: capture._id})">
+                <img ng-src="{{capture.picture}}" alt="bird" class="dash-thumb-img"><h4 class="no-margin-top">
+                </img>
+            </a>
+            <div class="dash-info">
+                <h5><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="capture.created_at"></span></h5>
+            </div>
             <hr />
         </div>
     </div>
 </div>
 
-<div class="well col-md-4">
-    <h4><stong>Most Liked Captures</stong></h4>
+<div class="well col-md-3">
+    <h4><stong>3 Most Liked Captures</stong></h4>
     <hr />
     <div class="row">
-        <div ng-if="captures" ng-repeat="capture in captures | orderBy:'-votes.length' | limitTo:10">
-        <div class="clearfix" ng-if="$index % 2 == 0"></div>
-            <a ui-sref="detail({id: capture._id})" class="list-group-item col-md-6">
+        <div ng-if="captures" ng-repeat="capture in captures | orderBy:'-votes.length' | limitTo:3">
+            <a ui-sref="detail({id: capture._id})" class="list-group-item col-md-12">
                 <h5 class="no-margin-top likes-header"><i class="fa fa-thumbs-o-up"></i> <strong>{{capture.votes.length}}</strong></h5>
                 <div class="thumbnail no-border no-margin-bottom"> 
                     <img ng-src="{{capture.picture}}" alt="bird"/>

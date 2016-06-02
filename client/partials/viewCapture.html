@@ -1,39 +1,56 @@
-<div class="well col-md-12 no-margin-bottom">
-    <p class="captureManage" ng-if="author">
+<div class="well col-md-9 no-margin-bottom">
+    <p class="captureManage" ng-if="postAuthor">
         <span class="glyphicon glyphicon-pencil" ng-click="editCapture()"></span> 
          <span class="glyphicon glyphicon-trash" 
                 ng-bootbox-confirm-action-cancel="cancelDelete()"
                 ng-bootbox-confirm-action="deleteCapture()" 
                 ng-bootbox-confirm="Are you sure you want to delete this?"></span>
     </p>
-    <h3 align="center">{{capture.birdname}}</h3>
-    <h4 align="center"><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="captureLink">{{capture.author}}</a></h4>
-    <h4 align="center"><span class="fa fa-map-marker"></span> {{capture.place}}</h4>
+    <h3>{{capture.birdname}}</h3>
+    <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="captureLink">{{capture.author}}</a> in <span class="fa fa-map-marker"></span> {{capture.place}}</h4>
+    <h5 ng-if="capture.note"><i>"{{capture.note}}"</i></h5>
     <hr />
+        
         <div class="thumbnail no-border"> 
             <img ng-src="{{capture.picture}}" alt="bird"/>
         </div>
+        
+        
         <div class="pictureButton">
             <button class="btn margin-left btn-success" ng-click="likeCapture()" ng-show="like"><i class="fa fa-heart" aria-hidden="true"></i> Like</button>
             <button class="btn margin-left btn-danger" ng-click="unlikeCapture()"  ng-if="liked"><i class="fa fa-heart-o" aria-hidden="true"></i> Unlike</button>
-        <p class="voteComment" ng-click="test()">{{capture.votes.length}} Likes | <a class="captureLink" ng-click="show">{{capture.comments.length}} Comments</a></p>
+            <p class="voteComment" ng-click="test()">{{capture.votes.length}} Likes | <a class="captureLink" ng-click="show">{{capture.comments.length}} Comments</a></p>
         </div>
 </div>    
 
-<div class="well col-md-12">
-    <div ng-repeat="comment in capture.comments">
-            {{comment.author}}
-		<span style="font-size:20px; margin-left:10px;">
-			{{comment.body}}
-		</span>
-	</div>
-    <form name="addCapture">
-        <div class="form-group">
-            <label for="comment">Comment</label>
-            <textarea class="form-control" id="comment" rows="3" ng-model="body" required></textarea>
-        </div>
-        <div class="form-group">
-            <button ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addCapture.$invalid">Comment</button>
-       </div>
-    </form>
-</div>
+
+    <div class="well col-md-3">
+        <h4> Comments:</h4>
+        <hr />
+        <ul ng-scrollbars ng-scrollbars-config="config" class="list-group comments">
+            <li ng-repeat="comment in capture.comments" class="list-group-item comment">
+                    <span>
+                        <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> {{comment.body}} <span>
+                    <p class="commentActions">
+                        <span class="captureLink">Like</span> · 
+                        <span am-time-ago="comment.created_at"></span> · 
+                        <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment(comment._id)">Delete</span>
+                    </p>
+        	</li>
+    	</ul>
+    	<hr />
+    	<form name="addComments">
+            <div class="form-group" ng-if="capture.type == 'question'">
+                <label for="comment">Give Birdname:</label>
+                <input type="text" class="form-control" id="suggestedBirdname" rows="2" ng-model="suggestedBirdname" autocomplete="off" placeholder="Give the birdname" 
+                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8">
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea class="form-control" id="comment" rows="2" ng-model="body" required></textarea>
+            </div>
+            <div class="form-group">
+                <button ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addComments.$invalid">Comment</button>
+           </div>
+        </form>
+    </div>

@@ -29,8 +29,6 @@ app.controller('taxonomyCtrl', ['$scope', '$http', 'birdApi', function($scope, $
             } else {
                 $scope.infoShow = false;
             }
-            
         });
-        
     };
 }]);

@@ -4,6 +4,7 @@ var Capture = require('../models/capture');
 module.exports = function(router) {
     router.post('/captures/:capture/comments', function(req, res, next){
         var comment = new Comment();
+        comment.suggestedBirdname = req.body.suggestedBirdname;
         comment.body =  req.body.body;
         comment.userId = req.body.userId;
         comment.author = req.body.author;
@@ -31,10 +32,10 @@ module.exports = function(router) {
     });
     
     router.delete('/comments/:id', function(req, res){
-          Comment.findByIdAndRemove(req.params.id, function(err, comment){
+        Comment.findByIdAndRemove(req.params.id, function(err, comment){
             if (comment) {
                 Capture.update({_id: comment.capture}, {
-                        $pull : {votes: req.params.id}
+                        $pull : {comments: req.params.id}
                     }, function(err, data) { if(err) throw err; });
             } if(err) throw err;
         });

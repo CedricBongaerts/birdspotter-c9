@@ -1,7 +1,7 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 
-                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi',
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi) {
 
      var id = $stateParams.id;
      $scope.auth = auth;
@@ -9,12 +9,15 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
      $scope.liked = false;
      $scope.like = false;
      
+     birdApi.getBirds().then(function(res) {
+        $scope.birds = res.data;
+    });
+     
      captureApi.findCapture(id)
           .then(function(res) {
                $scope.capture = res.data;
                var votes = res.data.votes;
                     var i;
-                    console.log(votes.length);
                     if(votes.length == 0) {
                         $scope.like = true;
                     } else {
@@ -47,7 +50,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             };
             
             if($scope.capture.userId == auth.profile.user_id) {
-                $scope.author = true;
+                $scope.postAuthor = true;
             }
             
             $scope.deleteCapture = function() {
@@ -61,9 +64,15 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             $scope.cancelDelete = function() {
                 return;
             };
+            
+             $scope.deleteComment = function(commentId) {
+                 commentApi.deleteComment(commentId)
+                    .then(function(res) {
+                       console.log('deleted comment');
+                    });
+                };
         });
-
-          
+                  
     $scope.likeCapture = function(){
 
         var dataObj = {
@@ -82,9 +91,10 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     $scope.addComment = function(){
           
         var dataObj = {
-            body    : $scope.body,
-            userId  : $scope.auth.profile.user_id,
-            author  : $scope.auth.profile.name
+            suggestedBirdname : $scope.suggestedBirdname,
+            body              : $scope.body,
+            userId            : $scope.auth.profile.user_id,
+            author            : $scope.auth.profile.name
         };  
         
         captureApi.postComment(id, dataObj)  
@@ -93,20 +103,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         });
         $scope.body = "";
     };
+    
      
 }]);
-
-// app.directive('ngConfirmClick', [
-//         function(){
-//             return {
-//                 link: function (scope, element, attr) {
-//                     var msg = attr.ngConfirmClick || "Are you sure?";
-//                     var clickAction = attr.confirmedClick;
-//                     element.bind('click',function (event) {
-//                         if ( window.confirm(msg) ) {
-//                             scope.$eval(clickAction);
-//                         }
-//                     });
-//                 }
-//             };
-//     }])

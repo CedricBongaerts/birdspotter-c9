@@ -13,7 +13,8 @@ var app = angular.module('app',
                             'autocomplete',
                             'infinite-scroll',
                             'angularMoment',
-                            'ngBootbox'
+                            'ngBootbox',
+                            'ngScrollbars'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
@@ -50,7 +51,7 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
 });
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
-  jwtInterceptorProvider, $urlRouterProvider, $locationProvider, filepickerProvider){
+  jwtInterceptorProvider, $urlRouterProvider, $locationProvider, filepickerProvider, ScrollBarsProvider){
     
   authProvider.init({
     domain: 'cedricbongaerts.eu.auth0.com',
@@ -116,7 +117,19 @@ app.config(function($stateProvider, authProvider, $httpProvider,
               requiresLogin: true
           },
         resolve: {
-            $title: function() { return 'Detail'; }
+            $title: function() { return 'View Capture'; }
+  				}
+      })
+      
+      .state('edit', {
+        url: '/detail/{id}/edit',
+        templateUrl: 'partials/editCapture.html',
+        controller: 'editCaptureCtrl',
+        data: {
+              requiresLogin: true
+          },
+        resolve: {
+            $title: function() { return 'Edit Capture'; }
   				}
       })
     
@@ -154,7 +167,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       });
     
     $urlRouterProvider.otherwise("/");
-    filepickerProvider.setKey('A0KU8DpZ3Tai1uHSmwevwz');
+    filepickerProvider.setKey('AwxvGuQ4R5SbfsLwuKh2Qz');
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');
@@ -175,6 +188,17 @@ app.config(function($stateProvider, authProvider, $httpProvider,
   };
   
   $httpProvider.interceptors.push('jwtInterceptor');
+  
+  ScrollBarsProvider.defaults = {
+        scrollButtons: {
+            scrollAmount: 'auto', // scroll amount when button pressed
+            enable: true // enable scrolling buttons by default
+        },
+        scrollInertia: 400, // adjust however you want
+        axis: 'y', // enable 2 axis scrollbars by default,
+        theme: 'dark-3',
+        setHeight: 350
+    };
 });
 
 app.filter('startFrom', function() {

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var commentSchema = Schema({
+    suggestedBirdname: String,
     body: String,
     userId: String,
     author: String,

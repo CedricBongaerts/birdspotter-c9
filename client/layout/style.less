@@ -151,12 +151,12 @@ hr {
 }
 
 .header-icon {
-    color: #fff;
     font-size: 25px;
+    float: right;
+    color: #fff;
+    padding: 3px 3px 0;
     position:relative;
-    top: 50px;
-    left: 22px;
-    position:absolute;
+    top: 28px;
 }
 
 .likes-header {
@@ -168,12 +168,24 @@ hr {
     background: rgba(15,112,0,.1);
     padding: 2px;
 }
-
+.dash-thumb-img {
+    max-width: 220px;
+}
 
 .dash-info {
+    width: 100%;
+}
+.dash-info-left {
     padding: 5px;
     margin-bottom: 10px;
-    
+    text-align: left;
+    display: inline;
+}
+.dash-info-right {
+    padding: 5px;
+    margin-bottom: 10px;
+    align:right;
+    display: inline;
 }
 
 .header-info {
@@ -182,6 +194,17 @@ hr {
     bottom: 4px;
     color: #fff;
 }
+
+.comments {
+    background: #fff;
+    border:1px solid #ddd;
+}
+
+.commentActions {
+    font-size: 12px;
+    color: #bbb;
+}
+        
 @media screen and (min-width: 991px) {
 
     .no-padding-right {
