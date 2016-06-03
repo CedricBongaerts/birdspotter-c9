@@ -1,5 +1,5 @@
 <div class="well col-md-9">
-    <h3>Following:</h3>
+    <h3>Personal Dashboard:</h3>
     <hr />
     <div class="row">
         <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10">
@@ -13,5 +13,21 @@
                 <h5 class="header-info" align="center">&#160;<i class="fa fa-user"></i> {{capture.author}}</h5>
             </a>
         </div>
+        <div ng-hide="captures">
+            <h4 align="center">
+                <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>
+                <br /><br />
+                Quickly, go follow more people!</h4>
+        </div>
     </div>
+</div>
+
+<div class="well col-md-3">
+    <h4>Following:</h4>
+    <hr />
+    <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
+        <li ng-if="following" ng-repeat="follow in following">
+            <p><img ng-src="{{follow.picture}}" width="35px"> <a ui-sref="user-profile({id: capture.userId})" class="captureLink">{{follow.name}}</a></p>
+        </li>
+    </ul>
 </div>

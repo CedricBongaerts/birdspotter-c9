@@ -14,7 +14,8 @@ var app = angular.module('app',
                             'infinite-scroll',
                             'angularMoment',
                             'ngBootbox',
-                            'ngScrollbars'
+                            'ngScrollbars',
+                            '720kb.socialshare'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
@@ -164,10 +165,19 @@ app.config(function($stateProvider, authProvider, $httpProvider,
           resolve: {
             $title: function() { return 'Users List'; }
           }
+      })
+      
+      .state('error', {
+        url: '/error',
+        templateUrl: 'views/error.html',
+        controller: 'errorCtrl',
+          resolve: {
+            $title: function() { return '404'; }
+          }
       });
     
     $urlRouterProvider.otherwise("/");
-    filepickerProvider.setKey('AwxvGuQ4R5SbfsLwuKh2Qz');
+    filepickerProvider.setKey('AgtaVB9hxRa6TReRkKWgRz');
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');

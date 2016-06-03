@@ -1,24 +1,28 @@
-<form class="well col-md-4" name="addCapture">
+<form class="well col-md-12" name="addCapture">
     <div class="form-group">
         <h3>Capture form:</h3>
         <hr />
-        <div class="text-center">
-            <button type="button" class="btn btn-default" ng-click="upload()">
+        <div class="form-group">
+            <button type="button" class="btn btn-default" ng-click="upload()" ng-class="{'btn-error' : !birdname}">
                 Upload your capture
             </button>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error' : !birdname}">
         <label for="birdname">Birdname:</label>
         <div class="input-group">
             <span class="input-group-addon">
                 <input type="checkbox" ng-model="checked" ng-change="toggleType()" id="toggleType">
             </span>
-            <input type="text" class="form-control" id="birdname" ng-model="birdname" required ng-disabled="checked" autocomplete="off" placeholder="Check box for unknown" 
-                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8">
+            <input type="text" class="form-control" id="birdname" ng-model="birdname" required ng-disabled="checked" autocomplete="off" placeholder="Check box if you don't know!" 
+                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" 
+                uib-tooltip="Pick a bird or check the box if unsure"
+                tooltip-placement="top"
+                tooltip-trigger="mouseenter"
+                tooltip-enable="!birdname">
         </div>
     </div>
-    <div class="form-group move-down">
+    <div class="form-group move-down" ng-class="{'has-error' : !place}">
         <label for="place">Picture taken in:</label>
         <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete options="options" required>
     </div>
@@ -26,26 +30,20 @@
         <label for="note">Notes:</label>
         <textarea class="form-control" id="note" rows="3" ng-model="note" placeholder="Any extra information you would like to add?"></textarea>
     </div>
-    <div class="form-group">
-        <button type="button" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid">Place your capture</button>
-   </div>
-</form>
-<div class="col-md-8 well">
-    <div class="form-group">
-        <h4>Capture preview:</strong>
-        <hr />
-        <div style="margin-top:10px;">
+    
+    <h3>Preview:</h3>
+    <hr />
+    <h3>{{birdname}}</h3>
+    <h4 ng-if="place"><span class="fa fa-map-marker"></span> {{place}}</h4>
             <!-- Show the thumbnail only when the picture is uploaded -->
             <div class="thumbnail" ng-if="capture.picture">
             <!-- the picture is rendered with width: 500 and sharpened -->
-            <img ng-src="{{capture.picture.url | fpConvert: {filter:'sharpen'} }}">
+                <img ng-src="{{capture.picture.url | fpConvert: {filter:'sharpen'} }}">
             </div>
-        </div>
-        <span ng-mouseover="showPopover()" ng-mouseleave="hidePopover()" class="glyphicon glyphicon glyphicon-{{captureType}}-sign glyphicon-design"></span> 
-        <label for="birdname">Birdname:</label>
-        <input type="text" class="form-control" id="birdname-preview" disabled value="{{birdname}}">
-        <label for="place">Picture taken in:</label>
-        <input type="text" class="form-control" id="place-preview" disabled value="{{place}}">
-    </div>
-</div>
+        
+        <span class="glyphicon glyphicon glyphicon-{{captureType}}-sign glyphicon-design"></span> 
+    <div class="form-group">
+        <button type="button" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid || !capture.picture">Place your capture</button>
+    </div>  
+</form>
 

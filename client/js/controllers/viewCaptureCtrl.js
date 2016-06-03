@@ -1,9 +1,11 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi',
-                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state',
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state) {
 
      var id = $stateParams.id;
+     
+     $scope.id = $stateParams.id;
      $scope.auth = auth;
      
      $scope.liked = false;
@@ -44,6 +46,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         $http.delete('https://birdspotter-cedricbongaerts.c9users.io/api/votes/'+ voteId);
                           $scope.liked = false;
                           $scope.like = true;
+                          $scope.capture.votes.length--;
                           break;
                     } 
                 }
@@ -53,6 +56,8 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 $scope.postAuthor = true;
             }
             
+
+            
             $scope.deleteCapture = function() {
                 captureApi.deleteCapture(id)
                     .then(function(res) {
@@ -61,15 +66,10 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 });
             };
             
-            $scope.cancelDelete = function() {
-                return;
-            };
-            
-             $scope.deleteComment = function(commentId) {
-                 commentApi.deleteComment(commentId)
-                    .then(function(res) {
-                       console.log('deleted comment');
-                    });
+             $scope.deleteComment = function(index) {
+                 commentApi.deleteComment($scope.capture.comments[index]._id)
+                    .then(function(res) {});
+                    $scope.capture.comments.splice(index, 1);
                 };
         });
                   
@@ -81,7 +81,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
              votedFor    : $scope.capture.userId
         };
         captureApi.likeCapture(id, dataObj)
-            .then(function(res){
+            .success(function(res){
                     $scope.capture.votes.push(res);
                     $scope.liked = true;
                     $scope.like = false;
@@ -99,10 +99,32 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         
         captureApi.postComment(id, dataObj)  
             .then(function(res){
-                $scope.capture.comments.push(res);
+                $scope.capture.comments.push(res.data);
         });
         $scope.body = "";
     };
     
-     
+    $scope.editCapture = function(){  
+        $scope.type = 'info';
+        var dataObj = {
+            type     : $scope.type,
+            birdname : $scope.capture.birdname,
+            note     : $scope.capture.note
+        };
+        
+        console.log(dataObj);
+        captureApi.editCapture(id, dataObj)
+        .then(function(res) {
+            $state.transitionTo($state.current, $stateParams, {
+                reload: true,
+                inherit: false,
+                notify: true
+            });
+            $ngBootbox.hideAll();
+        });
+    };
+    
+    $scope.cancel = function() {
+        $ngBootbox.hideAll();
+    };
 }]);

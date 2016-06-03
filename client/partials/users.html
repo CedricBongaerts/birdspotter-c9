@@ -1,13 +1,44 @@
-<h1> USERS LIST</h1>
+<div class="well col-md-12">
+<h3>Users list:</h3>
+<hr />
 
-<div ng-repeat="user in users" class="list-group-item" >
-     <a ui-sref="user-profile({id: user.user_id})">
-            <div class="row">
-                <div class="col-md-4">
-                    {{user.name}}
-                    {{user.email}}
-                    
-                </div>
-            </div>
-            </a>
-        </div>
+<form class="form-inline user-search">
+    <input type="text" ng-model="search" class="form-control" placeholder="Search">
+</form>
+
+<table class="table table-striped">
+    <thead>
+            <tr>
+                <th class="sort-icon" ng-click="sort('name')">Name
+                    <span class="glyphicon" ng-show="sortKey=='name'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                </th>
+                <th class="sort-icon" ng-click="sort('nickname')">Username
+                    <span class="glyphicon" ng-show="sortKey=='nickname'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                </th>
+                <th class="sort-icon" ng-click="sort('email')">Email
+                    <span class="glyphicon" ng-show="sortKey=='email'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                </th>
+                <th class="sort-icon" ng-click="sort('gender')">Gender
+                    <span class="glyphicon" ng-show="sortKey=='gender'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                </th>
+                <th></th>
+            </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in users|filter:search|orderBy:sortKey:reverse|startFrom:currentPage:pageSize">
+            <td><img ng-src="{{user.picture}}" width="35px"> <a ui-sref="user-profile({id: user.user_id})">{{user.name}}</a></td>
+            <td>{{user.nickname}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.gender}}</td>
+            <td>+</td>
+        </tr>
+    </tbody>
+</table>
+<div ng-if="users.length > pageSize">
+    <uib-pagination 
+            total-items="users.length"
+            items-per-page="pageSize"
+            ng-model="currentPage">
+    </uib-pagination>
+</div>
+</div>

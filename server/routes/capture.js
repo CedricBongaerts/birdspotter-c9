@@ -57,19 +57,6 @@ module.exports = function(router) {
     		return next();
     	});
     });  
-    
-    // // Map logic to route parameter 'vote'
-    // router.param('vote', function (req, res, next, id) {
-    // 	var query = Vote.findById(id);
-    	
-    // 	query.exec(function (err, vote) {
-    // 		if (err) { return next(err); }
-    // 		if (!vote) { return next(new Error("can't find vote")); }
-    		
-    // 		req.vote = vote;
-    // 		return next();
-    // 	});
-    // });
      
     router.get('/captures/:capture', function(req, res) {
 	    req.capture.populate('comments',
@@ -112,4 +99,21 @@ module.exports = function(router) {
     		});
     	});
      });
+     
+     router.post('/captures/:id', function(req, res){
+        Capture.findOne({_id: req.params.id}, function(err, data) {
+            var capture = data;
+            capture.type = req.body.type;
+            capture.birdname = req.body.birdname;
+            console.log(req.body.birdname);
+            capture.note = req.body.note;
+            
+            if(err) throw err;
+            capture.save(function(err, data){
+                if(err)
+                    throw err;
+                res.json(data);
+                });
+        });
+    });
 };

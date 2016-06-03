@@ -14,7 +14,7 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
     $scope.toggleType = function() {
         if($scope.checked == true)
         {
-            $scope.birdname = 'Unknown';
+            $scope.birdname = ' ';
             $scope.captureType = 'question';
         } else {
             $scope.birdname = null;

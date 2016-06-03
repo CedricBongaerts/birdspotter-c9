@@ -10,13 +10,12 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.captures = [];
     $scope.pageSize = 4;
     $scope.currentPage = 1;
-
+    
     $scope.following = false;
     $scope.follow = false;
     
     userApi.getUsers().then(function(res) {
         var users = res.data.users;
-        
         userApi.findFollow().then(function(res) {
             var follows = res.data;
             
@@ -28,7 +27,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                     allUsers.push(users[i]);
                     if(users[i].user_id == id) {
                         $scope.user = users[i];
-                        console.log($scope.user);
+                        
                         $scope.profilePic = function(pic) {
                             if($scope.user.identities[0].provider == "facebook"){
                                 pic = $scope.user.picture_large;
@@ -78,6 +77,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                             $http.delete('https://birdspotter-cedricbongaerts.c9users.io/api/follows/'+ follow_id);
                               $scope.following = false;
                               $scope.follow = true;
+                              $scope.capture.votes.length--;
                               break;
                         } 
                     }

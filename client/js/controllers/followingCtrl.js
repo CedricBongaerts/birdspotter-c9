@@ -26,7 +26,6 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
                         }
                         
                         for(f=0; f<users.length; f++){
-                            console.log(f);
                             if(follows[i].followed_id == users[f].user_id) {
                                  $scope.following.push(users[f]);
                             }

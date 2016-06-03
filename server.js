@@ -27,6 +27,7 @@ app.use(function(req, res, next) {
     }
 });
 
+
 // Database Connection
 var mongoose = require('mongoose');
 var configDB = require('./server/config/database.js');
@@ -47,9 +48,9 @@ app.get('/', function(req, res){
     res.render('index.html');
 });
 
-app.get('/birds', function(req, res){
-    res.render('webtest.json');
-});
+// app.get('/error', function(req, res){
+//     res.render('error.html');
+// });
 
 // API 
 var api = express.Router();
@@ -58,6 +59,7 @@ require('./server/routes/comment')(api);
 require('./server/routes/vote')(api);
 require('./server/routes/follow')(api);
 app.use('/api', api);
+
 
 // Port Settings
 app.listen(process.env.PORT || 3000, process.env.IP);

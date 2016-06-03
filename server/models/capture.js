@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var captureSchema = Schema({
     type: String,
-    birdname: {type: String, required: true},
+    birdname: String,
     place: String,
     note: String,
     userId: String,

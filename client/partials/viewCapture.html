@@ -1,10 +1,15 @@
 <div class="well col-md-9 no-margin-bottom">
     <p class="captureManage" ng-if="postAuthor">
-        <span class="glyphicon glyphicon-pencil" ng-click="editCapture()"></span> 
-         <span class="glyphicon glyphicon-trash" 
-                ng-bootbox-confirm-action-cancel="cancelDelete()"
-                ng-bootbox-confirm-action="deleteCapture()" 
-                ng-bootbox-confirm="Are you sure you want to delete this?"></span>
+        <span class="glyphicon glyphicon-pencil"
+            ng-bootbox-title="Edit Capture"
+            ng-bootbox-custom-dialog
+            ng-bootbox-custom-dialog-template="/partials/model/editCapture.html">
+        </span> 
+        <span class="glyphicon glyphicon-trash" 
+            ng-bootbox-confirm-action-cancel="cancel()"
+            ng-bootbox-confirm-action="deleteCapture()" 
+            ng-bootbox-confirm="Are you sure you want to delete this?">
+        </span>
     </p>
     <h3>{{capture.birdname}}</h3>
     <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="captureLink">{{capture.author}}</a> in <span class="fa fa-map-marker"></span> {{capture.place}}</h4>
@@ -12,29 +17,35 @@
     <hr />
         
         <div class="thumbnail no-border"> 
-            <img ng-src="{{capture.picture}}" alt="bird"/>
+            <img ng-src="{{capture.picture}}" />
         </div>
-        
         
         <div class="pictureButton">
             <button class="btn margin-left btn-success" ng-click="likeCapture()" ng-show="like"><i class="fa fa-heart" aria-hidden="true"></i> Like</button>
             <button class="btn margin-left btn-danger" ng-click="unlikeCapture()"  ng-if="liked"><i class="fa fa-heart-o" aria-hidden="true"></i> Unlike</button>
-            <p class="voteComment" ng-click="test()">{{capture.votes.length}} Likes | <a class="captureLink" ng-click="show">{{capture.comments.length}} Comments</a></p>
+            <p class="voteComment">{{capture.votes.length}} <span class="glyphicon glyphicon-thumbs-up"></span></p>
         </div>
+        <a
+        socialshare
+        socialshare-provider="facebook"
+        socialshare-popup-height="400"
+        socialshare-url="https://birdspotter-cedricbongaerts.c9users.io/#/detail/{{id}}"
+        socialshare-popup-width="400">
+        Share with a bigger popup
+        </a>
 </div>    
 
 
     <div class="well col-md-3">
-        <h4> Comments:</h4>
+        <h4> Comments ({{capture.comments.length}}):</h4>
         <hr />
         <ul ng-scrollbars ng-scrollbars-config="config" class="list-group comments">
             <li ng-repeat="comment in capture.comments" class="list-group-item comment">
                     <span>
                         <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> {{comment.body}} <span>
                     <p class="commentActions">
-                        <span class="captureLink">Like</span> · 
                         <span am-time-ago="comment.created_at"></span> · 
-                        <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment(comment._id)">Delete</span>
+                        <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment($index)" class="commentDelete">Delete</span>
                     </p>
         	</li>
     	</ul>
@@ -46,11 +57,10 @@
                 uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8">
             </div>
             <div class="form-group">
-                <label for="comment">Comment</label>
-                <textarea class="form-control" id="comment" rows="2" ng-model="body" required></textarea>
+                <input type="text" class="form-control" id="comment" ng-model="body" placeholder="Comment..">
             </div>
             <div class="form-group">
-                <button ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addComments.$invalid">Comment</button>
+                <button ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="!body || !suggestedBirdname">Comment</button>
            </div>
         </form>
     </div>

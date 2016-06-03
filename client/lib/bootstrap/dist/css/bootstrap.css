@@ -6772,6 +6772,10 @@ body {
 .captureLink {
   cursor: pointer;
 }
+.commentDelete:hover {
+  color: #0F7000;
+  cursor: pointer;
+}
 .captureLink:hover {
   text-decoration: none;
 }
@@ -6787,6 +6791,12 @@ body {
 hr {
   margin-top: 5px!important;
   margin-bottom: 10px!important;
+}
+.user-search {
+  float: right;
+}
+.sort-icon:hover {
+  cursor: pointer;
 }
 .header-icon {
   font-size: 25px;

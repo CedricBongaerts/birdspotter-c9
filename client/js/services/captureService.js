@@ -1,6 +1,6 @@
 /* global app */
 
-app.factory('captureApi', ['$http', function($http){
+app.factory('captureApi', ['$http', '$location', function($http, $location){
     
     var urlBase = 'https://birdspotter-cedricbongaerts.c9users.io/api/captures';
     
@@ -14,7 +14,14 @@ app.factory('captureApi', ['$http', function($http){
         },
         
         findCapture : function(id) {
-            return $http.get(urlBase + '/' + id);
+            return $http.get(urlBase + '/' + id)
+            .error(function(data,status,headers,config) {
+                $location.url('/error');
+            });
+        },
+        
+        editCapture : function(id, data) {
+            return $http.post(urlBase + '/' + id, data);
         },
         
         deleteCapture : function(id) {
