@@ -4,7 +4,6 @@ var Capture = require('../models/capture');
 module.exports = function(router) {
     router.post('/captures/:capture/comments', function(req, res, next){
         var comment = new Comment();
-        comment.suggestedBirdname = req.body.suggestedBirdname;
         comment.body =  req.body.body;
         comment.userId = req.body.userId;
         comment.author = req.body.author;

@@ -1,6 +1,6 @@
-/* global app angular*/
+/* global app */
 
-app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureApi', function($scope, $http, userApi, auth, captureApi) {
+app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureApi', 'angularGridInstance', function($scope, $http, userApi, auth, captureApi, angularGridInstance) {
 
     $scope.auth = auth;
 
@@ -36,4 +36,7 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
             });
         });
     });
+    $scope.refresh = function(){
+            angularGridInstance.gallery.refresh();
+    }
 }]);

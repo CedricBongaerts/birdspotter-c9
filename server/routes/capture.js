@@ -1,6 +1,7 @@
 var Capture = require('../models/capture');
 var Comment = require('../models/comment');
 var Vote = require('../models/vote');
+var Suggestion = require('../models/suggestion');
 
 
 module.exports = function(router) {
@@ -86,6 +87,13 @@ module.exports = function(router) {
     			if (err) { throw err;}
     		});
     	});
+    	req.capture.suggestions.forEach(function(id) {
+    		Suggestion.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
+    		});
+    	});
          Capture.remove({
 		_id: req.params.capture
     	}, function(err, captures) {
@@ -107,6 +115,8 @@ module.exports = function(router) {
             capture.birdname = req.body.birdname;
             console.log(req.body.birdname);
             capture.note = req.body.note;
+            capture.updated_at = new Date();
+            
             
             if(err) throw err;
             capture.save(function(err, data){

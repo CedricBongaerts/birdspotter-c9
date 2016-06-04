@@ -15,7 +15,8 @@ var app = angular.module('app',
                             'angularMoment',
                             'ngBootbox',
                             'ngScrollbars',
-                            '720kb.socialshare'
+                            '720kb.socialshare',
+                            'angularGrid'
                         ]);
                         
 app.run(function($rootScope, auth, store, jwtHelper, $location) {

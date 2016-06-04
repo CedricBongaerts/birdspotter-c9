@@ -37,7 +37,6 @@ module.exports = function(router) {
                         $pull : {votes: req.params.id}
                     }, function(err, data) { if(err) throw err; });
             } if(err) throw err;
-            
         });
      });
 };

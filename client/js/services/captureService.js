@@ -36,5 +36,9 @@ app.factory('captureApi', ['$http', '$location', function($http, $location){
             return $http.post(urlBase + '/' + id + '/votes', data);
         },
         
+        postSuggestion : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/suggestions', data);
+        }
+        
     };
 }]);

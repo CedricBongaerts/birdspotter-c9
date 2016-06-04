@@ -1,4 +1,4 @@
-<div class="well col-md-9 no-margin-bottom">
+<div class="well col-md-9">
     <p class="captureManage" ng-if="postAuthor">
         <span class="glyphicon glyphicon-pencil"
             ng-bootbox-title="Edit Capture"
@@ -33,6 +33,18 @@
         socialshare-popup-width="400">
         Share with a bigger popup
         </a>
+        
+        <div class="col-md-12">
+        <hr />
+    	<form name="addComments">
+            <div class="form-group">
+                <input type="text" class="form-control" id="comment" ng-model="body" placeholder="Comment..">
+            </div>
+            <div class="form-group">
+                <button ng-click="addComment()" class="btn margin-left btn-success">Comment</button>
+           </div>
+        </form>
+</div>
 </div>    
 
 
@@ -44,23 +56,9 @@
                     <span>
                         <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> {{comment.body}} <span>
                     <p class="commentActions">
-                        <span am-time-ago="comment.created_at"></span> · 
-                        <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment($index)" class="commentDelete">Delete</span>
+                        <span am-time-ago="comment.created_at"></span>
+                        <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment($index)" class="commentDelete"> · Delete</span>
                     </p>
         	</li>
     	</ul>
-    	<hr />
-    	<form name="addComments">
-            <div class="form-group" ng-if="capture.type == 'question'">
-                <label for="comment">Give Birdname:</label>
-                <input type="text" class="form-control" id="suggestedBirdname" rows="2" ng-model="suggestedBirdname" autocomplete="off" placeholder="Give the birdname" 
-                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="comment" ng-model="body" placeholder="Comment..">
-            </div>
-            <div class="form-group">
-                <button ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="!body || !suggestedBirdname">Comment</button>
-           </div>
-        </form>
     </div>

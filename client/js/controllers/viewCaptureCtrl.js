@@ -91,7 +91,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     $scope.addComment = function(){
           
         var dataObj = {
-            suggestedBirdname : $scope.suggestedBirdname,
             body              : $scope.body,
             userId            : $scope.auth.profile.user_id,
             author            : $scope.auth.profile.name
@@ -108,7 +107,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         $scope.type = 'info';
         var dataObj = {
             type     : $scope.type,
-            birdname : $scope.capture.birdname,
+            birdname : $scope.newBirdname,
             note     : $scope.capture.note
         };
         

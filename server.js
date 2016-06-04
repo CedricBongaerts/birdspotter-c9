@@ -35,6 +35,7 @@ require('./server/routes/capture');
 require('./server/routes/comment');
 require('./server/routes/vote');
 require('./server/routes/follow');
+require('./server/routes/suggestion');
 mongoose.connect(configDB.url);
 
 var bodyParser = require('body-parser');
@@ -58,7 +59,14 @@ require('./server/routes/capture')(api);
 require('./server/routes/comment')(api);
 require('./server/routes/vote')(api);
 require('./server/routes/follow')(api);
+require('./server/routes/suggestion')(api);
 app.use('/api', api);
+
+app.use(function(err, req, res, next) {
+    res.status(err.status || 50, function(res) {
+        res.render('error.html');
+    });
+});
 
 
 // Port Settings

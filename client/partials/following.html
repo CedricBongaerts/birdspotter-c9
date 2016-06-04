@@ -1,25 +1,32 @@
 <div class="well col-md-9">
     <h3>Personal Dashboard:</h3>
     <hr />
-    <div class="row">
-        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10">
-            <div class="clearfix" ng-if="$index % 3 == 0"></div>
-            <a ui-sref="detail({id: capture._id})" class="padding col-md-4 list-group-item">
-                <div class="thumbnail no-border no-margin-bottom"> 
-                    <h5 class="no-margin-top capture-header"><span class="glyphicon glyphicon-{{capture.type}}-sign"></span> {{capture.birdname}}</h5>
-                    <h5 class="no-margin-top likes-header"><i class="fa fa-thumbs-o-up"></i> <strong>{{capture.votes.length}}</strong></h5>
-                    <img ng-src="{{capture.picture}}" alt="bird"/>
-                </div>
-                <h5 class="header-info" align="center">&#160;<i class="fa fa-user"></i> {{capture.author}}</h5>
-            </a>
-        </div>
-        <div ng-hide="captures">
-            <h4 align="center">
-                <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>
-                <br /><br />
-                Quickly, go follow more people!</h4>
-        </div>
-    </div>
+    <!--<div class="row">-->
+    <!--    <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10">-->
+    <!--        <div class="clearfix" ng-if="$index % 3 == 0"></div>-->
+    <!--        <a ui-sref="detail({id: capture._id})" class="padding col-md-4 list-group-item">-->
+    <!--            <div class="thumbnail no-border no-margin-bottom"> -->
+    <!--                <h5 class="no-margin-top capture-header"><span class="glyphicon glyphicon-{{capture.type}}-sign"></span> {{capture.birdname}}</h5>-->
+    <!--                <h5 class="no-margin-top likes-header"><i class="fa fa-thumbs-o-up"></i> <strong>{{capture.votes.length}}</strong></h5>-->
+    <!--                <img ng-src="{{capture.picture}}" alt="bird"/>-->
+    <!--            </div>-->
+    <!--            <h5 class="header-info" align="center">&#160;<i class="fa fa-user"></i> {{capture.author}}</h5>-->
+    <!--        </a>-->
+    <!--    </div>-->
+    <!--    <div ng-hide="captures">-->
+    <!--        <h4 align="center">-->
+    <!--            <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>-->
+    <!--            <br /><br />-->
+    <!--            Quickly, go follow more people!</h4>-->
+    <!--    </div>-->
+    <!--</div>-->
+    <row>
+        <ul class="dynamic-grid" angular-grid="captures" " ag-id="gallery" ag-refresh-on-img-load="true" >
+            <li data-ng-repeat="capture in captures" class="grid">
+                 <a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" class="grid-img" /></a>
+            </li>
+        </ul>
+    </row>
 </div>
 
 <div class="well col-md-3">
