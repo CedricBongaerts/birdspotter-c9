@@ -1,49 +1,58 @@
-<form class="well col-md-12" name="addCapture">
-    <div class="form-group">
-        <h3>Capture form:</h3>
-        <hr />
+<div class="col-md-12">
+    <form class="well" name="addCapture">
         <div class="form-group">
-            <button type="button" class="btn btn-default" ng-click="upload()" ng-class="{'btn-error' : !birdname}">
-                Upload your capture
-            </button>
-        </div>
-    </div>
-    <div class="form-group" ng-class="{'has-error' : !birdname}">
-        <label for="birdname">Birdname:</label>
-        <div class="input-group">
-            <span class="input-group-addon">
-                <input type="checkbox" ng-model="checked" ng-change="toggleType()" id="toggleType">
-            </span>
-            <input type="text" class="form-control" id="birdname" ng-model="birdname" required ng-disabled="checked" autocomplete="off" placeholder="Check box if you don't know!" 
-                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" 
-                uib-tooltip="Pick a bird or check the box if unsure"
-                tooltip-placement="top"
-                tooltip-trigger="mouseenter"
-                tooltip-enable="!birdname">
-        </div>
-    </div>
-    <div class="form-group move-down" ng-class="{'has-error' : !place}">
-        <label for="place">Picture taken in:</label>
-        <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete options="options" required>
-    </div>
-    <div class="form-group">
-        <label for="note">Notes:</label>
-        <textarea class="form-control" id="note" rows="3" ng-model="note" placeholder="Any extra information you would like to add?"></textarea>
-    </div>
-    
-    <h3>Preview:</h3>
-    <hr />
-    <h3>{{birdname}}</h3>
-    <h4 ng-if="place"><span class="fa fa-map-marker"></span> {{place}}</h4>
-            <!-- Show the thumbnail only when the picture is uploaded -->
-            <div class="thumbnail" ng-if="capture.picture">
-            <!-- the picture is rendered with width: 500 and sharpened -->
-                <img ng-src="{{capture.picture.url | fpConvert: {filter:'sharpen'} }}">
+            <h3>Capture form:</h3>
+            <hr />
+            <div class="form-group" align="center">
+                <button type="button" class="btn btn-default" ng-click="upload()">
+                    Upload your capture
+                </button>
             </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error' : !checked && !birdname}">
+            <label for="birdname">Birdname:</label>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="checked" ng-click="toggleBirdname()">
+                </span>
+                <input type="text" class="form-control" id="birdname" ng-model="birdname" required ng-disabled="checked" autocomplete="off" placeholder="Check the box if you don't know!" 
+                    uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" typeahead-select-on-blur="true"
+                    uib-tooltip="Pick a bird or check the box if unsure!"
+                    tooltip-placement="top-right"
+                    tooltip-trigger="mouseenter"
+                    tooltip-enable="!birdname">
+            </div>
+            <div ng-show="noResults">
+              <i class="glyphicon glyphicon-remove"></i> No Results Found - Please Try Again!
+            </div>
+        </div>
+        <div class="form-group move-down" ng-class="{'has-error' : !place}">
+            <label for="place">Picture taken in:</label>
+            <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete options="options" required
+            uib-tooltip="Please pick the location where you captures your photo!"
+            tooltip-placement="top-right"
+            tooltip-trigger="mouseenter"
+            tooltip-enable="!place"
+            tooltip-class="tooltip">
+        </div>
+        <div class="form-group">
+            <label for="note">Any thoughts:</label>
+            <input type="text" class="form-control" id="note"ng-model="note" placeholder="Anything extra you would like to add?">
+        </div>
         
-        <span class="glyphicon glyphicon glyphicon-{{captureType}}-sign glyphicon-design"></span> 
-    <div class="form-group">
-        <button type="button" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid || !capture.picture">Place your capture</button>
-    </div>  
-</form>
-
+        <h3>Preview:</h3>
+        <hr />
+        <h3 ng-hide="checked || !birdname">{{birdname}}</h3>
+        <h4 ng-if="place"><span class="fa fa-map-marker"></span> {{place}}</h4>
+        <p ng-if="note"><i>"{{note}}"</i></p>
+        
+        <!-- Show the thumbnail only when the picture is uploaded -->
+        <div class="thumbnail" ng-if="capture.picture">
+        <!-- the picture is rendered with width: 500 and sharpened -->
+            <img ng-src="{{capture.picture.url | fpConvert: {filter:'sharpen'} }}">
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid || !capture.picture ||  noResults">Place your capture</button>
+        </div>  
+    </form>
+</div>

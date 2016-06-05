@@ -19,57 +19,17 @@ var app = angular.module('app',
                             'angularGrid'
                         ]);
                         
-app.run(function($rootScope, auth, store, jwtHelper, $location) {
-  auth.hookEvents();
-
-  var refreshingToken = null;
-  $rootScope.$on('$locationChangeStart', function() {
-    var token = store.get('token');
-    var refreshToken = store.get('refreshToken');
-    if (token) {
-      if (!jwtHelper.isTokenExpired(token)) {
-        if (!auth.isAuthenticated) {
-          auth.authenticate(store.get('profile'), token);
-          //Store the status in the scope 
-          $rootScope.isAuthenticated = auth.isAuthenticated;
-        }
-      } else {
-        if (refreshToken) {
-          if (refreshingToken === null) {
-            refreshingToken = auth.refreshIdToken(refreshToken).then(function(idToken) {
-              store.set('token', idToken);
-              auth.authenticate(store.get('profile'), idToken);
-            }).finally(function() {
-              refreshingToken = null;
-            });
-          }
-          return refreshingToken;
-        } else {
-          $location.path('/');
-        }
-      }
-    }
-  });
-});
-                        
 app.config(function($stateProvider, authProvider, $httpProvider,
   jwtInterceptorProvider, $urlRouterProvider, $locationProvider, filepickerProvider, ScrollBarsProvider){
     
-  authProvider.init({
-    domain: 'cedricbongaerts.eu.auth0.com',
-    clientID: 'JHBzxHogKvCHTOSmPtNr6EncjaSM1GDg',
-    loginUrl: '/'
-  });  
-  
+  $urlRouterProvider.otherwise("/");
+ 
  $stateProvider
-
+ 
     .state('home', {
       url: '/',
       templateUrl: 'partials/home.html',
       controller: 'homeCtrl',
-        data: {
-            requiresLogin: false
-        },
         resolve: {
           $title: function() { return 'Home'; }
         }
@@ -80,7 +40,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       templateUrl: 'partials/dashboard.html',
       controller: 'dashboardCtrl',
         data: {
-            requiresLogin: true
+            requiresLogin: true,
         },
         resolve: {
           $title: function() { return 'Dashboard'; }
@@ -92,7 +52,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       templateUrl: 'partials/following.html',
       controller: 'followingCtrl',
         data: {
-            requiresLogin: true
+            requiresLogin: true,
         },
         resolve: {
           $title: function() { return 'Dashboard'; }
@@ -104,7 +64,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       templateUrl: 'partials/capture.html',
       controller: 'captureCtrl',
         data: {
-            requiresLogin: true
+            requiresLogin: true,
         },
         resolve: {
           $title: function() { return 'Capture'; }
@@ -116,7 +76,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         templateUrl: 'partials/viewCapture.html',
         controller: 'viewCaptureCtrl',
         data: {
-              requiresLogin: true
+              requiresLogin: true,
           },
         resolve: {
             $title: function() { return 'View Capture'; }
@@ -128,28 +88,19 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         templateUrl: 'partials/editCapture.html',
         controller: 'editCaptureCtrl',
         data: {
-              requiresLogin: true
+              requiresLogin: true,
           },
         resolve: {
             $title: function() { return 'Edit Capture'; }
   				}
       })
     
-    .state('taxonomy', {
-      url: '/avian-taxonomy',
-      templateUrl: 'partials/taxonomy.html',
-      controller: 'taxonomyCtrl',
-        resolve: {
-          $title: function() { return 'Avian Taxonomy'; }
-        }
-    })
-    
       .state('user-profile', {
         url: '/user-profile/{id}',
         templateUrl: 'partials/viewUser.html',
         controller: 'viewUserCtrl',
           data: {
-              requiresLogin: true
+              requiresLogin: true,
           },
           resolve: {
             $title: function() { return 'View Profile'; }
@@ -160,9 +111,9 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         url: '/users',
         templateUrl: 'partials/users.html',
         controller: 'usersCtrl',
-          data: {
-              requiresLogin: true
-          },
+        data: {
+          requiresLogin: true
+        },
           resolve: {
             $title: function() { return 'Users List'; }
           }
@@ -176,8 +127,13 @@ app.config(function($stateProvider, authProvider, $httpProvider,
             $title: function() { return '404'; }
           }
       });
-    
-    $urlRouterProvider.otherwise("/");
+      
+      authProvider.init({
+        domain: 'cedricbongaerts.eu.auth0.com',
+        clientID: 'JHBzxHogKvCHTOSmPtNr6EncjaSM1GDg',
+        loginState: 'home'
+      }); 
+      
     filepickerProvider.setKey('AgtaVB9hxRa6TReRkKWgRz');
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
@@ -212,8 +168,55 @@ app.config(function($stateProvider, authProvider, $httpProvider,
     };
 });
 
+app.run(function($rootScope, auth, store, jwtHelper, $location) {
+  auth.hookEvents();
+
+  var refreshingToken = null;
+  $rootScope.$on('$locationChangeStart', function() {
+    var token = store.get('token');
+    var refreshToken = store.get('refreshToken');
+    if (token) {
+      if (!jwtHelper.isTokenExpired(token)) {
+        if (!auth.isAuthenticated) {
+          auth.authenticate(store.get('profile'), token);
+          //Store the status in the scope 
+          $rootScope.isAuthenticated = auth.isAuthenticated;
+        }
+      } else {
+        if (refreshToken) {
+          if (refreshingToken === null) {
+            refreshingToken = auth.refreshIdToken(refreshToken).then(function(idToken) {
+              store.set('token', idToken);
+              auth.authenticate(store.get('profile'), idToken);
+            }).finally(function() {
+              refreshingToken = null;
+            });
+          }
+          return refreshingToken;
+        } else {
+          $location.path('/');
+        }
+      }
+    }
+  });
+});
+
 app.filter('startFrom', function() {
   return function(data, currentPage, pageSize) {
     return data.slice(((currentPage-1)*pageSize), ((currentPage)*pageSize));
   };
+});
+
+app.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {
+            if(event.which === 13) {
+                    scope.$apply(function(){
+                            scope.$eval(attrs.ngEnter);
+                    });
+                    
+                    event.preventDefault();
+            }
+        });
+    };
 });

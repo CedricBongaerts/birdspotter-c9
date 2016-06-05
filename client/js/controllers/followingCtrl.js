@@ -1,7 +1,7 @@
 /* global app */
 
 app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureApi', 'angularGridInstance', function($scope, $http, userApi, auth, captureApi, angularGridInstance) {
-
+        
     $scope.auth = auth;
 
     $scope.captures = [];

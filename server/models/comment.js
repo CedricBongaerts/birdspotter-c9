@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var commentSchema = Schema({
-    body: String,
+    comment: String,
+    birdSuggestion: String,
     userId: String,
     author: String,
     created_at: Date,

@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     if (req.method === 'OPTIONS') {
-        res.send(200);
+        res.sendStatus(200);
     }
     else {
         next();
@@ -35,7 +35,6 @@ require('./server/routes/capture');
 require('./server/routes/comment');
 require('./server/routes/vote');
 require('./server/routes/follow');
-require('./server/routes/suggestion');
 mongoose.connect(configDB.url);
 
 var bodyParser = require('body-parser');
@@ -58,15 +57,14 @@ var api = express.Router();
 require('./server/routes/capture')(api);
 require('./server/routes/comment')(api);
 require('./server/routes/vote')(api);
-require('./server/routes/follow')(api);
-require('./server/routes/suggestion')(api);
+require('./server/routes/follow')(api); 
 app.use('/api', api);
 
-app.use(function(err, req, res, next) {
-    res.status(err.status || 50, function(res) {
-        res.render('error.html');
-    });
-});
+// app.use(function(err, req, res, next) {
+//     res.status(err.status || 500, function(res) {
+//         console.log('Error 500');
+//     });
+// });
 
 
 // Port Settings

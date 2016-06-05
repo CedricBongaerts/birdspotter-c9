@@ -8,12 +8,13 @@ app.controller('usersCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'aut
     
     userApi.getUsers().then(function(res) {
         $scope.users = res.data.users;
-        console.log($scope.users.length);
+        
+        console.log($scope.users);
         $scope.users.filter(function(users) {
             return users;
         });
     });
-    
+        
     $scope.sort = function(keyname){
         $scope.sortKey = keyname;   //set the sortKey to the param passed
         $scope.reverse = !$scope.reverse; //if true make it false and vice versa

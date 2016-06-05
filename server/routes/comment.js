@@ -4,7 +4,8 @@ var Capture = require('../models/capture');
 module.exports = function(router) {
     router.post('/captures/:capture/comments', function(req, res, next){
         var comment = new Comment();
-        comment.body =  req.body.body;
+        comment.comment =  req.body.comment;
+        comment.birdSuggestion = req.body.birdSuggestion;
         comment.userId = req.body.userId;
         comment.author = req.body.author;
         comment.created_at = new Date();

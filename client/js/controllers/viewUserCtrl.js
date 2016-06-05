@@ -4,9 +4,9 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
 
     var id = $stateParams.id;
     $scope.auth = auth;
-    
+    console.log(auth.profile);
     var allUsers = [];
-
+    
     $scope.captures = [];
     $scope.pageSize = 4;
     $scope.currentPage = 1;
@@ -14,21 +14,14 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.following = false;
     $scope.follow = false;
     
-    userApi.getUsers().then(function(res) {
-        var users = res.data.users;
+    userApi. getUser(id).then(function(res) {
+        $scope.user = res.data;
+        console.log($scope.user);
+        
         userApi.findFollow().then(function(res) {
             var follows = res.data;
             
-            captureApi.getAllCaptures().then(function(res) {
-                var captures = res.data;
-            
-                var i;
-                for(i=0; i<users.length; i++) {
-                    allUsers.push(users[i]);
-                    if(users[i].user_id == id) {
-                        $scope.user = users[i];
-                        
-                        $scope.profilePic = function(pic) {
+                 $scope.profilePic = function(pic) {
                             if($scope.user.identities[0].provider == "facebook"){
                                 pic = $scope.user.picture_large;
                             } else {
@@ -45,10 +38,6 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                             }
                             return social;
                         };
-                        
-                        break;
-                    }
-                }
                 
                 var j;
                 for (j=0; j<follows.length; j++)
@@ -95,6 +84,9 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                         $scope.follow = false;
                     });
                 };
+            
+            captureApi.getAllCaptures().then(function(res) {
+                var captures = res.data;
                 
                 $scope.captures = captures.filter(function(captures) {
                     return captures.userId == id;

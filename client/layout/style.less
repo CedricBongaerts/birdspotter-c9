@@ -1,5 +1,9 @@
 /* Importing bootstrap.less*/
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
 @import "client/lib/bootstrap/less/bootstrap.less";
 
 /*================ Variables ====================*/
@@ -81,14 +85,28 @@
 @list-group-hover-bg:           @well-bg;
 @list-group-link-hover-color:   @brand-primary;
 
+@grid-gutter-width:         14px;
+
+
+
 /*============= Custom Additions ================*/
 
 html,body {
     height:100%;
 }
 
+.thumb-min {
+    min-height: 200px;
+    min-width: 200px;
+}
+
+.profile-pic {
+    width: 200px;
+    height: 200px;
+}
+
 #main-container {
-    margin-top: 40px;
+    margin-top: 54px;
     height:100%;
     position: relative;
 }
@@ -120,6 +138,11 @@ html,body {
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.clickable:hover {
+    color:@brand-primary;
+    cursor: pointer;
 }
 
 .voteComment{
@@ -247,6 +270,11 @@ hr {
 .grid-img.img-loaded{
     visibility: visible;
     opacity: 1;
+}
+
+/* View Capture Edits */
+#captureImg {
+    max-height: 800px;
 }
         
 @media screen and (min-width: 991px) {

@@ -5,22 +5,20 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
     
     $scope.form = {};
     $scope.auth = auth;
-    $scope.disable = null;
-    $scope.captureType = 'ok';
+    // $scope.disable = null;
     
     $scope.options = {};
     $scope.options.watchEnter = true;
     
-    $scope.toggleType = function() {
-        if($scope.checked == true)
+    $scope.toggleBirdname = function() {
+        if($scope.checked)
         {
-            $scope.birdname = ' ';
-            $scope.captureType = 'question';
+            $scope.birdname = 'Unknown';
+            $scope.noResults = false;
         } else {
             $scope.birdname = null;
-            $scope.captureType = 'ok';
         }
-        return $scope.birdname, $scope.type;
+        return $scope.birdname;
     };
 
     $scope.upload = function(){

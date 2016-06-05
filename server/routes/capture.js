@@ -1,7 +1,6 @@
 var Capture = require('../models/capture');
 var Comment = require('../models/comment');
 var Vote = require('../models/vote');
-var Suggestion = require('../models/suggestion');
 
 
 module.exports = function(router) {
@@ -82,13 +81,6 @@ module.exports = function(router) {
     	});
     	req.capture.votes.forEach(function(id) {
     		Vote.remove({
-    			_id: id
-    		}, function(err) {
-    			if (err) { throw err;}
-    		});
-    	});
-    	req.capture.suggestions.forEach(function(id) {
-    		Suggestion.remove({
     			_id: id
     		}, function(err) {
     			if (err) { throw err;}

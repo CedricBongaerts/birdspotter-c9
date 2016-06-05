@@ -1,16 +1,24 @@
 <div ng-controller="viewCaptureCtrl">
     <form name="editYourCapture">
-        <div class="form-group">
+        <div class="form-group" ng-class="{'has-error' : !newBirdname && !checked}">
             <label for="birdname">Birdname:</label>
-            <input type="text" class="form-control" id="birdname" ng-model="newBirdname" autocomplete="off" placeholder="{{capture.birdname}}"
-                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="checked" ng-change="toggleBirdname()" id="toggleType">
+                </span>
+                <input type="text" class="form-control" id="birdname" ng-model="newBirdname" required ng-disabled="checked" autocomplete="off" ng-value="capture.birdname" 
+                    uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" typeahead-select-on-blur="true">
+            </div>
+            <div ng-show="noResults">
+              <i class="glyphicon glyphicon-remove"></i> No Results Found - Please pick a correct birdname!
+            </div>
         </div>
         <div class="form-group">
             <textarea class="form-control" id="note" rows="3" ng-model="capture.note" ng-value="capture.note" ></textarea>
         </div>
         <div class="form-group">
             <button type="button" ng-click="cancel()" class="btn margin-left btn-default">Cancel edit</button> 
-            <button type="button" ng-click="editCapture()" class="btn margin-left btn-success">Edit your capture</button>
+            <button type="button" ng-click="editCapture()" class="btn margin-left btn-success" ng-disabled="editYourCapture.$invalid || noResults">Edit your capture</button>
        </div>
     </form>
 </div>

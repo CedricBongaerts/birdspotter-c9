@@ -18,7 +18,86 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
      captureApi.findCapture(id)
           .then(function(res) {
                $scope.capture = res.data;
-               var votes = res.data.votes;
+                //console.log(res.data);
+                
+                /* ---------------- Check owner Capture & Delete Capture ----------------- */
+                // Check owner
+                if($scope.capture.userId == auth.profile.user_id) {
+                    $scope.postAuthor = true;
+                }
+                
+                // Delete Capture & redirect
+                $scope.deleteCapture = function() {
+                    captureApi.deleteCapture(id)
+                        .then(function(res) {
+                            $location.path('/dashboard');
+                            console.log('Deleted Capture');
+                    });
+                };
+               
+               /* ----------------------------- Edit Options ----------------------------- */
+               $scope.toggleBirdname = function() {
+                    if($scope.checked)
+                    {
+                        $scope.newBirdname = 'Unknown';
+                        $scope.noResults = false;
+                    } else {
+                        $scope.newBirdname = null;
+                    }
+                };
+               
+               
+                if($scope.capture.birdname == 'Unknown'){
+                    $scope.checked = true;
+                }
+                
+                /* ----------------------------- POPOVER BIRDINFORMATION ----------------------------- */
+                
+                // Top page popover
+                if($scope.capture.birdname!=='Unknown') {
+                    birdApi.getDuckEngine($scope.capture.birdname)
+                    .then(function(res) {
+                        $scope.birdName = res.data.Heading;
+                        $scope.birdInfo = res.data.Abstract;
+                        $scope.birdImage = res.data.Image;
+                        // console.log(res.data);
+                        // console.log($scope.birdInfo);
+                        // console.log($scope.birdImage);
+                        $scope.birdInfoPopover = {
+                            image: $scope.birdImage,
+                            content: $scope.birdInfo,
+                            templateUrl: '/partials/model/birdPopover.html',
+                            title: $scope.birdName
+                       };
+                    });
+                } else {
+                    $scope.birdInfoPopover = {
+                            content: "The user doesn't know the birdname. If you know it, give it down below!",
+                            templateUrl: '/partials/model/birdPopover.html',
+                            title: $scope.capture.birdname
+                       };
+                }  
+                
+                $scope.birdSuggestionInfo = function(birdSuggestion) {
+                    birdApi.getDuckEngine(birdSuggestion)
+                    .then(function(res) {
+                        console.log(res.data);
+                        $scope.suggestionBirdName = res.data.Heading;
+                        $scope.suggestionBirdImage = res.data.Image;
+                        $scope.suggestionBirdInfo = res.data.Abstract;
+                        $scope.suggestionBirdInfoPopover = {
+                            title: $scope.suggestionBirdName,
+                            image: $scope.suggestionBirdImage,
+                            content: $scope.suggestionBirdInfo,
+                            templateUrl: '/partials/model/birdPopover.html'
+                       };
+                    });
+                };
+                
+                
+                /* -------------------------- Check if voted unlike Capture -------------------------- */
+                // Check voted
+                var votes = res.data.votes;
                     var i;
                     if(votes.length == 0) {
                         $scope.like = true;
@@ -30,49 +109,39 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                                   break;
                           } else {if((i+1) == votes.length){
                                   $scope.like = true;
+                                    }
                                 }
-                          }
+                            }
                         }
-                    }
-               
-            $scope.unlikeCapture = function(){
-                var i;
-                for (i=0; i<votes.length; i++)
-                {
-                    if(votes[i].userId == auth.profile.user_id) {
-                       
-                        var voteId = votes[i]._id;
                         
-                        $http.delete('https://birdspotter-cedricbongaerts.c9users.io/api/votes/'+ voteId);
-                          $scope.liked = false;
-                          $scope.like = true;
-                          $scope.capture.votes.length--;
-                          break;
-                    } 
-                }
-            };
-            
-            if($scope.capture.userId == auth.profile.user_id) {
-                $scope.postAuthor = true;
-            }
-            
-
-            
-            $scope.deleteCapture = function() {
-                captureApi.deleteCapture(id)
-                    .then(function(res) {
-                        $location.path('/dashboard');
-                        console.log('Deleted Capture');
-                });
-            };
-            
-             $scope.deleteComment = function(index) {
-                 commentApi.deleteComment($scope.capture.comments[index]._id)
-                    .then(function(res) {});
-                    $scope.capture.comments.splice(index, 1);
+                // Unlike
+                $scope.unlikeCapture = function(){
+                    var i;
+                    for (i=0; i<votes.length; i++)
+                    {
+                        if(votes[i].userId == auth.profile.user_id) {
+                           
+                            var voteId = votes[i]._id;
+                            
+                            voteApi.unlikeCapture(voteId).then(function(res) {
+                            });
+                            $scope.liked = false;
+                            $scope.like = true;
+                            $scope.capture.votes.length--;
+                            break;
+                        } 
+                    }
                 };
+            
+                /* --------------------------------- Delete comment ----------------------------------- */
+                $scope.deleteComment = function(index) {
+                    commentApi.deleteComment($scope.capture.comments[index]._id)
+                        .then(function(res) {});
+                        $scope.capture.comments.splice(index, 1);
+                    };
         });
-                  
+    
+    /* --------------------------------- Like Capture ----------------------------------- */              
     $scope.likeCapture = function(){
 
         var dataObj = {
@@ -88,10 +157,12 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             });
     };
           
+    /* --------------------------------- Add comment ------------------------------------ */       
     $scope.addComment = function(){
-          
+          console.log($scope.birdSuggestion);
         var dataObj = {
-            body              : $scope.body,
+            comment           : $scope.comment,
+            birdSuggestion    : $scope.birdSuggestion,     
             userId            : $scope.auth.profile.user_id,
             author            : $scope.auth.profile.name
         };  
@@ -100,13 +171,13 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             .then(function(res){
                 $scope.capture.comments.push(res.data);
         });
-        $scope.body = "";
+        $scope.comment = "";
+        $scope.birdSuggestion = "";
     };
     
+    /* --------------------------------- Edit Capture ----------------------------------- */
     $scope.editCapture = function(){  
-        $scope.type = 'info';
         var dataObj = {
-            type     : $scope.type,
             birdname : $scope.newBirdname,
             note     : $scope.capture.note
         };
@@ -123,6 +194,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         });
     };
     
+    /* ------------------------------- Cancel Bootbox ----------------------------------- */
     $scope.cancel = function() {
         $ngBootbox.hideAll();
     };
