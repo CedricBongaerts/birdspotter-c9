@@ -1,15 +1,20 @@
-<html ng-app="app">
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <link rel="icon" href="img/favicon.ico">
-
     <title ng-bind="($title || 'Home') + ' | Birdspotter'">Birdspotter</title>
+    
+    <!-- Lato Font -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato">
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
+    
+    <!-- Loadingbar CSS -->
+    <link rel="stylesheet" href="/lib/angular-loading-bar/build/loading-bar.min.css">
     
     <!-- Bootstrap core JavaScript -->
     <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -25,31 +30,32 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4WM_531qnWnu1lNM824QE0ITMBvzjMqU&libraries=places"></script>
     
     <!-- AngularJS libraries-->
-    <script type="text/javascript" src="/lib/angular/angular.js"></script>
-    <script type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
-    <script type="text/javascript" src="/lib/angular-cookies/angular-cookies.js"></script>
-    <script type="text/javascript" src="/lib/angular-ui-router/release/angular-ui-router.js"></script>
-    <script type="text/javascript" src="/lib/a0-angular-storage/dist/angular-storage.js"></script>
-    <script type="text/javascript" src="/lib/angular-jwt/dist/angular-jwt.js"></script>
+    <script type="text/javascript" src="/lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="/lib/a0-angular-storage/dist/angular-storage.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-jwt/dist/angular-jwt.min.js"></script>
     <script type="text/javascript" src="/lib/angular-ui-router-title/angular-ui-router-title.js"></script>
     <script type="text/javascript" src="/lib/ng-autocomplete/src/ngAutocomplete.js"></script>
-    <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
-    <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="/lib/allmighty-autocomplete/script/autocomplete.js"></script>
     <script type="text/javascript" src="/lib/allmighty-autocomplete/script/app.js"></script>
     <script type='text/javascript' src='/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
     <script type='text/javascript' src="/lib/moment/moment.js"></script>
-    <script type='text/javascript' src='/lib/angular-moment/angular-moment.js'></script>
+    <script type='text/javascript' src='/lib/angular-moment/angular-moment.min.js'></script>
     <script type='text/javascript' src='/lib/bootbox/bootbox.js'></script>
     <script type='text/javascript' src='/lib/ngBootbox/dist/ngBootbox.js'></script>
     <script type='text/javascript' src="/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <script type='text/javascript' src="/lib/ng-scrollbars/dist/scrollbars.min.js"></script>
-    <script type='text/javascript' src="/lib/angular-socialshare/dist/angular-socialshare.js"></script>
-    <script type='text/javascript' src="/lib/angulargrid/angulargrid.js"></script>
+    <script type='text/javascript' src="/lib/angular-socialshare/dist/angular-socialshare.min.js"></script>
+    <script type='text/javascript' src="/lib/angulargrid/angulargrid.min.js"></script>
+    <script type='text/javascript' src="/lib/angular-loading-bar/build/loading-bar.min.js"></script>
     
     <!-- Filestack -->
-    <script type="text/javascript" src="/lib/filepicker-js/filepicker.js"></script>
-    <script type="text/javascript" src="/lib/angular-filepicker/dist/angular_filepicker.js"></script>
+    <script type="text/javascript" src="/lib/filepicker-js/filepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-filepicker/dist/angular_filepicker.min.js"></script>
     
     <!-- Auth0's libraries -->
     <script type="text/javascript" src="https://cdn.auth0.com/js/lock-9.1.js"></script>
@@ -80,7 +86,7 @@
     <script  type="text/javascript" src="/js/services/commentService.js"></script>
   </head>
 
-  <body>
+  <body ng-app="app" class="ng-cloak" ng-cloak>
     <!-- Navbar -->
       <nav class="navbar navbar-default navbar-fixed-top" ng-controller="navCtrl">
       <div class="container">
@@ -102,17 +108,16 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li ng-if="!auth.isAuthenticated"><a ui-sref="home" ng-click="login()">Register & Login</a></li>
-            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"><img ng-src="{{auth.profile.picture}}" width="24px" height="24px" /> {{auth.profile.given_name}}</a></li>
+            <li ng-if="auth.isAuthenticated" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"> {{auth.profile.given_name}}</a></li>
             <li ng-if="auth.isAuthenticated"><a ui-sref="home" ng-click="logout()">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
+      <div id="loading-bar-container"></div>
     </nav>
-
     <!-- Container -->
-    <div class="container" id="main-container">
+    <div class="container" id="main-container" >
       <div ui-view>
-        
       </div>
     </div>
     <!-- End Container -->

@@ -6,7 +6,7 @@
                 <span class="input-group-addon">
                     <input type="checkbox" ng-model="checked" ng-change="toggleBirdname()" id="toggleType">
                 </span>
-                <input type="text" class="form-control" id="birdname" ng-model="newBirdname" required ng-disabled="checked" autocomplete="off" ng-value="capture.birdname" 
+                <input type="text" class="form-control" id="birdname" ng-model="capture.birdname" required ng-disabled="checked" autocomplete="off" ng-value="capture.birdname" 
                     uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" typeahead-select-on-blur="true">
             </div>
             <div ng-show="noResults">

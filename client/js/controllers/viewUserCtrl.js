@@ -22,13 +22,13 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
             var follows = res.data;
             
                  $scope.profilePic = function(pic) {
-                            if($scope.user.identities[0].provider == "facebook"){
-                                pic = $scope.user.picture_large;
-                            } else {
-                                pic = $scope.user.picture;
-                            }
-                            return pic;
-                        };
+                    if($scope.user.identities[0].provider == "facebook"){
+                        pic = $scope.user.picture_large;
+                    } else {
+                        pic = $scope.user.picture;
+                    }
+                    return pic;
+                };
                         
                         $scope.connectedWith = function(social) {
                             if($scope.user.identities[0].provider == "facebook"){

@@ -1,17 +1,26 @@
 <div class="col-md-9">
-    <div class="well">
-        <h3>Personal Dashboard:</h3>
+    <div class="well main-well">
+        <h3 class="page-header-h3">Following Dashboard:</h3>
         <hr />
-            <div ng-hide="captures">
-                <h4 align="center">
-                    <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>
-                    <br /><br />
-                    Quickly, go follow more people!</h4>
-            </div>
+        <h4 align="center" ng-show="!captures.length">
+                            <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>
+                            <br /><br />
+                            Quickly, go follow more people!</h4>
         <row>
             <ul class="dynamic-grid" angular-grid="captures" ag-id="gallery" ag-refresh-on-img-load="true" >
                 <li data-ng-repeat="capture in captures" class="grid">
-                     <a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" class="grid-img" /></a>
+                     <a ui-sref="detail({id: capture.capture._id})">
+                         <img ng-src="{{capture.capture.picture}}" class="grid-img" />
+                         <span class="follow-capture-info">
+                            <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 
+                              {{capture.user.name}} 
+                                <span class="following-capture-time">· 
+                                    <span class="glyphicon glyphicon-time"></span> 
+                                    <span am-time-ago="capture.capture.created_at"></span>
+                                </span>
+                            </span>
+                        </span>
+                     </a>
                 </li>
             </ul>
         </row>
@@ -19,11 +28,18 @@
 </div>
 <div class="col-md-3">
     <div class="well">
-        <h4>Following:</h4>
+        <h3 class="page-header-h3">Following ({{following.length}}):</h3>
         <hr />
         <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
-            <li ng-if="following" ng-repeat="follow in following">
-                <p><img ng-src="{{follow.picture}}" width="35px"> <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">{{follow.name}}</a></p>
+            <li ng-if="following" ng-repeat="follow in following" class="col-md-6 followers-list" >
+                <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
+                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" width="100%">
+                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" width="100%">
+                        <span class="followers-info">
+                            <span class="followers-name">{{follow.name}}</span>
+                        </span>
+                    </p>
+                </a>
             </li>
         </ul>
     </div>

@@ -1,6 +1,6 @@
 <div class="col-md-12">
-    <div class="well">
-        <h3>Users list:</h3>
+    <div class="well main-well">
+        <h3 class="page-header-h3">Users list:</h3>
         <hr />
         <form class="form-inline user-search">
             <input type="text" ng-model="search" class="form-control" placeholder="Search User">
@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="user in users|filter:search|orderBy:sortKey:reverse|startFrom:currentPage:pageSize">
-                    <td><img ng-src="{{user.picture}}" width="35px"> <a ui-sref="user-profile({id: user.user_id})">{{user.name}}</a></td>
+                    <td><img ng-src="{{user.picture}}" width="35px"> <a ui-sref="user-profile({id: user.user_id})" class="clickable">{{user.name}}</a></td>
                     <td>{{user.gender}}</td>
                     <td>{{user.created_at | date:'MMM dd, yyyy'}}</td>
                     <td><span am-time-ago="user.last_login"></span></td>

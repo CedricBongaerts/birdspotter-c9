@@ -10,7 +10,7 @@ app.factory('commentApi', ['$http', function($http){
         },
         
         deleteComment : function(id) {
-            return $http.delete(urlBase + '/' + id);
+            return $http.delete(urlBase + '/' + id, {ignoreLoadingBar: true});
         }
     };
 }]);

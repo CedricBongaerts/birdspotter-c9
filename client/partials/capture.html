@@ -1,7 +1,7 @@
 <div class="col-md-12">
-    <form class="well" name="addCapture">
+    <form class="well main-well" name="addCapture">
         <div class="form-group">
-            <h3>Capture form:</h3>
+            <h3 class="page-header-h3">Capture form:</h3>
             <hr />
             <div class="form-group" align="center">
                 <button type="button" class="btn btn-default" ng-click="upload()">
@@ -40,7 +40,7 @@
             <input type="text" class="form-control" id="note"ng-model="note" placeholder="Anything extra you would like to add?">
         </div>
         
-        <h3>Preview:</h3>
+        <h3 class="page-header-h3">Preview:</h3>
         <hr />
         <h3 ng-hide="checked || !birdname">{{birdname}}</h3>
         <h4 ng-if="place"><span class="fa fa-map-marker"></span> {{place}}</h4>

@@ -16,7 +16,8 @@ var app = angular.module('app',
                             'ngBootbox',
                             'ngScrollbars',
                             '720kb.socialshare',
-                            'angularGrid'
+                            'angularGrid',
+                            'angular-loading-bar'
                         ]);
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
@@ -134,7 +135,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         loginState: 'home'
       }); 
       
-    filepickerProvider.setKey('AgtaVB9hxRa6TReRkKWgRz');
+    filepickerProvider.setKey('AIcUH5ju1R1SRGJRVC2TRz');
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');
@@ -167,6 +168,11 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         setHeight: 350
     };
 });
+
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = true;
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+  }]);
 
 app.run(function($rootScope, auth, store, jwtHelper, $location) {
   auth.hookEvents();

@@ -1,7 +1,7 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state',
-                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$uibModal',
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $uibModal) {
 
      var id = $stateParams.id;
      
@@ -74,7 +74,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                     $scope.birdInfoPopover = {
                             content: "The user doesn't know the birdname. If you know it, give it down below!",
                             templateUrl: '/partials/model/birdPopover.html',
-                            title: $scope.capture.birdname
+                            title: $scope.capture.birdname,
                        };
                 }  
                 
@@ -98,39 +98,48 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 /* -------------------------- Check if voted unlike Capture -------------------------- */
                 // Check voted
                 var votes = res.data.votes;
-                    var i;
-                    if(votes.length == 0) {
-                        $scope.like = true;
+
+                if(votes.length == 0){$scope.like = true;}
+                votes.forEach(function(vote){
+                    if(vote.userId === auth.profile.user_id) {
+                        $scope.liked = true;
                     } else {
-                        for (i=0; i<votes.length; i++)
-                        {
-                            if(votes[i].userId == auth.profile.user_id) {
-                                  $scope.liked = true;
-                                  break;
-                          } else {if((i+1) == votes.length){
-                                  $scope.like = true;
-                                    }
-                                }
-                            }
-                        }
+                        $scope.like = true;
+                    }
+                });
+                    
+                        
                         
                 // Unlike
                 $scope.unlikeCapture = function(){
-                    var i;
-                    for (i=0; i<votes.length; i++)
-                    {
-                        if(votes[i].userId == auth.profile.user_id) {
-                           
-                            var voteId = votes[i]._id;
-                            
-                            voteApi.unlikeCapture(voteId).then(function(res) {
+                    
+                    votes.forEach(function(vote){
+                        if(vote.userId === auth.profile.user_id) {
+                            var voteId = vote._id;
+                        
+                        voteApi.unlikeCapture(voteId).then(function(res) {
                             });
                             $scope.liked = false;
                             $scope.like = true;
                             $scope.capture.votes.length--;
-                            break;
-                        } 
-                    }
+                        }
+                    });
+                    
+                    // var i;
+                    // for (i=0; i<votes.length; i++)
+                    // {
+                    //     if(votes[i].userId == auth.profile.user_id) {
+                           
+                    //         var voteId = votes[i]._id;
+                            
+                    //         voteApi.unlikeCapture(voteId).then(function(res) {
+                    //         });
+                    //         $scope.liked = false;
+                    //         $scope.like = true;
+                    //         $scope.capture.votes.length--;
+                    //         break;
+                    //     } 
+                    // }
                 };
             
                 /* --------------------------------- Delete comment ----------------------------------- */
@@ -139,6 +148,13 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         .then(function(res) {});
                         $scope.capture.comments.splice(index, 1);
                     };
+                    
+                $scope.openImageModel = function() {
+                    $uibModal.open({
+                        animation: true,
+                        templateUrl: '/partials/model/birdImageModal.html'
+                    });
+                };
         });
     
     /* --------------------------------- Like Capture ----------------------------------- */              
@@ -178,7 +194,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     /* --------------------------------- Edit Capture ----------------------------------- */
     $scope.editCapture = function(){  
         var dataObj = {
-            birdname : $scope.newBirdname,
+            birdname : $scope.capture.birdname,
             note     : $scope.capture.note
         };
         

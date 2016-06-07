@@ -1,10 +1,5 @@
 /* Importing bootstrap.less*/
-[ng\:cloak],
-[ng-cloak],
-[data-ng-cloak],
-[x-ng-cloak],
-.ng-cloak,
-.x-ng-cloak {
+[ng-cloak] {
   display: none !important;
 }
 /*!
@@ -6739,22 +6734,27 @@ button.close {
 /*================ Thumbnail ===================*/
 /*================ List Group ==================*/
 /*============= Custom Additions ================*/
+/* ---------------------- Global ---------------------- */
 html,
 body {
   height: 100%;
-}
-.thumb-min {
-  min-height: 200px;
-  min-width: 200px;
-}
-.profile-pic {
-  width: 200px;
-  height: 200px;
+  font-family: Lato;
 }
 #main-container {
   margin-top: 54px;
   height: 100%;
   position: relative;
+}
+#loading-bar-container {
+  position: absolute;
+  margin-top: 40px;
+}
+.main-well {
+  min-height: 455px;
+}
+hr {
+  margin-top: 5px!important;
+  margin-bottom: 10px!important;
 }
 .no-margin-bottom {
   margin-bottom: 0px!important;
@@ -6765,8 +6765,27 @@ body {
 .no-border {
   border: none!important;
 }
-.glyphicon-design {
-  font-size: 16px;
+.thumb-min {
+  min-height: 200px;
+  min-width: 200px;
+}
+.brand-color-normal {
+  color: #0F7000;
+}
+.brand-color-link:hover {
+  color: #0F7000;
+}
+.clickable:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+.inline {
+  display: inline;
+}
+.page-header-h3 {
+  margin-top: 0px;
+  font-weight: 600;
+  font-size: 1.6em;
 }
 .autocomplete {
   display: block;
@@ -6781,64 +6800,30 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.clickable:hover {
-  color: #0F7000;
-  cursor: pointer;
+/* ---------------------- Homepage ---------------------- */
+#intro {
+  background: url(/img/Background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 750px;
+  margin-top: -15px;
 }
-.voteComment {
-  display: inline;
-  float: right!important;
+/* ---------------------- Navbar ---------------------- */
+.nav-glyph {
+  line-height: 26px!important;
+  font-size: 16px!important;
 }
-.captureLink {
-  cursor: pointer;
+/* ---------------------- Dashboard ---------------------- */
+.dash-posts {
+  padding-bottom: 0px;
 }
-.commentDelete:hover {
-  color: #0F7000;
-  cursor: pointer;
-}
-.captureLink:hover {
-  text-decoration: none;
-}
-.captureManage {
-  float: right;
-  font-size: 14px;
-  display: inline;
-}
-.captureManage span {
-  padding: 3px;
-  cursor: pointer;
-}
-hr {
-  margin-top: 5px!important;
-  margin-bottom: 10px!important;
-}
-.user-search {
-  float: right;
-}
-.sort-icon:hover {
-  cursor: pointer;
-}
-.header-icon {
-  font-size: 25px;
-  float: right;
-  color: #fff;
-  padding: 3px 3px 0;
-  position: relative;
-  top: 28px;
-}
-.likes-header {
-  position: absolute;
-  right: 23px;
-  top: 19px;
-  color: #fff;
-  border: 1px solid white;
-  background: rgba(15, 112, 0, 0.1);
-  padding: 2px;
-}
-.dash-header {
+.dash-capture-info {
   margin-top: 0px;
-  margin-bottom: 0px;
-  display: inline;
+  margin-bottom: 5px;
+}
+.dash-capture-time {
+  margin-top: 5px;
 }
 .dash-thumb-img {
   opacity: 0;
@@ -6849,40 +6834,19 @@ hr {
   -o-transition: opacity 2s;
   transition: opacity 2s;
 }
-.dash-info {
-  width: 100%;
-}
-.dash-info-left {
-  padding: 5px;
-  margin-bottom: 10px;
-  text-align: left;
-  display: inline;
-}
-.dash-info-right {
-  padding: 5px;
-  margin-bottom: 10px;
-  align: right;
-  display: inline;
-}
-.header-info {
-  right: 21px;
-  position: absolute;
-  bottom: 4px;
+.top-likes {
+  bottom: 3;
   color: #fff;
+  left: 20;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+  font-size: 15px;
 }
-.comments {
-  background: #fff;
-  border: 1px solid #ddd;
-}
-.commentActions {
-  font-size: 12px;
-  color: #bbb;
-}
+/* ---------------------- Following ---------------------- */
 .grid {
   list-style: none;
   -moz-box-sizing: border-box;
-  -webkit-transition: all 0.6s ease-out;
-  transition: all 0.6s ease-out;
 }
 .grid-img {
   width: 100%;
@@ -6896,10 +6860,141 @@ hr {
   visibility: visible;
   opacity: 1;
 }
-/* View Capture Edits */
-#captureImg {
+.followers-list {
+  list-style: none;
+}
+.followers-info {
+  bottom: 8;
+  color: #fff;
+  left: 4;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+}
+.followers-name {
+  font-size: 12px;
+  line-height: 16px;
+}
+.follow-capture-info {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
+  bottom: 0;
+  color: #fff;
+  left: 0;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+}
+.follow-capture-name {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+}
+.following-capture-time {
+  font-weight: 500;
+}
+/* ---------------------- Users list ---------------------- */
+.user-search {
+  float: right;
+}
+.sort-icon:hover {
+  cursor: pointer;
+}
+/* ---------------------- View Capture ---------------------- */
+.capture-manage-icons {
+  float: right;
+  font-size: 14px;
+  display: inline;
+}
+.capture-manage-icons span {
+  padding: 3px;
+  cursor: pointer;
+}
+.captureImg {
   max-height: 800px;
 }
+.modal-dialog {
+  height: 90vh;
+  position: relative;
+  top: 5vh;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  background: none!important;
+  width: 80%;
+}
+.modal-content {
+  height: 90vh;
+  position: relative!important;
+  background-color: rgba(0, 0, 0, 0);
+  border: none!important;
+  border-radius: none!important;
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+  background-clip: none!important;
+  width: auto;
+}
+.imageModel {
+  max-height: 90vh;
+  max-width: 90%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modal-header {
+  background: white;
+  color: #0a4a00;
+  width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modal-body {
+  position: relative;
+  padding: 15px;
+  background: white;
+  width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.comments {
+  background: #fff;
+  border: 1px solid #ddd;
+}
+.commentActions {
+  font-size: 12px;
+  color: #bbb;
+}
+.vote-comment-buttons {
+  display: inline;
+  position: relative;
+  right: 0;
+}
+.capture-action-buttons {
+  margin-left: 20px;
+}
+.view-capture-thumb {
+  margin-bottom: 10px;
+}
+.share-buttons {
+  font-size: 18px;
+  margin-bottom: 0;
+  margin-top: 0;
+  cursor: pointer;
+  line-height: 0.3;
+}
+.fa.fa-facebook-official.share-icon {
+  font-size: 18px;
+  margin-right: 10px;
+  margin-left: 5px;
+}
+/* ---------------------- Profile -------------------------- */
+.profile-pic {
+  width: 200px;
+  height: 200px;
+}
+/* ---------------------- Smaller screens ---------------------- */
 @media screen and (min-width: 991px) {
   .no-padding-right {
     padding-right: 0px!important;
@@ -6907,15 +7002,6 @@ hr {
   .no-padding-left {
     padding-left: 0px!important;
   }
-}
-/*================= Home Page ===================*/
-#intro {
-  background: url(/img/Background.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  min-height: 750px;
-  margin-top: -15px;
 }
 @media screen and (max-width: 990px) {
   .no-padding-right {
@@ -6926,8 +7012,4 @@ hr {
     padding-left: 0px!important;
     padding-right: 0px!important;
   }
-}
-.nav-glyph {
-  line-height: 26px!important;
-  font-size: 16px!important;
 }
