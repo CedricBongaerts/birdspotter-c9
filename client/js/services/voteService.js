@@ -10,7 +10,7 @@ app.factory('voteApi', ['$http', function($http){
         },
         
         unlikeCapture : function(id) {
-            return $http.delete(urlBase + '/' + id);
+            return $http.delete(urlBase + '/' + id , {ignoreLoadingBar: true});
         }
     };
 }]);

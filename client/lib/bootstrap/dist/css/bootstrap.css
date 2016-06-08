@@ -6814,6 +6814,9 @@ hr {
   line-height: 26px!important;
   font-size: 16px!important;
 }
+.navbar-brand {
+  margin-left: 0px!important;
+}
 /* ---------------------- Dashboard ---------------------- */
 .dash-posts {
   padding-bottom: 0px;
@@ -6843,6 +6846,10 @@ hr {
   right: 0;
   font-size: 15px;
 }
+.top-liked-captures {
+  max-width: 195px;
+  width: 100%;
+}
 /* ---------------------- Following ---------------------- */
 .grid {
   list-style: none;
@@ -6862,6 +6869,7 @@ hr {
 }
 .followers-list {
   list-style: none;
+  float: left;
 }
 .followers-info {
   bottom: 8;
@@ -6892,6 +6900,10 @@ hr {
 .following-capture-time {
   font-weight: 500;
 }
+.following-pictures {
+  max-width: 95px;
+  width: 100%;
+}
 /* ---------------------- Users list ---------------------- */
 .user-search {
   float: right;
@@ -6899,6 +6911,7 @@ hr {
 .sort-icon:hover {
   cursor: pointer;
 }
+/* ---------------------- Create Capture ---------------------*/
 /* ---------------------- View Capture ---------------------- */
 .capture-manage-icons {
   float: right;
@@ -6970,6 +6983,11 @@ hr {
   display: inline;
   position: relative;
   right: 0;
+}
+.vote-amount {
+  display: inline;
+  float: right;
+  margin-right: 10px;
 }
 .capture-action-buttons {
   margin-left: 20px;

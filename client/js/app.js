@@ -9,6 +9,7 @@ var app = angular.module('app',
                             'ui.router.title',
                             'ngAutocomplete',
                             'ui.bootstrap',
+                            'ui.bootstrap.collapse',
                             'angular-filepicker',
                             'autocomplete',
                             'infinite-scroll',
@@ -205,6 +206,8 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
       }
     }
   });
+  
+  $rootScope.$on('$viewContentLoaded', function(){ window.scrollTo(0, 0); });
 });
 
 app.filter('startFrom', function() {

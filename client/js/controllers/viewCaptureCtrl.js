@@ -103,10 +103,9 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 votes.forEach(function(vote){
                     if(vote.userId === auth.profile.user_id) {
                         $scope.liked = true;
-                    } else {
-                        $scope.like = true;
-                    }
+                    } 
                 });
+                $scope.like = !$scope.liked;
                     
                         
                         
@@ -124,22 +123,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                             $scope.capture.votes.length--;
                         }
                     });
-                    
-                    // var i;
-                    // for (i=0; i<votes.length; i++)
-                    // {
-                    //     if(votes[i].userId == auth.profile.user_id) {
-                           
-                    //         var voteId = votes[i]._id;
-                            
-                    //         voteApi.unlikeCapture(voteId).then(function(res) {
-                    //         });
-                    //         $scope.liked = false;
-                    //         $scope.like = true;
-                    //         $scope.capture.votes.length--;
-                    //         break;
-                    //     } 
-                    // }
                 };
             
                 /* --------------------------------- Delete comment ----------------------------------- */

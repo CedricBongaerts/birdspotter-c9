@@ -28,7 +28,6 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
             }).forEach(function(follow) {
             
             captures.filter(function(capture){
-                console.log(follow.followed_id === capture.userId);
                 return follow.followed_id === capture.userId;
             }).forEach(function(capture){
                 users.filter(function(user){

@@ -1,0 +1,11 @@
+.fp__sidebar {
+    bottom: 0px!important;
+}
+
+.fp__action-bar {
+    display: none!important;
+}
+
+.content__header__title {
+    color: red;
+}

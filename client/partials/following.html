@@ -33,8 +33,8 @@
         <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
             <li ng-if="following" ng-repeat="follow in following" class="col-md-6 followers-list" >
                 <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
-                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" width="100%">
-                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" width="100%">
+                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" class="following-pictures">
+                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" class="following-pictures">
                         <span class="followers-info">
                             <span class="followers-name">{{follow.name}}</span>
                         </span>
