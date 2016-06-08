@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <div class="well main-well">
+        <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countNotification" class="notifications-header-count"> · {{countNotification}} New</h5></h3>
+        <div class="view-all"><a src='#' class="clickable" ng-click="allSeen()">Mark all as seen</a></div>
+        <hr />
+        
+        <div ng-repeat="notification in notifications | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
+                {{notification.notificationFor}} - 
+                {{notification.notificationFrom}} -
+                {{notification.parameter}} - 
+                {{notification.concirning}} - 
+                {{notification.seen}} - 
+                {{notification.created_at}}
+                <span ng-if="notification.concirning=='comment'"><strong><br />{{notification.notificationFrom}} has commented on one of your captures.</strong></span>
+                <span ng-if="notification.concirning=='birdsuggestion'"><strong><br />{{notification.notificationFrom}} has given a birdname for your capture! Go check it out!</strong></span>
+                <span ng-if="notification.concirning=='like'"><strong><br />{{notification.notificationFrom}} has just liked your capture!</strong></span>
+                <span ng-if="notification.concirning=='follow'"><strong><br />{{notification.notificationFrom}} has commented on one of your captures.</strong></span>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>

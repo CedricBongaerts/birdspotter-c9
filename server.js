@@ -35,6 +35,7 @@ require('./server/routes/capture');
 require('./server/routes/comment');
 require('./server/routes/vote');
 require('./server/routes/follow');
+require('./server/routes/notification');
 mongoose.connect(configDB.url);
 
 var bodyParser = require('body-parser');
@@ -48,24 +49,14 @@ app.get('/', function(req, res){
     res.render('index.html');
 });
 
-// app.get('/error', function(req, res){
-//     res.render('error.html');
-// });
-
 // API 
 var api = express.Router();
 require('./server/routes/capture')(api);
 require('./server/routes/comment')(api);
 require('./server/routes/vote')(api);
 require('./server/routes/follow')(api); 
+require('./server/routes/notification')(api); 
 app.use('/api', api);
-
-// app.use(function(err, req, res, next) {
-//     res.status(err.status || 500, function(res) {
-//         console.log('Error 500');
-//     });
-// });
-
 
 // Port Settings
 app.listen(process.env.PORT || 3000, process.env.IP);

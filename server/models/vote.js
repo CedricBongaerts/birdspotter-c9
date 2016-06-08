@@ -4,7 +4,8 @@ var voteSchema = Schema({
     userId: String,
     userName: String,
     votedFor: String,
-    capture: { type: Schema.Types.ObjectId, ref: 'Capture'}
+    capture: { type: Schema.Types.ObjectId, ref: 'Capture'},
+    notification: [{ type: Schema.Types.ObjectId, ref: 'Notification'}]
 });
 
 module.exports = mongoose.model('Vote', voteSchema);

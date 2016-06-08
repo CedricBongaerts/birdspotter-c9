@@ -12,10 +12,13 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="/layout/filepicker.css">
     
     <!-- Loadingbar CSS -->
     <link rel="stylesheet" href="/lib/angular-loading-bar/build/loading-bar.min.css">
+    
+    <!-- Notifications CSS -->
+    <link rel="stylesheet" href="/lib/angular-notification-icons/dist/angular-notification-icons.min.css">
+    
     
     <!-- Bootstrap core JavaScript -->
     <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -53,6 +56,8 @@
     <script type='text/javascript' src="/lib/angular-socialshare/dist/angular-socialshare.min.js"></script>
     <script type='text/javascript' src="/lib/angulargrid/angulargrid.min.js"></script>
     <script type='text/javascript' src="/lib/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script type='text/javascript' src="/lib/angular-animate/angular-animate.min.js"></script>
+    <script type='text/javascript' src="/lib/angular-notification-icons/dist/angular-notification-icons.min.js"></script>
     
     <!-- Filestack -->
     <script type="text/javascript" src="/lib/filepicker-js/filepicker.min.js"></script>
@@ -77,6 +82,7 @@
     <script  type="text/javascript" src="/js/controllers/viewCaptureCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/viewUserCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/usersCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/notificationsCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/errorCtrl.js"></script>
     
     <!-- Services -->
@@ -85,6 +91,7 @@
     <script  type="text/javascript" src="/js/services/userService.js"></script>
     <script  type="text/javascript" src="/js/services/voteService.js"></script>
     <script  type="text/javascript" src="/js/services/commentService.js"></script>
+    <script  type="text/javascript" src="/js/services/notificationService.js"></script>
   </head>
 
   <body ng-app="app" class="ng-cloak" ng-cloak>
@@ -102,12 +109,13 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> Dashboard</a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span> Capture</a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span> Following</a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span> Users</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"> <notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon></a></li>
             <li ng-if="!auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="login()">Register & Login</a></li>
             <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"> {{auth.profile.given_name}}</a></li>
             <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()">Logout</a></li>

@@ -55,11 +55,11 @@
             	<form name="addComments" ng-submit="addComment()">
                         <div class="form-group">
                             <label for="birdname">Comment:</label>
-                            <input type="text" class="form-control" id="comment" class="col-md-6" ng-model="comment" placeholder="Leave your comment.." ng-enter="addComment()"> 
+                            <input type="text" class="form-control" autocomplete="off" id="comment" class="col-md-6" ng-model="comment" placeholder="Leave your comment.." ng-enter="addComment()"> 
                         </div>
                         <div class="form-group" ng-show="capture.birdname=='Unknown'">
                             <label for="birdname">Birdname:</label>
-                            <input type="text" class="form-control" id="birdSuggestion" class="col-md-6" ng-model="birdSuggestion" placeholder="Give the birdname.."
+                            <input type="text" class="form-control" autocomplete="off" id="birdSuggestion" class="col-md-6" ng-model="birdSuggestion" placeholder="Give the birdname.."
                                 uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" ng-enter="addComment()"
                                 uib-tooltip="The users has not added a birdname to his capture! This is most likely because he does not know the name. If you know it, let him know."
                                 tooltip-placement="top"

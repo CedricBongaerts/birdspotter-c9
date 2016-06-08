@@ -39,10 +39,10 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                $scope.toggleBirdname = function() {
                     if($scope.checked)
                     {
-                        $scope.newBirdname = 'Unknown';
+                        $scope.capture.birdname = 'Unknown';
                         $scope.noResults = false;
                     } else {
-                        $scope.newBirdname = null;
+                        $scope.capture.birdname = null;
                     }
                 };
                
@@ -143,35 +143,77 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     /* --------------------------------- Like Capture ----------------------------------- */              
     $scope.likeCapture = function(){
 
-        var dataObj = {
+        var likeObj = {
              userId      : $scope.auth.profile.user_id,
              userName    : $scope.auth.profile.name,
              votedFor    : $scope.capture.userId
         };
-        captureApi.likeCapture(id, dataObj)
-            .success(function(res){
+        
+        var notificationObj = {
+                            notificationFor     : $scope.capture.userId,
+                            notificationFrom    : auth.profile.user_id,
+                            concirning          : 'like',
+                            parameter           : id
+        };
+        
+        captureApi.likeCapture(id, likeObj)
+            .then(function(res){
                     $scope.capture.votes.push(res);
                     $scope.liked = true;
                     $scope.like = false;
+                    
+                    var likeId = res.data._id;
+                    console.log(likeId);
+
+                voteApi.voteNotification(likeId, notificationObj)  
+                .then(function(res){
+                    console.log(notificationObj);
+                    console.log(likeId);
+                });
             });
+            
     };
           
     /* --------------------------------- Add comment ------------------------------------ */       
     $scope.addComment = function(){
-          console.log($scope.birdSuggestion);
-        var dataObj = {
+        var commentObj = {
             comment           : $scope.comment,
             birdSuggestion    : $scope.birdSuggestion,     
             userId            : $scope.auth.profile.user_id,
             author            : $scope.auth.profile.name
         };  
         
-        captureApi.postComment(id, dataObj)  
+        var notificationType;
+        
+        if(commentObj.birdSuggestion == undefined) {
+            notificationType = 'comment';
+        } else {
+            notificationType = 'birdsuggestion';
+        }
+        
+        var notificationObj = {
+                            notificationFor     : $scope.capture.userId,
+                            notificationFrom    : auth.profile.user_id,
+                            concirning          : notificationType,
+                            parameter           : id
+        };
+        
+        
+        captureApi.postComment(id, commentObj)  
             .then(function(res){
                 $scope.capture.comments.push(res.data);
+                var commentId = res.data._id;
+                console.log(commentId);
+                
+                commentApi.commentNotification(commentId, notificationObj)  
+                .then(function(res){
+                    console.log(notificationObj);
+                    console.log(commentObj);
+            });
         });
-        $scope.comment = "";
-        $scope.birdSuggestion = "";
+        
+        $scope.comment = undefined;
+        $scope.birdSuggestion = undefined;
     };
     
     /* --------------------------------- Edit Capture ----------------------------------- */

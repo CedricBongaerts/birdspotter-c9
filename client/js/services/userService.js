@@ -32,6 +32,9 @@ app.factory('userApi', ['$http', function($http){
             });
         },
         
+        followNotification : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/notifications', data);
+        },
         
         followUser : function(data) {
             return $http.post(urlBase, data);

@@ -57,6 +57,19 @@ module.exports = function(router) {
     		return next();
     	});
     });  
+    
+    // Map logic to route parameter 'vote'
+    router.param('vote', function (req, res, next, id) {
+    	var query = Vote.findById(id);
+    	
+    	query.exec(function (err, vote) {
+    		if (err) { return next(err); }
+    		if (!vote) { return next(new Error("can't find comment")); }
+    		
+    		req.vote = vote;
+    		return next();
+    	});
+    });  
      
     router.get('/captures/:capture', function(req, res) {
 	    req.capture.populate('comments',

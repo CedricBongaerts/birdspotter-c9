@@ -1,5 +1,6 @@
 var Comment = require('../models/comment');
 var Capture = require('../models/capture');
+var Notification = require('../models/notification');
 
 module.exports = function(router) {
     router.post('/captures/:capture/comments', function(req, res, next){
@@ -31,13 +32,22 @@ module.exports = function(router) {
         });
     });
     
-    router.delete('/comments/:id', function(req, res){
-        Comment.findByIdAndRemove(req.params.id, function(err, comment){
+    router.delete('/comments/:comment', function(req, res){
+        req.comment.notification.forEach(function(id) {
+    		Notification.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
+    		});
+    	});
+    	
+        Comment.findByIdAndRemove(req.params.comment, function(err, comment){
             if (comment) {
                 Capture.update({_id: comment.capture}, {
-                        $pull : {comments: req.params.id}
+                        $pull : {comments: req.params.comment}
                     }, function(err, data) { if(err) throw err; });
             } if(err) throw err;
         });
+        
      });
 };

@@ -18,7 +18,8 @@ var app = angular.module('app',
                             'ngScrollbars',
                             '720kb.socialshare',
                             'angularGrid',
-                            'angular-loading-bar'
+                            'angular-loading-bar',
+                            'angular-notification-icons',
                         ]);
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
@@ -108,6 +109,18 @@ app.config(function($stateProvider, authProvider, $httpProvider,
             $title: function() { return 'View Profile'; }
           }
       })
+      
+      .state('notifications', {
+      url: '/notifications',
+      templateUrl: 'partials/notifications.html',
+      controller: 'notificationsCtrl',
+        data: {
+            requiresLogin: true,
+        },
+        resolve: {
+          $title: function() { return 'Notifications'; }
+        }
+    })
     
     .state('users', {
         url: '/users',

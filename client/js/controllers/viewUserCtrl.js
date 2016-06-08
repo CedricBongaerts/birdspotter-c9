@@ -1,6 +1,7 @@
 /* global app angular*/
 
-app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', function($scope, $stateParams, $http, userApi, auth, captureApi) {
+app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'notificationApi',
+                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi) {
 
     var id = $stateParams.id;
     $scope.auth = auth;
@@ -12,7 +13,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.currentPage = 1;
     
     $scope.following = false;
-    $scope.follow = false;
+    $scope.follow = true;
     
     userApi. getUser(id).then(function(res) {
         $scope.user = res.data;
@@ -66,22 +67,33 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                             $http.delete('https://birdspotter-cedricbongaerts.c9users.io/api/follows/'+ follow_id);
                               $scope.following = false;
                               $scope.follow = true;
-                              $scope.capture.votes.length--;
                               break;
                         } 
                     }
                 };
                 
                 $scope.followUser = function(){ 
-                    var dataObj = {
+                    var followObj = {
                             followed_id   : id,
                             follower_id   : auth.profile.user_id
                         };
+                    
+                    var notificationObj = {
+                            notificationFor     : id,
+                            notificationFrom    : auth.profile.user_id,
+                            concirning          : 'follow',
+                            parameter           : auth.profile.user_id
+                    };
+                    console.log(notificationObj);
                         
-                    userApi.followUser(dataObj)
+                    userApi.followUser(followObj)
                     .then(function(res){
                         $scope.following = true;
                         $scope.follow = false;
+                        
+                        console.log(notificationObj);
+                        var followId = res.data._id;
+                        userApi.followNotification(followId, notificationObj).then(function(res){});
                     });
                 };
             

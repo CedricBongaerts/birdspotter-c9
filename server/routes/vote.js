@@ -1,5 +1,6 @@
 var Vote = require('../models/vote');
 var Capture = require('../models/capture');
+var Notification = require('../models/notification');
 
 module.exports = function(router) {
     router.post('/captures/:capture/votes', function(req, res, next){
@@ -18,6 +19,7 @@ module.exports = function(router) {
     			if (err) { return next(err); }
     			
     			res.json(vote);
+    			console.log(vote);
     		});
         });
     });
@@ -30,8 +32,16 @@ module.exports = function(router) {
         });
     });
     
-    router.delete('/votes/:id', function(req, res){
-         Vote.findByIdAndRemove(req.params.id, function(err, vote){
+    router.delete('/votes/:vote', function(req, res){
+        req.vote.notification.forEach(function(id) {
+    		Notification.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
+    		});
+    	});
+    	console.log(req.params.vote);
+         Vote.findByIdAndRemove(req.params.vote, function(err, vote){
             if (vote) {
                 Capture.update({_id: vote.capture}, {
                         $pull : {votes: req.params.id}

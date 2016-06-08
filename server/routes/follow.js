@@ -1,4 +1,5 @@
 var Follow = require('../models/follow');
+var Notification = require('../models/notification');
 
 module.exports = function(router) {
     router.post('/follows', function(req, res){
@@ -24,8 +25,29 @@ module.exports = function(router) {
         });
     });
     
-    router.delete('/follows/:id', function(req, res){
-         Follow.remove({_id: req.params.id}, function(err){
+    // Map logic to route parameter 'follow'
+    router.param('follow', function (req, res, next, id) {
+    	var query = Follow.findById(id);
+    	
+    	query.exec(function (err, follow) {
+    		if (err) { return next(err); }
+    		if (!follow) { return next(new Error("can't find follow")); }
+    		
+    		req.follow = follow;
+    		return next();
+    	});
+    });  
+    
+    router.delete('/follows/:follow', function(req, res){
+        req.follow.notification.forEach(function(id) {
+    		Notification.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
+    		});
+    	});
+    	
+         Follow.remove({_id: req.params.follow}, function(err){
              res.json({result: err ? 'error' : 'ok'});
              console.log('unfollowed');
          });
