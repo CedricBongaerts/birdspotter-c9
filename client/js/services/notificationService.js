@@ -8,6 +8,7 @@ app.factory('notificationApi', ['$http', function($http){
         detectNotification : function(id, data) {
             return $http.post(urlBase + '/' + id, data);
         },
+        
         readNotification : function(id, data) {
             return $http.post(urlBase + '/' + id, data);
         },

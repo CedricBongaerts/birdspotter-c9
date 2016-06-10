@@ -24,19 +24,6 @@
 
 <div class="col-md-4">
     <div class="well">
-        <h3 class="page-header-h3">
-            <img ng-show="auth.profile.identities[0].provider=='facebook'" ng-src="{{auth.profile.picture_large}}" width="35px">
-            <img ng-show="auth.profile.identities[0].provider=='google-oauth2'" ng-src="{{auth.profile.picture}}" width="35px">
-             {{auth.profile.name}}
-        </h3>
-        <hr />
-            <h4> Total Captures: {{getCount(auth.profile.user_id)}}</h4>
-
-    </div>
-</div>
-
-<div class="col-md-4">
-    <div class="well">
         <h3 class="page-header-h3">Most Liked Captures</h3>
         <hr />
         <div class="row">

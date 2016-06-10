@@ -1,19 +1,19 @@
 var Notification = require('../models/notification');
 
 module.exports = function(router) {
-    router.post('/notifications/:id', function(req, res){
-        Notification.findOne({_id: req.params.id}, function(err, data) {
-            var notification = data;
-            notification.detected = true;
+    // router.post('/notifications/:id', function(req, res){
+    //     Notification.findOne({_id: req.params.id}, function(err, data) {
+    //         var notification = data;
+    //         notification.detected = true;
         
-            if(err) throw err;
-            notification.save(function(err, data){
-                if(err)
-                    throw err;
-                res.json(data);
-                });
-        });
-    });
+    //         if(err) throw err;
+    //         notification.save(function(err, data){
+    //             if(err)
+    //                 throw err;
+    //             res.json(data);
+    //             });
+    //     });
+    // });
     
     router.post('/votes/:vote/notifications', function(req, res, next){
         var notification = new Notification();
@@ -98,8 +98,9 @@ module.exports = function(router) {
             console.log('done');
             var notification = data;
             notification.seen = req.body.seen;
+            notification.detected = req.body.detected;
             notification.updated_at = new Date();
-            
+            console.log('did this');
             if(err) throw err;
             notification.save(function(err, data){
                 if(err)

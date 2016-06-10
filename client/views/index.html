@@ -1,11 +1,11 @@
-<html>
+<html ng-app="app">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <link rel="icon" href="img/favicon.ico">
-    <title ng-bind="($title || 'Home') + ' | Birdspotter'">Birdspotter</title>
+    <title ng-bind="$state.current.data.pageTitle">Birdspotter</title>
     
     <!-- Lato Font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato">
@@ -94,7 +94,7 @@
     <script  type="text/javascript" src="/js/services/notificationService.js"></script>
   </head>
 
-  <body ng-app="app" class="ng-cloak" ng-cloak>
+  <body class="ng-cloak" ng-cloak>
     <!-- Navbar -->
       <nav class="navbar navbar-default navbar-fixed-top" ng-controller="navCtrl">
       <div class="container">

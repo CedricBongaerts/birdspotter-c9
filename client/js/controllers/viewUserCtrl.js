@@ -1,124 +1,136 @@
-/* global app angular*/
+/* global app*/
 
-app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'notificationApi',
-                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi) {
+app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'notificationApi', '$q', 'filterFilter',
+                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi, $q, filterFilter) {
 
     var id = $stateParams.id;
-    $scope.auth = auth;
-    console.log(auth.profile);
-    var allUsers = [];
+    // var auth = auth;
     
     $scope.captures = [];
     $scope.pageSize = 4;
     $scope.currentPage = 1;
     
     $scope.following = false;
-    $scope.follow = true;
+    $scope.follow = false;
     
-    userApi. getUser(id).then(function(res) {
-        $scope.user = res.data;
-        console.log($scope.user);
+    $q.all({follows: findFollow(), captures: getAllCaptures(), user: getUser(id)}).then(function(collections) {
+        var user = collections.user;
+        $scope.user = user;
+        var follows = collections.follows;
+        var captures = collections.captures;
         
-        userApi.findFollow().then(function(res) {
-            var follows = res.data;
-            
-                 $scope.profilePic = function(pic) {
-                    if($scope.user.identities[0].provider == "facebook"){
-                        pic = $scope.user.picture_large;
-                    } else {
-                        pic = $scope.user.picture;
-                    }
-                    return pic;
-                };
-                        
-                        $scope.connectedWith = function(social) {
-                            if($scope.user.identities[0].provider == "facebook"){
-                                social = "img/facebook-logo.png";
-                            } else {
-                                social = "img/google-logo.png";
-                            }
-                            return social;
-                        };
-                
-                var j;
-                for (j=0; j<follows.length; j++)
-                {
-                    if(id==auth.profile.user_id) {
-                        break;
-                    }
-                    if(follows[j].followed_id == id &&
-                      follows[j].follower_id == auth.profile.user_id) {
-                          $scope.following = true;
-                          break;
-                    } else {if((j+1) == follows.length){
-                        $scope.follow = true;
-                        }
-                    }
-                }
-                
-                $scope.unfollowUser = function(){
-                    var u;
-                    for (u=0; u<follows.length; u++)
-                    {
-                        if(follows[u].followed_id == id &&
-                            follows[u].follower_id == auth.profile.user_id) {
-                           
-                            var follow_id = follows[u]._id;
-                            $http.delete('https://birdspotter-cedricbongaerts.c9users.io/api/follows/'+ follow_id);
-                              $scope.following = false;
-                              $scope.follow = true;
-                              break;
-                        } 
-                    }
-                };
-                
-                $scope.followUser = function(){ 
-                    var followObj = {
-                            followed_id   : id,
-                            follower_id   : auth.profile.user_id
-                        };
-                    
-                    var notificationObj = {
-                            notificationFor     : id,
-                            notificationFrom    : auth.profile.user_id,
-                            concirning          : 'follow',
-                            parameter           : auth.profile.user_id
-                    };
-                    console.log(notificationObj);
-                        
-                    userApi.followUser(followObj)
-                    .then(function(res){
-                        $scope.following = true;
-                        $scope.follow = false;
-                        
-                        console.log(notificationObj);
-                        var followId = res.data._id;
-                        userApi.followNotification(followId, notificationObj).then(function(res){});
-                    });
-                };
-            
-            captureApi.getAllCaptures().then(function(res) {
-                var captures = res.data;
-                
-                $scope.captures = captures.filter(function(captures) {
-                    return captures.userId == id;
-                });
-                
-                
-                var followingMe = [];
-                var meFollowing = [];
-                var f;
-                for(f=0; f<follows.length; f++) {
-                    if(follows[f].followed_id == id) {
-                        followingMe.push(follows[f]);
-                    }
-                    if(follows[f].follower_id == id) {
-                        meFollowing.push(follows[f]);
-                    }
-                }
-                $scope.followingMe = followingMe.length;
-                $scope.meFollowing = meFollowing.length;
-            });
+        $scope.meFollowing = [];
+        $scope.myFollowers = [];
+        
+        follows.forEach(function(follow) {
+            if(follow.followed_id === id) {
+                $scope.myFollowers.push(follow);
+            }
+            if(follow.follower_id === id) {
+                $scope.meFollowing.push(follow);
+            }
         });
+        
+        captures.filter(function(capture) {
+            return capture.userId === id;
+        }).forEach(function(capture) {
+            $scope.captures.push(capture);
+        });
+        console.log(captures);
+        console.log($scope.captures.length);
+        
+        $scope.profilePic = function(pic) {
+            if(user.identities[0].provider == "facebook"){
+                pic = user.picture_large;
+            } else {
+                pic = user.picture;
+            }
+            return pic;
+        }; 
+        console.log($scope.user);
+       
+        $scope.connectedWith = function(social) {
+            if($scope.user.identities[0].provider == "facebook"){
+                social = "fa-facebook-official";
+            } else {
+                social = "fa-google-plus-square";
+            }
+            return social;
+        };
+        
+        if(id === auth.profile.user_id){return;}
+        follows.forEach(function(follow) {
+            if(follow.followed_id == id &&
+                  follow.follower_id == auth.profile.user_id) {
+                $scope.following = true;
+                return;
+            }
+        });
+        $scope.follow = !$scope.following;
+        console.log($scope.follow);
+        console.log($scope.following);
+        
+        
+        $scope.unfollowUser = function(){
+            console.log('done');
+            follows.forEach(function(follow) {
+                if(follow.followed_id == id && follow.follower_id == auth.profile.user_id) {
+                    var follow_id = follow._id;
+                    userApi.unfollowUser(follow_id).then(function(res) {
+                        $scope.following = false;
+                              $scope.follow = true;
+                              $scope.myFollowers.length--;
+                              return;
+                    });
+                }
+            });
+        };
+        
+        $scope.followUser = function(){ 
+            console.log('ok');
+            var followObj = {
+                    followed_id   : id,
+                    follower_id   : auth.profile.user_id
+                };
+            
+            var notificationObj = {
+                    notificationFor     : id,
+                    notificationFrom    : auth.profile.user_id,
+                    concirning          : 'follow',
+                    parameter           : auth.profile.user_id
+            };
+            console.log(notificationObj);
+                
+            userApi.followUser(followObj)
+            .then(function(res){
+                $scope.following = true;
+                $scope.follow = false;
+                $scope.myFollowers.length++;
+                console.log(notificationObj);
+                var followId = res.data._id;
+                userApi.followNotification(followId, notificationObj).then(function(res){});
+            });
+        };
+        
     });
+                
+function getUser(id) {
+    return userApi.getUser(id).then(function(res) {
+        return res.data;
+    });
+}
+
+function findFollow() {
+    return userApi.findFollow().then(function(res) {
+        return res.data;
+    });
+}
+
+function getAllCaptures() {
+    return captureApi.getAllCaptures().then(function(res) {
+        return res.data;
+    });
+}
+
 }]);
+

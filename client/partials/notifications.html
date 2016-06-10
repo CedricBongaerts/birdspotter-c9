@@ -1,22 +1,53 @@
-<div class="col-md-12">
+<div class="col-md-9">
     <div class="well main-well">
-        <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countNotification" class="notifications-header-count"> · {{countNotification}} New</h5></h3>
-        <div class="view-all"><a src='#' class="clickable" ng-click="allSeen()">Mark all as seen</a></div>
+        <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countUnseen" class="notifications-header-count"> · {{countUnseen}} Unseen</h5></h3>
         <hr />
-        
-        <div ng-repeat="notification in notifications | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
-                {{notification.notificationFor}} - 
-                {{notification.notificationFrom}} -
-                {{notification.parameter}} - 
-                {{notification.concirning}} - 
-                {{notification.seen}} - 
-                {{notification.created_at}}
-                <span ng-if="notification.concirning=='comment'"><strong><br />{{notification.notificationFrom}} has commented on one of your captures.</strong></span>
-                <span ng-if="notification.concirning=='birdsuggestion'"><strong><br />{{notification.notificationFrom}} has given a birdname for your capture! Go check it out!</strong></span>
-                <span ng-if="notification.concirning=='like'"><strong><br />{{notification.notificationFrom}} has just liked your capture!</strong></span>
-                <span ng-if="notification.concirning=='follow'"><strong><br />{{notification.notificationFrom}} has commented on one of your captures.</strong></span>
-                <hr />
+        <div ng-repeat="notification in notifications | orderBy :'created_at':true | limitTo:10" class="list-group-item notification-link" ng-class="[{'notification-link-seen':notification.notification.seen}]">
+            <div class="row">
+                <div ng-switch="notification.notification.concirning">
+                    <button ng-click="setToSeen(notification.notification._id)" type="button">test</button>
+                    <div ng-switch-when="follow" ui-sref="user-profile({id: notification.notification.parameter})">
+                        <div class="col-md-1">
+                            <img ng-src="{{notification.user.picture}}" max-width="40px" width="50px">
+                        </div>
+                        <div class="col-md-11">
+                          <strong>{{notification.user.name}}</strong> has started following you.
+                        </div>
+                    </div>
+                    <a ng-switch-when="birdsuggestion" ui-sref="detail({id: notification.notification.parameter})">
+                        <div class="col-md-1">
+                            <img ng-src="{{notification.user.picture}}" max-width="40px" width="50px">
+                        </div>
+                        <div class="col-md-11">
+                          <strong>{{notification.user.name}}</strong> has commented on one of your captures.
+                          <span><strong>{{notification.user.name}}</strong> has given a birdname for your capture! Go check it out!</span>
+                        </div>
+                    </a>
+                    <a ng-switch-when="like" ui-sref="detail({id: notification.notification.parameter})">
+                        <div class="col-md-1">
+                            <img ng-src="{{notification.user.picture}}" max-width="40px" width="50px">
+                        </div>
+                        <div class="col-md-11">
+                          <span><strong>{{notification.user.name}}</strong> has just liked your capture!</span>
+                        </div>
+                    </a>
+                    <a ng-switch-when="comment" ui-sref="detail({id: notification.notification.parameter})">
+                        <div class="col-md-1">
+                            <img ng-src="{{notification.user.picture}}" max-width="40px" width="50px">
+                        </div>
+                        <div class="col-md-11">
+                          <span><strong>{{notification.user.name}}</strong> commented on on of your captures.</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
+    </div>
+</div>
+</div>
+<div class="col-md-3">
+    <div class="well main-well">
+        <a src='#' class="clickable" ng-click="seenAll()">Mark all as seen</a>
+        <hr />
     </div>
 </div>

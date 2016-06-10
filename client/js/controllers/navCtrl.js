@@ -1,6 +1,6 @@
 /* global app*/
-app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'notificationApi',
-              function($scope, auth, store, $location, $state, notificationApi){
+app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'notificationApi', '$rootScope',
+              function($scope, auth, store, $location, $state, notificationApi, $rootScope){
     
     $scope.isActive = function(destination){
         return destination === $location.path();
@@ -43,23 +43,28 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
         $location.path('/');
     };
     
-    $scope.notifications = [];
-    
-    notificationApi.findNotifications().then(function(res){
-      var notifications = res.data;
-      notifications.forEach(function(notification) {
-        if(notification.notificationFor === auth.profile.user_id && notification.detected == false) {
-                    $scope.notifications.push(notification);
-          } 
-      });
-      $scope.countNotification = $scope.notifications.length;
-
-        $scope.clearNavNotification = function() {
+    $rootScope.$on('$stateChangeStart', 
+    function(event, toState, toParams, fromState, fromParams){ 
+      
+      $scope.clearNavNotification = function() {
         $scope.notifications.forEach(function(notification) {
             var id = notification._id;
-            notificationApi.detectNotification(id).then(function(res) {});
+            var dataObj = {detected:true, seen:false};
+            notificationApi.detectNotification(id, dataObj).then(function(res) {});
         });
         $scope.countNotification = 0;
-    };
-    });
+        };
+      });
+
+      $scope.notifications = [];
+    
+      notificationApi.findNotifications().then(function(res){
+        var notifications = res.data;
+        notifications.forEach(function(notification) {
+          if(notification.notificationFor === auth.profile.user_id && notification.detected == false) {
+                      $scope.notifications.push(notification);
+            } 
+        });
+        $scope.countNotification = $scope.notifications.length;
+      });
 }]);

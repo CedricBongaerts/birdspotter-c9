@@ -33,8 +33,8 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       url: '/',
       templateUrl: 'partials/home.html',
       controller: 'homeCtrl',
-        resolve: {
-          $title: function() { return 'Home'; }
+        data: {
+          pageTitle: 'Home | Birdspotter'
         }
     })
     
@@ -44,9 +44,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       controller: 'dashboardCtrl',
         data: {
             requiresLogin: true,
-        },
-        resolve: {
-          $title: function() { return 'Dashboard'; }
+            pageTitle: 'Dashboard | Birdspotter'
         }
     })
     
@@ -56,9 +54,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       controller: 'followingCtrl',
         data: {
             requiresLogin: true,
-        },
-        resolve: {
-          $title: function() { return 'Dashboard'; }
+            pageTitle: 'Following | Birdspotter'
         }
     })
 
@@ -68,9 +64,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       controller: 'captureCtrl',
         data: {
             requiresLogin: true,
-        },
-        resolve: {
-          $title: function() { return 'Capture'; }
+            pageTitle: 'Capture | Birdspotter'
         }
     })
     
@@ -80,10 +74,8 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         controller: 'viewCaptureCtrl',
         data: {
               requiresLogin: true,
-          },
-        resolve: {
-            $title: function() { return 'View Capture'; }
-  				}
+              pageTitle: 'Capture detail | Birdspotter'
+          }
       })
       
       .state('edit', {
@@ -92,10 +84,8 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         controller: 'editCaptureCtrl',
         data: {
               requiresLogin: true,
-          },
-        resolve: {
-            $title: function() { return 'Edit Capture'; }
-  				}
+              pageTitle: 'Edit Capture | Birdspotter'
+          }
       })
     
       .state('user-profile', {
@@ -104,9 +94,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         controller: 'viewUserCtrl',
           data: {
               requiresLogin: true,
-          },
-          resolve: {
-            $title: function() { return 'View Profile'; }
+              pageTitle: 'User Profile | Birdspotter'
           }
       })
       
@@ -116,9 +104,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       controller: 'notificationsCtrl',
         data: {
             requiresLogin: true,
-        },
-        resolve: {
-          $title: function() { return 'Notifications'; }
+            pageTitle: 'Notifications | Birdspotter'
         }
     })
     
@@ -127,19 +113,17 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         templateUrl: 'partials/users.html',
         controller: 'usersCtrl',
         data: {
-          requiresLogin: true
-        },
-          resolve: {
-            $title: function() { return 'Users List'; }
-          }
+          requiresLogin: true,
+            pageTitle: 'Users | Birdspotter'
+        }
       })
       
       .state('error', {
         url: '/error',
         templateUrl: 'views/error.html',
         controller: 'errorCtrl',
-          resolve: {
-            $title: function() { return '404'; }
+          data: {
+            pageTitle: 'Error | Birdspotter'
           }
       });
       
@@ -188,7 +172,10 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
   }]);
 
-app.run(function($rootScope, auth, store, jwtHelper, $location) {
+app.run([ '$rootScope', '$state', '$stateParams', 'auth', 'store', 'jwtHelper', '$location', function($rootScope, $state, $stateParams, auth, store, jwtHelper, $location) {
+  $rootScope.$state = $state;
+  $rootScope.$stateParams = $stateParams;
+  
   auth.hookEvents();
 
   var refreshingToken = null;
@@ -221,7 +208,7 @@ app.run(function($rootScope, auth, store, jwtHelper, $location) {
   });
   
   $rootScope.$on('$viewContentLoaded', function(){ window.scrollTo(0, 0); });
-});
+}]);
 
 app.filter('startFrom', function() {
   return function(data, currentPage, pageSize) {

@@ -448,9 +448,151 @@ hr {
 
 /* ---------------------- Profile -------------------------- */
 
+.profile-header-content {
+    padding: 0;
+    background: url(/img/user-profile-background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.profile-heading-row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.profile-heading-info {
+    position: relative;
+}
 .profile-pic {
     width: 200px;
     height: 200px;
+    position: relative;
+    top: 20px;
+    left: 25px;
+    border: 1px solid @brand-primary;
+    z-index: 5;
+    background: white;
+}
+
+.profile-heading {
+    position: absolute;
+    top: 130px;
+    left: 250px;
+    display: inline;
+    color: white;
+}
+
+.profile-heading-name {
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.profile-user-stats {
+    background: @brand-primary;
+    min-height: 50px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.header-stats-info {
+    position: relative;
+    padding-left: 245px;
+    font-size: 20px;
+    top: 4px;
+}
+
+.header-stats-count {
+    font-size: 1em;
+}
+
+.header-stats-title {
+    text-transform: uppercase;
+    font-size: 0.6em;
+    font-weight: 600;
+}
+
+.header-stats-devider {
+    font-size: 15px;
+    margin: 10px;
+}
+.header-stats-right {
+    float: right;
+    position:relative;
+    top: 10px;
+    right: 5px;
+}
+
+.connected {
+    font-size: 30px!important;
+    position:absolute;
+    bottom: 75;
+    right: 15px;
+    color: #fff;
+}
+
+.header-stats-button {
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: 600;
+    position: relative;
+    top: 4px;
+}
+
+@media screen and (max-width: 991px) {
+    .connected {
+        top: 5;
+    }
+    
+    .profile-user-stats {
+        margin-bottom: 0px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .profile-heading-info {
+        position: inherit;
+        min-height: 185px;
+        display:block;
+        
+    }
+    .profile-pic {
+        margin-top: 5px;
+        position: inherit;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .profile-heading {
+        position: inherit;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        text-align: center;
+    }
+    
+    .header-stats-info {
+        position: inherit;
+        padding-left: 0px;
+        font-size: 20px;
+        top: 4px;
+        display: block;
+        text-align: center;
+        top: 0;
+        padding-bottom: 5px;
+    }
+    .header-stats-right {
+        float: none;
+        display: block;
+        position:inherit;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+        padding-bottom: 10px;
+        top: 5;
+    }
 }
 
 /* ----------------------- Notifications --------------------*/
@@ -465,6 +607,21 @@ hr {
 
 .view-all {
     float: right;
+}
+
+.notification-link {
+    background: #F7FFF7;
+    border-top: 1px solid #E4E4E4;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.notification-link-seen {
+    background: #fff!important;
+}
+
+.notification-link:hover {
+    background: #E4EBE3;
+    cursor:pointer;
 }
 
 
