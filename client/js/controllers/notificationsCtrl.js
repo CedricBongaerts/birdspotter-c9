@@ -1,7 +1,7 @@
 /* global app */
 
-app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$state', '$stateParams', '$timeout', '$window', 'userApi', '$q',
-                    function($scope, auth, notificationApi, $state, $stateParams, $timeout, $window, userApi, $q) {
+app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$state', '$stateParams', '$timeout', '$window', 'userApi', '$q', '$location',
+                    function($scope, auth, notificationApi, $state, $stateParams, $timeout, $window, userApi, $q, $location) {
     
      $scope.notifications = [];
      var unseenNotifications = [];
@@ -80,18 +80,24 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
                 });
             };
             
-            $scope.setToSeen = function() {
+            $scope.seeNotification = function() {
+                console.log(this.notification.notification);
                 if(this.notification.notification.seen === false) {
-                    console.log('do spmething');
+                    var dataObj = {seen:true};
+                    var notificationId = this.notification.notification._id;
+                    console.log(dataObj);
+                    console.log(notificationId);
+                    notificationApi.readNotification(notificationId, dataObj)
+                    .then(function(res) {
+                    console.log(res.data.seen);
+                    });
+                } 
+                if(this.notification.notification.concirning == "follow") {
+                    $location.path('/user-profile/' + this.notification.notification.parameter);
                 } else {
-                    console.log('do something else');
+                    $location.path('/detail/' + this.notification.notification.parameter);
                 }
-                // var dataObj = {seen:true};
-                //     notificationApi.readNotification(notificationId, dataObj)
-                //     .then(function(res) {
-                //     console.log(res.data.seen);
-                //     });
-            };
+            }; 
     });
     
     function findNotifications() {

@@ -1,6 +1,6 @@
 /* global app*/
-app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'notificationApi', '$rootScope',
-              function($scope, auth, store, $location, $state, notificationApi, $rootScope){
+app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'notificationApi', '$rootScope', '$stateParams', '$q',
+              function($scope, auth, store, $location, $state, notificationApi, $rootScope, $stateParams, $q){
     
     $scope.isActive = function(destination){
         return destination === $location.path();
@@ -46,25 +46,57 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
     $rootScope.$on('$stateChangeStart', 
     function(event, toState, toParams, fromState, fromParams){ 
       
-      $scope.clearNavNotification = function() {
-        $scope.notifications.forEach(function(notification) {
-            var id = notification._id;
-            var dataObj = {detected:true, seen:false};
-            notificationApi.detectNotification(id, dataObj).then(function(res) {});
-        });
-        $scope.countNotification = 0;
-        };
-      });
-
-      $scope.notifications = [];
-    
-      notificationApi.findNotifications().then(function(res){
-        var notifications = res.data;
+     $q.all({notifications: findNotifications()}).then(function(collections) {
+        var notifications = collections.notifications; 
+        $scope.notifications = [];
+        
         notifications.forEach(function(notification) {
           if(notification.notificationFor === auth.profile.user_id && notification.detected == false) {
-                      $scope.notifications.push(notification);
-            } 
+              $scope.notifications.push(notification);
+          }
         });
         $scope.countNotification = $scope.notifications.length;
-      });
+        
+        $scope.clearNavNotification = function() {
+          findNotifications().then(function(res) {
+            var currentNotifications = res;
+            currentNotifications.forEach(function(notification) {
+              var id = notification._id;
+                  var dataObj = {detected:true, seen:notification.seen};
+                  notificationApi.detectNotification(id, dataObj).then(function(res) {});
+              }); 
+            });
+            
+            $scope.countNotification = 0;
+          };
+        });
+     });
+     
+    // $scope.notifications = [];
+    
+    //   notificationApi.findNotifications().then(function(res){
+    //     var notifications = res.data;
+    //     notifications.forEach(function(notification) {
+    //       if(notification.notificationFor === auth.profile.user_id && notification.detected == false) {
+    //                   $scope.notifications.push(notification);
+    //         } 
+    //     });
+    //     $scope.countNotification = $scope.notifications.length;
+        
+    //   // $scope.clearNavNotification = function() {
+        
+    //   //   notifications.forEach(function(notification) {
+    //   //       var id = notification._id;
+    //   //       var dataObj = {detected:true, seen:false};
+    //   //       notificationApi.detectNotification(id, dataObj).then(function(res) {});
+    //   //   }); 
+    //   //   $scope.countNotification = 0;
+    //   //   };
+
+    
+    function findNotifications() {
+        return notificationApi.findNotifications().then(function(res){
+            return res.data;
+        });
+    }
 }]);
