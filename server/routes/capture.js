@@ -1,6 +1,7 @@
 var Capture = require('../models/capture');
 var Comment = require('../models/comment');
 var Vote = require('../models/vote');
+var Notification = require('../models/notification');
 
 
 module.exports = function(router) {
@@ -85,23 +86,24 @@ module.exports = function(router) {
     });
     
      router.delete('/captures/:capture', function(req, res){
-         req.capture.comments.forEach(function(id) {
-    		Comment.remove({
-    			_id: id
-    		}, function(err) {
-    			if (err) { throw err;}
-    		});
-    	});
-    	req.capture.votes.forEach(function(id) {
-    		Vote.remove({
-    			_id: id
-    		}, function(err) {
-    			if (err) { throw err;}
-    		});
-    	});
-         Capture.remove({
-		_id: req.params.capture
-    	}, function(err, captures) {
+            req.capture.comments.forEach(function(id) {
+        		Comment.remove({
+        			_id: id
+        		}, function(err) {
+        			if (err) { throw err;}
+        		});
+        	});
+            req.capture.votes.forEach(function(id) {
+        		Vote.remove({
+        			_id: id
+        		}, function(err) {
+        			if (err) { throw err;}
+        		});
+        	});
+        	
+        Capture.remove({
+		    _id: req.params.capture
+        }, function(err, captures) {
     		if (err) { throw err }
     		
     		// get and return all the posts after you delete one

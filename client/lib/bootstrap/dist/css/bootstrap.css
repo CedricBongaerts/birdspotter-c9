@@ -6740,6 +6740,9 @@ body {
   height: 100%;
   font-family: Lato;
 }
+.nav-none {
+  display: none;
+}
 #main-container {
   margin-top: 54px;
   height: 100%;
@@ -6800,6 +6803,30 @@ hr {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.follow-list {
+  list-style: none;
+  float: left;
+}
+.follow-info {
+  bottom: 8;
+  color: #fff;
+  left: 4;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+}
+.follow-name {
+  font-size: 12px;
+  line-height: 16px;
+}
+.follow-pictures {
+  width: 100%;
+}
+@media screen and (max-width: 991px) {
+  .follow-pictures {
+    max-width: 150px;
+  }
+}
 /* ---------------------- Homepage ---------------------- */
 #intro {
   background: url(/img/Background.jpg);
@@ -6807,7 +6834,7 @@ hr {
   background-repeat: no-repeat;
   background-position: center;
   min-height: 750px;
-  margin-top: -15px;
+  margin-top: -54px;
 }
 /* ---------------------- Navbar ---------------------- */
 .nav-glyph {
@@ -6870,6 +6897,17 @@ hr {
   max-width: 195px;
   width: 100%;
 }
+.top-captures {
+  float: right;
+}
+.top-captures {
+  float: right;
+}
+@media screen and (max-width: 991px) {
+  .top-captures {
+    float: none;
+  }
+}
 /* ---------------------- Following ---------------------- */
 .grid {
   list-style: none;
@@ -6887,22 +6925,6 @@ hr {
   visibility: visible;
   opacity: 1;
 }
-.followers-list {
-  list-style: none;
-  float: left;
-}
-.followers-info {
-  bottom: 8;
-  color: #fff;
-  left: 4;
-  padding: 5px;
-  position: absolute;
-  right: 0;
-}
-.followers-name {
-  font-size: 12px;
-  line-height: 16px;
-}
 .follow-capture-info {
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
   bottom: 0;
@@ -6919,10 +6941,6 @@ hr {
 }
 .following-capture-time {
   font-weight: 500;
-}
-.following-pictures {
-  max-width: 95px;
-  width: 100%;
 }
 /* ---------------------- Users list ---------------------- */
 .user-search {
@@ -7011,6 +7029,9 @@ hr {
 }
 .capture-action-buttons {
   margin-left: 20px;
+}
+.capture-action-active {
+  color: #0F7000;
 }
 .view-capture-thumb {
   margin-bottom: 10px;

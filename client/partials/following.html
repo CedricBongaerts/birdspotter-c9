@@ -1,4 +1,4 @@
-<div class="col-md-9">
+<div class="col-md-8">
     <div class="well main-well">
         <h3 class="page-header-h3">Following Dashboard:</h3>
         <hr />
@@ -26,17 +26,17 @@
         </row>
     </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
     <div class="well">
         <h3 class="page-header-h3">Following ({{following.length}}):</h3>
         <hr />
         <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
-            <li ng-if="following" ng-repeat="follow in following" class="col-md-6 followers-list" >
+            <li ng-if="following" ng-repeat="follow in following" class="col-md-6 follow-list" >
                 <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
-                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" class="following-pictures">
-                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" class="following-pictures">
-                        <span class="followers-info">
-                            <span class="followers-name">{{follow.name}}</span>
+                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" class="follow-pictures">
+                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" class="follow-pictures">
+                        <span class="follow-info">
+                            <span class="follow-name">{{follow.name}}</span>
                         </span>
                     </p>
                 </a>

@@ -3,39 +3,11 @@
 app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$state', '$stateParams', '$timeout', '$window', 'userApi', '$q', '$location',
                     function($scope, auth, notificationApi, $state, $stateParams, $timeout, $window, userApi, $q, $location) {
     
-     $scope.notifications = [];
-     var unseenNotifications = [];
+    $scope.notifications = [];
+    var unseenNotifications = [];
+    $scope.pageSize = 10;
+    $scope.currentPage = 1;
     
-    // notificationApi.findNotifications().then(function(res){
-    //   var notifications = res.data;
-    //   notifications.forEach(function(notification) {
-    //     if(notification.notificationFor === auth.profile.user_id) {
-    //             $scope.notifications.push(notification);
-    //         } 
-    //     });
-        
-    //     $scope.notifications.forEach(function(notifications) {
-    //         if(notifications.seen == false){
-    //             newNotifications.push(notifications);
-    //         }
-            
-    //         $scope.countNotification = newNotifications.length;
-    //         console.log(newNotifications);
-          
-    //     });
-        
-    //     $scope.allSeen = function(){
-    //         newNotifications.forEach(function(newNotification) {
-    //             var notificationId = newNotification._id;
-    //             console.log(notificationId);
-    //             var dataObj = {seen:true};
-    //             notificationApi.readNotification(notificationId, dataObj)
-    //             .then(function(res) {
-    //             console.log(res.data.seen);
-    //             });
-    //         });
-    //     };
-    // });
     $q.all({notifications: findNotifications(), users: getUsers()}).then(function(collections) {
         var notifications = collections.notifications;
         var users = collections.users;

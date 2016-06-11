@@ -8,6 +8,10 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
     
     $scope.auth = auth;
     
+    $scope.getUserId = function() {
+      return auth.profile.users;
+    }
+    
     $scope.login = function doAuth() {
       auth.signin({
         dict: {
@@ -45,7 +49,7 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
     
     $rootScope.$on('$stateChangeStart', 
     function(event, toState, toParams, fromState, fromParams){ 
-      
+    if(auth.isAuthenticated) {  
      $q.all({notifications: findNotifications()}).then(function(collections) {
         var notifications = collections.notifications; 
         $scope.notifications = [];
@@ -70,33 +74,12 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
             $scope.countNotification = 0;
           };
         });
+      }
      });
-     
-    // $scope.notifications = [];
-    
-    //   notificationApi.findNotifications().then(function(res){
-    //     var notifications = res.data;
-    //     notifications.forEach(function(notification) {
-    //       if(notification.notificationFor === auth.profile.user_id && notification.detected == false) {
-    //                   $scope.notifications.push(notification);
-    //         } 
-    //     });
-    //     $scope.countNotification = $scope.notifications.length;
-        
-    //   // $scope.clearNavNotification = function() {
-        
-    //   //   notifications.forEach(function(notification) {
-    //   //       var id = notification._id;
-    //   //       var dataObj = {detected:true, seen:false};
-    //   //       notificationApi.detectNotification(id, dataObj).then(function(res) {});
-    //   //   }); 
-    //   //   $scope.countNotification = 0;
-    //   //   };
-
-    
     function findNotifications() {
         return notificationApi.findNotifications().then(function(res){
             return res.data;
         });
-    }
+      }
+    
 }]);

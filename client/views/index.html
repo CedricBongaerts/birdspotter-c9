@@ -85,6 +85,12 @@
     <script  type="text/javascript" src="/js/controllers/notificationsCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/errorCtrl.js"></script>
     
+    <!-- Directives -->
+    <script  type="text/javascript" src="/js/directives/ngEnter.js"></script>
+    <script  type="text/javascript" src="/js/directives/ngConfirmClick.js"></script>
+    <script  type="text/javascript" src="/js/directives/ngSlideToggle.js"></script>
+    
+    
     <!-- Services -->
     <script  type="text/javascript" src="/js/services/captureService.js"></script>
     <script  type="text/javascript" src="/js/services/birdService.js"></script>
@@ -96,7 +102,7 @@
 
   <body class="ng-cloak" ng-cloak>
     <!-- Navbar -->
-      <nav class="navbar navbar-default navbar-fixed-top" ng-controller="navCtrl">
+      <nav class="navbar navbar-default navbar-fixed-top" ng-controller="navCtrl" ng-if="$state.current.name !== 'home'">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -109,16 +115,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> Dashboard</a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span> Capture</a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span> Following</a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span> Users</a></li>
+            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> Dashboard</a></li>
+            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span> Capture</a></li>
+            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span> Following</a></li>
+            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span> Users</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"> <notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon></a></li>
-            <li ng-if="!auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="login()">Register & Login</a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"> {{auth.profile.given_name}}</a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()">Logout</a></li>
+            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"> <notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon></a></li>
+            <!--<li data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="login()">Register & Login</a></li>-->
+            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"> {{auth.profile.given_name}}</a></li>
+            <li data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

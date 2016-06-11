@@ -33,7 +33,7 @@
     <div class="well main-well">
         <h3 class="page-header-h3">Recent Activity</h3>
         <hr />
-        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
+        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="list-group-item dash-posts">
             <div class="thumbnail no-border no-margin-bottom"> 
                 <h4 class="dash-capture-info">
                     <span>
@@ -50,76 +50,28 @@
                 <hr />
             </div>
         </div>
+        <uib-pagination ng-show="captures.length > pageSize"
+                        total-items="captures.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+        </uib-pagination>
     </div>
 </div>
 <div class="col-md-4">
     <div class="well">
         <h3 class="page-header-h3">Followed By</h3>
         <hr />
+        <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
+            <li ng-if="followers" ng-repeat="follow in followers" class="col-md-6 follow-list" >
+                <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
+                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" class="follow-pictures">
+                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" class="follow-pictures">
+                        <span class="follow-info">
+                            <span class="follow-name">{{follow.name}}</span>
+                        </span>
+                    </p>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
-
-<!--<div class="col-md-12 no-padding-left">-->
-<!--    <div class="well">-->
-<!--        <div class="panel-heading text-center">-->
-<!--            <h4 class="no-margin-top no-margin-bottom">{{user.name}}</h4>-->
-<!--        </div>-->
-<!--        <div class="thumbnail no-border no-margin-bottom thumb-min">-->
-<!--            <img class="profile-pic dash-thumb-img" onload="this.style.opacity='1';" ng-src="{{profilePic()}}" alt="{{user.nickname}}" width="200" height="200"/>-->
-<!--        </div>-->
-<!--        <ul class="list-group">-->
-<!--            <li class="list-group-item text-center"><span class="glyphicon glyphicon-user"></span> {{user.nickname}}</li>-->
-<!--            <li class="list-group-item text-center"><span class="glyphicon glyphicon-envelope"></span> {{user.email}}</li>-->
-<!--            <li class="list-group-item text-center"><strong>Last login: </strong> <span am-time-ago="user.last_login"></span></li>-->
-<!--        </ul>-->
-<!--        <p class="text-center no-margin-bottom"><strong>Connected with</strong></p>-->
-<!--        <div class="thumbnail no-border no-margin-bottom">-->
-<!--            <img class="img-rounded" src="{{connectedWith()}}" width="50" height="50"/>-->
-<!--        </div>-->
-<!--    </div>-->
-    
-<!--     <button type="button" class="btn margin-left btn-success" ng-click="followUser()" ng-if="follow" >Follow User</button>-->
-<!--     <button type="button" class="btn margin-left btn-danger" ng-click="unfollowUser()"  ng-if="following">Unfollow User</button>-->
-     
-
-<!--    <div class="panel panel-primary">-->
-<!--        <div class="panel-heading text-center">-->
-<!--            <h4 class="no-margin-top no-margin-bottom">Followed by: {{followingMe}} people</h4>-->
-<!--            <hr />-->
-<!--            <h4 class="no-margin-top no-margin-bottom">Following: {{meFollowing}} people</h4>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-
-<!--<div class="col-md-8 no-padding-right">-->
-<!--    <div class="panel panel-primary">-->
-<!--        <div class="list-group-item active text-center">-->
-<!--            <h4 class="no-margin-top no-margin-bottom">Your Recent Activity</h4>-->
-<!--        </div>-->
-        
-<!--        <a ui-sref="detail({id: capture._id})" class="list-group-item" ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize ">-->
-<!--            <div class="row">-->
-<!--                <div class="col-md-4">-->
-<!--                    <div class="thumbnail no-border no-margin-bottom">         -->
-<!--                        <img ng-src="{{capture.picture}}" alt="bird" width="150" height="150"/>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col-md-8">-->
-<!--                    <h4 class="no-margin-top no-margin-bottom"><strong>{{capture.birdname}}</strong></h4>-->
-<!--                    <strong>Picture taken in:</strong> {{capture.place}}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </a>-->
-        
-<!--        <a href="#" class="list-group-item" ng-if="captures == 0">-->
-<!--            <p>NOTHING FOUND</p>-->
-<!--        </a>-->
-        
-<!--        <uib-pagination ng-if="captures.length > pageSize"-->
-<!--                        total-items="captures.length"-->
-<!--                        items-per-page="pageSize"-->
-<!--                        ng-model="currentPage">-->
-<!--        </uib-pagination>-->
-<!--    </div>-->
-<!--</div>-->

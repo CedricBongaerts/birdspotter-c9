@@ -2,7 +2,7 @@
     <div class="well main-well">
         <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countUnseen" class="notifications-header-count"> · {{countUnseen}} Unseen</h5></h3>
         <hr />
-        <button ng-repeat="notification in notifications | orderBy :'created_at':true | limitTo:10" 
+        <button ng-repeat="notification in notifications | orderBy :'notification.created_at':true | startFrom:currentPage:pageSize" 
                 class="list-group-item notification-link" 
                 ng-class="[{'notification-seen':notification.notification.seen}]"
                 ng-click="seeNotification(notification)">
@@ -21,6 +21,11 @@
                     </div>
                 </div>
         </button>
+        <uib-pagination ng-show="notifications.length > pageSize"
+                        total-items="notifications.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+        </uib-pagination>
     </div>
 </div>
 </div>

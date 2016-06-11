@@ -1,7 +1,7 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$uibModal',
-                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $uibModal) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$uibModal', '$filter',
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $uibModal, $filter) {
 
      var id = $stateParams.id;
      
@@ -55,14 +55,17 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 
                 // Top page popover
                 if($scope.capture.birdname!=='Unknown') {
-                    birdApi.getDuckEngine($scope.capture.birdname)
+                     var lowercaseBirdname = $filter('lowercase')($scope.capture.birdname);
+                    console.log(lowercaseBirdname);
+                    birdApi.getDuckEngine(lowercaseBirdname)
                     .then(function(res) {
                         $scope.birdName = res.data.Heading;
                         $scope.birdInfo = res.data.Abstract;
                         $scope.birdImage = res.data.Image;
-                        // console.log(res.data);
-                        // console.log($scope.birdInfo);
-                        // console.log($scope.birdImage);
+                       
+                        console.log(res.data);
+                        console.log($scope.birdInfo);
+                        console.log($scope.birdImage);
                         $scope.birdInfoPopover = {
                             image: $scope.birdImage,
                             content: $scope.birdInfo,

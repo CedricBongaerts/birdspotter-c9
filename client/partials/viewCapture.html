@@ -7,9 +7,8 @@
                 ng-bootbox-custom-dialog-template="/partials/model/editCapture.html">
             </span> 
             <span class="glyphicon glyphicon-trash brand-color-link" 
-                ng-bootbox-confirm-action-cancel="cancel()"
-                ng-bootbox-confirm-action="deleteCapture()" 
-                ng-bootbox-confirm="Are you sure you want to delete this?">
+                confirmed-click='deleteCapture()'
+                ng-confirm-click="Are you sure you want to delete this capture?">
             </span>
         </p>
         <h3  class="page-header-h3 clickable brand-color-link" popover-placement="bottom-left" popover-trigger="mouseenter" popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl">
@@ -39,18 +38,18 @@
                         </li>
                     </ul>
                 </span> 
-                <span class="clickable capture-action-buttons"><span class="glyphicon glyphicon-comment clickable"></span> Comment </span>  
+                <span class="clickable capture-action-buttons" ng-click="comments=!comments" ng-class="[{'capture-action-active':comments}]"><span class="glyphicon glyphicon-comment clickable"></span> Comment </span>  
                 <span ng-click="likeCapture()" ng-show="like" class="clickable capture-action-buttons"><span class="glyphicon glyphicon-heart"></span> Like</span>
                 <span ng-click="unlikeCapture()" ng-show="liked" class="clickable capture-action-buttons"><span class="glyphicon glyphicon-heart-empty"></span> Unlike</span>
             </div>
             <div class="vote-amount">
                 <span>This capture has received {{capture.votes.length}} likes</span>
             </div>
-        <hr />
         <div>
+            <hr />
+            <div class="row" data-slide-toggle="comments" data-start-shown="false" data-slide-toggle-duration="250">
             <h4> Comments ({{capture.comments.length}}):</h4>
             <hr />
-            <div class="row">
                 <div class="col-md-4">
             	<form name="addComments" ng-submit="addComment()">
                         <div class="form-group">

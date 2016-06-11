@@ -3,7 +3,7 @@ app.controller('dashboardCtrl', ['$scope', '$http', 'captureApi', 'userApi', 'fi
                         function ($scope, $http, captureApi, userApi, filterFilter, $q, auth) {
                     
     $scope.captures = [];
-    $scope.pageSize = 4;
+    $scope.pageSize = 10;
     $scope.currentPage = 1;
     $scope.topPosters = [];
     $scope.auth = auth;

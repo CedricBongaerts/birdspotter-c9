@@ -2,7 +2,7 @@
     <div class="well main-well">
         <h3 class="page-header-h3">Recent Global Activity</h3>
         <hr />
-        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
+        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="list-group-item dash-posts">
             <div class="thumbnail no-border no-margin-bottom"> 
                 <h4 class="dash-capture-info">
                     <span>
@@ -19,6 +19,11 @@
                 <hr />
             </div>
         </div>
+        <uib-pagination ng-show="captures.length > pageSize"
+                        total-items="captures.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+        </uib-pagination>
     </div>
 </div>
 
@@ -41,7 +46,7 @@
     </div>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-4 top-captures">
     <div class="well">
         <h3 class="page-header-h3">Top Capturers:</h3>
         <hr />
