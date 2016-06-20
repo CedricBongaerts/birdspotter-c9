@@ -4,6 +4,7 @@ app.controller('homeCtrl', function($scope, auth, $http, $location, store, $root
   
     /* ----------------------- Variables ----------------------- */
     $scope.auth = auth;
+    $scope.showVideo = false;
     
     /* ----------------------- Login Proces ----------------------- */
     $scope.login = function doAuth() {
@@ -31,4 +32,12 @@ app.controller('homeCtrl', function($scope, auth, $http, $location, store, $root
         console.log("There was an error logging in", error);
       });
     };
+    
+    $scope.openVideo = function() {
+      $scope.showVideo = true;
+    }
+    
+    $scope.closeVideo = function() {
+      $scope.showVideo = false;
+    }
 });

@@ -21,7 +21,7 @@
     </div>
     
     <div id="info-preview">
-        <a href="https://www.youtube.com/embed/wXT-QVgNOO0?autoplay=1&wmode=opaque&fs=1" class="info-preview-video"><i class="fa fa-play-circle-o"></i> <span>Watch the Video</span></a>
+        <a ng-click="openVideo()" class="info-preview-video"><i class="fa fa-play-circle-o"></i> <span>Watch the Video</span></a>
     </div>
     
     <div id="info-details">
@@ -69,3 +69,11 @@
         </div>
     </div>
 </div>
+
+<div class="vidReel" ng-if="showVideo">
+    <div class="ytFrameWrapper">
+        <iframe class="ytIframe" src="https://www.youtube.com/embed/VyZAFyMEF4M?autoplay=0&wmode=opaque&fs=1" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeVideo()"></span>
+</div>
+<div class="video-wrapper" ng-if="showVideo" ng-click="closeVideo()"></div>

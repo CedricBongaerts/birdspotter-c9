@@ -432,6 +432,46 @@ hr {
     }
 }
 
+.vidReel {
+    position: fixed;
+    top: 30%;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 200;
+    .ytFrameWrapper {
+        width: 560;
+        height: 315;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        
+        .ytIframe {
+            border: 3px solid #0F7000;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+.video-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .8);
+    z-index: 99;
+}
+
+@media screen and (max-width: 560px) {
+    .ytFrameWrapper {
+        width: 300!important;
+        height: 150!important;
+    }
+}
+
 #info-details {
     position: relative;
     overflow: hidden;

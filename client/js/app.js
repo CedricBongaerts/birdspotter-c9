@@ -21,7 +21,7 @@ var app = angular.module('app',
                             'angular-notification-icons',
                             'ngMap',
                             'ngSanitize',
-                            'ngTextTruncate'
+                            'masonry'
                         ]);
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
