@@ -3,11 +3,13 @@
 app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$state', '$stateParams', '$timeout', '$window', 'userApi', '$q', '$location',
                     function($scope, auth, notificationApi, $state, $stateParams, $timeout, $window, userApi, $q, $location) {
     
+    /* ----------------------- Variables ----------------------- */
     $scope.notifications = [];
     var unseenNotifications = [];
     $scope.pageSize = 10;
     $scope.currentPage = 1;
     
+    /* ----------------------- Process Data ----------------------- */
     $q.all({notifications: findNotifications(), users: getUsers()}).then(function(collections) {
         var notifications = collections.notifications;
         var users = collections.users;
@@ -47,9 +49,9 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
                     var dataObj = {seen:true};
                     notificationApi.readNotification(notificationId, dataObj)
                     .then(function(res) {
-                    console.log(res.data.seen);
                     });
                 });
+                $state.go($state.current, {}, {reload: true});
             };
             
             $scope.seeNotification = function() {
@@ -72,6 +74,7 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
             }; 
     });
     
+    /* ----------------------- Retrieve Services - Data ----------------------- */
     function findNotifications() {
         return notificationApi.findNotifications().then(function(res){
             return res.data;

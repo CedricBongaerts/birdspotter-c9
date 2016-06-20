@@ -1,16 +1,37 @@
 /* global app */
-app.controller('dashboardCtrl', ['$scope', '$http', 'captureApi', 'userApi', 'filterFilter', '$q', 'auth', 
-                        function ($scope, $http, captureApi, userApi, filterFilter, $q, auth) {
+app.controller('dashboardCtrl', ['$scope', '$http', 'captureApi', 'userApi', 'filterFilter', '$q', 'auth', 'NgMap',
+                        function ($scope, $http, captureApi, userApi, filterFilter, $q, auth, NgMap) {
                     
+    /* ----------------------- Variables ----------------------- */
+    
     $scope.captures = [];
     $scope.pageSize = 10;
     $scope.currentPage = 1;
     $scope.topPosters = [];
     $scope.auth = auth;
+    $scope.mapShow = false;
+    $scope.birdLocation = "Antwerpen";
+    
+    /* ----------------------- Map Operations ----------------------- */
+    
+    $scope.showGoogleMap = function() {
+        $scope.mapShow = true;
+        $scope.birdLocation = this.capture.place;
+        console.log($scope.birdLocation);
+    };
+    
+    $scope.closeMap = function() {
+        $scope.mapShow = false;
+        console.log('did something');
+    };
+    
+     /* ----------------------- Count Captures ----------------------- */
     
     $scope.getCount = function getCount(strCat) {
         return filterFilter($scope.captures, {userId: strCat}).length;
     };
+    
+    /* ----------------------- Process Data ----------------------- */
     
     $q.all({captures: getAllCaptures(), users: getUsers()}).then(function(collections) {
         $scope.captures = collections.captures;
@@ -25,6 +46,7 @@ app.controller('dashboardCtrl', ['$scope', '$http', 'captureApi', 'userApi', 'fi
         });
     });
     
+    /* ----------------------- Retrieve Services - Data ----------------------- */    
     function getAllCaptures() {
         return captureApi.getAllCaptures().then(function (res) {
             return res.data;
@@ -38,36 +60,3 @@ app.controller('dashboardCtrl', ['$scope', '$http', 'captureApi', 'userApi', 'fi
     }
 
 }]);
-
-// app.controller('dashboardCtrl', ['$scope', '$http', 'captureApi', 'userApi', 'filterFilter', '$q', function($scope, $http, captureApi, userApi, filterFilter, $q){
-//     $scope.captures = [];
-//     $scope.pageSize = 4;
-//     $scope.currentPage = 1;
-    
-//     $scope.topPosters = [];
-
-//     captureApi.getAllCaptures().then(function(res) {
-//         $scope.captures = res.data;
-        
-//         $scope.getCount = function getCount(strCat){
-//                     return filterFilter( $scope.captures, {userId:strCat}).length;
-//                 };    
-        
-//         userApi.getUsers().then(function(res){
-            
-//         var users = res.data.users;
-//             var i;
-//             for(i=0; i<users.length; i++) {
-//                 var userId = users[i].user_id;
-//                 var user = users[i];
-
-//                 var dataObj = {
-//                     user :  user,
-//                     amountPosted : $scope.getCount(userId)
-//                     };
-                     
-//                     $scope.topPosters.push(dataObj);
-//             }
-//         });
-//     });
-// }]);

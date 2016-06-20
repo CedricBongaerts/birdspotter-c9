@@ -1,6 +1,3 @@
 /* global app angular*/
 
-app.controller('errorCtrl', function() {
-
-
-});
+app.controller('errorCtrl', function($scope) { });

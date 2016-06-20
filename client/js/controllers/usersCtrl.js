@@ -1,11 +1,15 @@
 /* global app */
 
-app.controller('usersCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', function($scope, $stateParams, $http, userApi, auth, captureApi) {
+app.controller('usersCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 
+                function($scope, $stateParams, $http, userApi, auth, captureApi) {
+    
+    /* ----------------------- Variables ----------------------- */
     $scope.auth = auth;
     $scope.users = [];
     $scope.pageSize = 25;
     $scope.currentPage = 1;
     
+    /* ----------------------- Retrieve Users ----------------------- */
     userApi.getUsers().then(function(res) {
         $scope.users = res.data.users;
     
@@ -15,10 +19,9 @@ app.controller('usersCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'aut
         });
     });
     
+    /* ----------------------- Process Data ----------------------- */
     $scope.sort = function(keyname){
         $scope.sortKey = keyname;   //set the sortKey to the param passed
         $scope.reverse = !$scope.reverse; //if true make it false and vice versa
     };
-    
-    
 }]);

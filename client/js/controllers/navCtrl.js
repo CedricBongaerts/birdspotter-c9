@@ -1,16 +1,18 @@
 /* global app*/
-app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'notificationApi', '$rootScope', '$stateParams', '$q',
-              function($scope, auth, store, $location, $state, notificationApi, $rootScope, $stateParams, $q){
-    
+app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'notificationApi', '$rootScope', '$stateParams', '$q', 'birdApi', '$timeout',
+              function($scope, auth, store, $location, $state, notificationApi, $rootScope, $stateParams, $q, birdApi, $timeout ){
+                
     $scope.isActive = function(destination){
         return destination === $location.path();
     };
     
     $scope.auth = auth;
     
+    console.log($state.current.name);
+    
     $scope.getUserId = function() {
       return auth.profile.users;
-    }
+    };
     
     $scope.login = function doAuth() {
       auth.signin({
@@ -47,8 +49,23 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
         $location.path('/');
     };
     
+    $scope.findBirdlist = function() {
+      if(this.noResults) {
+        console.log('error');
+        this.findBird = '';
+      } else {
+        console.log(this.findBird);
+        $state.go('birdlist' , {bird: this.findBird});
+        this.findBird = '';
+      }
+    };
+    
+    birdApi.getBirds().then(function(res) {
+        $scope.birds = res.data;
+    });
+    
     $rootScope.$on('$stateChangeStart', 
-    function(event, toState, toParams, fromState, fromParams){ 
+    function(event, toState, toParams, fromState, fromParams){
     if(auth.isAuthenticated) {  
      $q.all({notifications: findNotifications()}).then(function(collections) {
         var notifications = collections.notifications; 

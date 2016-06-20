@@ -17,9 +17,11 @@ var app = angular.module('app',
                             'ngBootbox',
                             'ngScrollbars',
                             '720kb.socialshare',
-                            'angularGrid',
                             'angular-loading-bar',
                             'angular-notification-icons',
+                            'ngMap',
+                            'ngSanitize',
+                            'ngTextTruncate'
                         ]);
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
@@ -34,7 +36,8 @@ app.config(function($stateProvider, authProvider, $httpProvider,
       templateUrl: 'partials/home.html',
       controller: 'homeCtrl',
         data: {
-          pageTitle: 'Home | Birdspotter'
+          pageTitle: 'Birdspotter',
+          hidenavbar: true
         }
     })
     
@@ -98,6 +101,16 @@ app.config(function($stateProvider, authProvider, $httpProvider,
           }
       })
       
+      .state('user-captures', {
+        url: '/user-profile/{id}/captures',
+        templateUrl: 'partials/viewUserCaptures.html',
+        controller: 'viewUserCtrl',
+          data: {
+              requiresLogin: true,
+              pageTitle: 'User Captures | Birdspotter'
+          }
+      })
+      
       .state('notifications', {
       url: '/notifications',
       templateUrl: 'partials/notifications.html',
@@ -118,9 +131,22 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         }
       })
       
+    .state('birdlist', {
+        url: '/birdlist',
+        templateUrl: 'partials/birdlist.html',
+        controller: 'birdlistCtrl',
+        data: {
+          requiresLogin: true,
+            pageTitle: 'Birds | Birdspotter'
+        },
+        params: {
+          bird: 'Unknown' //default parameter
+        }
+      })
+      
       .state('error', {
         url: '/error',
-        templateUrl: 'views/error.html',
+        templateUrl: 'partials/error.html',
         controller: 'errorCtrl',
           data: {
             pageTitle: 'Error | Birdspotter'
@@ -133,7 +159,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         loginState: 'home'
       }); 
       
-    filepickerProvider.setKey('AIcUH5ju1R1SRGJRVC2TRz');
+    filepickerProvider.setKey('AF6BvCiTmRHCrRyjpEfhQz');
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');
@@ -165,6 +191,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         theme: 'dark-3',
         setHeight: 350
     };
+    
 });
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {

@@ -12,7 +12,6 @@ module.exports = function(router) {
         follow.save(function(err, data){
             if(err)
                 throw err;
-            console.log(req.body);
             res.json(data);
         });
     });
@@ -49,7 +48,6 @@ module.exports = function(router) {
     	
          Follow.remove({_id: req.params.follow}, function(err){
              res.json({result: err ? 'error' : 'ok'});
-             console.log('unfollowed');
          });
      });
 };

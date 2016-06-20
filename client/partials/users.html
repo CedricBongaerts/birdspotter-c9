@@ -1,10 +1,10 @@
 <div class="col-md-12">
     <div class="well main-well">
-        <h3 class="page-header-h3">Users list:</h3>
-        <hr />
-        <form class="form-inline user-search">
+        <h3 class="page-header-h3 users-inline col-md-10">Users list:</h3>
+        <form class="form-inline users-search">
             <input type="text" ng-model="search" class="form-control" placeholder="Search User">
         </form>
+        <hr />
         
         <table class="table table-striped">
             <thead>
@@ -12,26 +12,19 @@
                         <th class="sort-icon" ng-click="sort('name')">Name
                             <span class="glyphicon" ng-show="sortKey=='name'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
                         </th>
-                        
-                        <!--<th class="sort-icon" ng-click="sort('provider')">Connected with-->
-                        <!--    <span class="glyphicon" ng-show="sortKey=='provider'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>-->
-                        <!--</th>-->
-                        <th class="sort-icon" ng-click="sort('created_at')">Joined on
-                            <span class="glyphicon" ng-show="sortKey=='created_at'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
-                        </th>
                         <th class="sort-icon" ng-click="sort('last_login')"> Last login
                             <span class="glyphicon" ng-show="sortKey=='last_login'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
                         </th>
-                        <th></th>
+                        <th class="sort-icon" ng-click="sort('created_at')">Joined on
+                            <span class="glyphicon" ng-show="sortKey=='created_at'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                        </th>
                     </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="user in users|filter:search|orderBy:sortKey:reverse|startFrom:currentPage:pageSize">
-                    <td><img ng-src="{{user.picture}}" width="35px"> <a ui-sref="user-profile({id: user.user_id})" class="clickable">{{user.name}}</a></td>
-                    <!--<td>{{user.identities[0].provider}}</td>-->
-                    <td>{{user.created_at | date:'MMM dd, yyyy'}}</td>
+                    <td><img ng-src="{{user.picture}}" width="35px" class="user-list-image"> <a ui-sref="user-profile({id: user.user_id})" class="clickable"><strong class="user-list-name">{{user.name}}</strong></a></td>
                     <td><span am-time-ago="user.last_login"></span></td>
-                    <td><button type="button" ng-if="followCheck(user.user_id)">Test</button></td>
+                    <td>{{user.created_at | date:'MMM dd, yyyy'}}</td>
                 </tr>
             </tbody>
         </table>

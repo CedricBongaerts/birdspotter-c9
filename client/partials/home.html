@@ -1,3 +1,71 @@
-<div id="intro">
-    <button type="button" ng-if="!auth.isAuthenticated" ng-click="login()">Test</button>
+<div class="homepage-wrapper">
+    <div class="intro-top-wrapper">
+        <div class="info-top">
+            <div>
+                <img src="/img/logo-transparent.png" />
+            </div>
+            <h1>Birdspotter</h1>
+            <h2>Capture The Avian Variaty</h3>
+            <h3>Discover & share <br /> your avian photos</h3>
+            <div class="action">
+                <a class="join clickable" ng-click="login()">
+                    Connect
+                </a>
+                <p class="register-info">
+                    No need to register! <br />
+                    Just click above & connect with <br /> 
+                </p>
+                <span class="register-connections"><i class="fa fa-google"></i><span class="or">or</span><i class="fa fa-facebook" aria-hidden="true"></i></span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="info-preview">
+        <a href="https://www.youtube.com/embed/wXT-QVgNOO0?autoplay=1&wmode=opaque&fs=1" class="info-preview-video"><i class="fa fa-play-circle-o"></i> <span>Watch the Video</span></a>
+    </div>
+    
+    <div id="info-details">
+        <div class="bird-images col-md-6">
+            <img src="/img/bird-images.png" />
+        </div>
+        <div class="detail-boxes-wrapper col-md-6">
+            <div class="detail-box box-1">
+                    <h3><strong>Submit</strong> Your Captures<br>&amp; <strong>Request</strong> Their Name</h3>
+                    <p>Not sure what the birdname is? Have someone answer this for you so you can keep your captures complete!</p>
+            </div>
+            <div class="detail-box box-2">
+                    <h3><strong>Share</strong> Your <br>Favorite Captures</h3>
+                    <p>Keep your friends updated on the captures you find beautiful &amp; interesting using your favorite social media </p>
+            </div> 
+            <div class="detail-box box-3">
+                    <h3><strong>Discover Bird</strong> That You<br>Have Never Encountered </h3>
+                    <p>Search for any bird and find out what there is to know about them.</p>
+            </div> 
+        </div>  
+    </div>
+    
+    <div id="info-phone">
+        <div class="info-phone-inner">
+            <div class="info-phone-scaler"></div>
+            <div class="info-phone-text">
+                <p>Birdspotter is available in all sizes and allows the use of your camera, if available.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-connect">
+        <div class="info-connect-wrapper">
+            <span class="info-connect-button">
+                <div class="action">
+                <p class="register-info">
+                    Seen enough? <br />
+                    Just click below!<br /> 
+                </p>
+                <a class="join clickable" ng-click="login()">
+                    Connect
+                </a>
+            </div>
+            </span>
+        </div>
+    </div>
 </div>

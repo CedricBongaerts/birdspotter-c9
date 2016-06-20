@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <form class="well main-well" name="addCapture">
         <div class="form-group">
-            <h3 class="page-header-h3">Capture form:</h3>
+            <h3 class="page-header-h3">Capture form</h3>
             <hr />
             <div class="form-group" align="center">
                 <button type="button" class="btn btn-default" ng-click="upload()">
@@ -9,7 +9,7 @@
                 </button>
             </div>
         </div>
-        <div class="form-group" ng-class="{'has-error' : !checked && !birdname}">
+        <div class="form-group" ng-class="{ 'has-error': noResults }">
             <label for="birdname">Birdname:</label>
             <div class="input-group">
                 <span class="input-group-addon">
@@ -22,28 +22,31 @@
                     tooltip-trigger="mouseenter"
                     tooltip-enable="!birdname">
             </div>
-            <div ng-show="noResults">
+            <div ng-show="noResults" class="noResults-typeahead">
               <i class="glyphicon glyphicon-remove"></i> No Results Found - Please Try Again!
             </div>
         </div>
-        <div class="form-group move-down" ng-class="{'has-error' : !place}">
+        <div class="form-group move-down" ng-class="{ 'has-error': place === null }">
             <label for="place">Picture taken in:</label>
-            <input type="text" class="form-control" id="place" ng-model="place" ng-autocomplete options="options" required
+            <input type="text" class="form-control" id="place" ng-model="place.formatted_address" ng-autocomplete options="options" required details="place" ng-click="checkPlace(place)"
             uib-tooltip="Please pick the location where you captures your photo!"
             tooltip-placement="top-right"
             tooltip-trigger="mouseenter"
-            tooltip-enable="!place"
+            tooltip-enable="!details.formatted_address"
             tooltip-class="tooltip">
+            <div ng-show="place === null" class="noPlace">
+              <i class="glyphicon glyphicon-remove"></i> Please fill in a valid location!
+            </div>
         </div>
         <div class="form-group">
             <label for="note">Any thoughts:</label>
             <input type="text" class="form-control" id="note"ng-model="note" placeholder="Anything extra you would like to add?">
         </div>
         
-        <h3 class="page-header-h3">Preview:</h3>
+        <h3 class="page-header-h3">Preview</h3>
         <hr />
         <h3 ng-hide="checked || !birdname">{{birdname}}</h3>
-        <h4 ng-if="place"><span class="fa fa-map-marker"></span> {{place}}</h4>
+        <h4 ng-if="place"><span class="fa fa-map-marker"></span> {{place.formatted_address}}</h4>
         <p ng-if="note"><i>"{{note}}"</i></p>
         
         <!-- Show the thumbnail only when the picture is uploaded -->

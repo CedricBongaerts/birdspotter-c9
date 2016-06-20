@@ -1,0 +1,76 @@
+<div class="col-md-12">
+    <div class="well profile-header-content">
+        <div class="row profile-heading-row">
+            <div class="profile-heading-info">
+                <img class="profile-pic" ng-src="{{profilePic()}}" alt="{{user.nickname}}" width="200" height="200"/>
+
+                <div class="profile-heading">
+                    <h3 class="profile-heading-name">{{user.name}}</h3>
+                    <span>{{user.email}}</span>
+                </div>
+            </div>
+            <i  class="connected fa {{connectedWith()}}"></i>
+        </div>
+            <div class="col-md-12 profile-user-stats">
+                <span class="header-stats-right">
+                    <span class="header-stats-button" ng-click="followUser()" ng-show="follow"><i class="fa fa-user-plus"></i> Follow</span>
+                    <span class="header-stats-button" ng-click="unfollowUser()" ng-show="following"><i class="fa fa-user-times"></i> Unfollow</span>
+                </span>
+                <span class="header-stats-info">
+                    <span ui-sref="user-captures({id: id})">
+                        <span class="header-stats-count">{{captures.length}}</span>
+                        <span class="header-stats-title clickable">Captures</span>
+                    </span>
+                    <span class="header-stats-devider"> | </span>
+                    <span class="clickable" ng-click="showFollowing()">
+                        <span class="header-stats-count">{{meFollowing.length}}</span>
+                        <span class="header-stats-title">Following</span>
+                    </span>
+                    <span class="header-stats-devider"> | </span>
+                    <span class="clickable" ng-click="showFollowers()">
+                        <span class="header-stats-count">{{myFollowers.length}}</span>
+                        <span class="header-stats-title">Followers</span>
+                    </span>
+                </span>
+            </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="well main-well">
+        <h3 class="page-header-h3">Captures:</h3>
+        <hr />
+        <ul class="gallery-cols" id="img-container">
+            <li ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="gallery-box">
+                <img ng-src="{{capture.picture}}" alt="bird" onload="this.style.opacity='1';" class="dash-thumb-img .thumb-min" ng-click="openImageModel()"></img>
+            </li>
+        </ul>
+        <p ng-if='noCaptures' class="no-captures-found">
+            Uh oh! <br />
+            It seems like this user has not posted any captures yet.. <br />
+            <img src="/img/noCaptures.jpg"/>
+        </p>
+        <uib-pagination ng-show="captures.length > pageSize"
+                        total-items="captures.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+        </uib-pagination>
+    </div>
+</div>
+
+<div class="follow-popup" ng-if="followShow">
+    <div class="follow-header">
+        <h1>Followers</h1>
+        <span class="glyphicon glyphicon-remove close-follow"  ng-click="closeFollow()"></span>
+        <hr/>
+    </div>
+    <ul ng-scrollbars class="list-group follow-content">
+        <li ng-if="follows" ng-repeat="follow in follows" class="follow-list">
+            <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
+                <p><img ng-src="{{follow.picture}}" class="follow-icons"><span><span>{{follow.name}}</span></span></p>
+            </a>
+            <hr />
+        </li>
+    </ul>
+</div>
+<div class="follow-wrapper" ng-if="followShow" ng-click="closeFollow()"></div>

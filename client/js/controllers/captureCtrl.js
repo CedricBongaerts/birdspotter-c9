@@ -3,13 +3,14 @@
 app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', '$location', 'birdApi',
 function($scope, captureApi, auth, $http, $timeout, filepickerService, $location, birdApi){
     
+    /* ----------------------- Variables ----------------------- */
     $scope.form = {};
     $scope.auth = auth;
-    // $scope.disable = null;
-    
+    $scope.details = "";
     $scope.options = {};
     $scope.options.watchEnter = true;
     
+    /* ----------------------- Birdname Operations ----------------------- */
     $scope.toggleBirdname = function() {
         if($scope.checked)
         {
@@ -21,6 +22,7 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
         return $scope.birdname;
     };
 
+    /* ----------------------- Upload Image Operations ----------------------- */
     $scope.upload = function(){
         filepickerService.pick(
             {
@@ -38,16 +40,18 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
         );
     };
 
+    /* ----------------------- Populate Birds input ----------------------- */
     birdApi.getBirds().then(function(res) {
         $scope.birds = res.data;
     });
 
+    /* ----------------------- Post Capture to Database ----------------------- */
     $scope.addToDatabase = function(){  
         
         var dataObj = {
                 type     : $scope.captureType,
                 birdname : $scope.birdname,
-                place    : $scope.place,
+                place    : $scope.place.formatted_address,
                 note     : $scope.note,
                 userId   : $scope.auth.profile.user_id,
                 author   : $scope.auth.profile.name,

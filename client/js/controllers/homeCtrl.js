@@ -1,16 +1,19 @@
 /* global app */
 
 app.controller('homeCtrl', function($scope, auth, $http, $location, store, $rootScope){
+  
+    /* ----------------------- Variables ----------------------- */
     $scope.auth = auth;
     
+    /* ----------------------- Login Proces ----------------------- */
     $scope.login = function doAuth() {
       auth.signin({
         dict: {
           signin: {
-            title: "Register or Login:",
+            title: "Login",
           }
         },
-        icon: 'http://science-all.com/images/wallpapers/bird-images/bird-images-1.jpg',
+        icon: '/img/logo-transparent.png',
         focusInput: false,
         gravatar: false,
         popup: true,

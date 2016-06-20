@@ -1,21 +1,25 @@
 /* global app*/
 
-app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'notificationApi', '$q', 'filterFilter', '$state',
-                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi, $q, filterFilter, $state) {
+app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'notificationApi', '$q', 'filterFilter', '$state', '$uibModal',
+                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi, $q, filterFilter, $state, $uibModal) {
 
+    /* ----------------------- Variables ----------------------- */
     var id = $stateParams.id;
+    $scope.id = $stateParams.id;
     // var auth = auth;
     
+    
     $scope.captures = [];
-    $scope.followers = [];
     $scope.meFollowing = [];
     $scope.myFollowers = [];
     $scope.pageSize = 5;
     $scope.currentPage = 1;
+    $scope.noCaptures = false;
     
     $scope.following = false;
     $scope.follow = false;
     
+    /* ----------------------- Process Data ----------------------- */
     $q.all({follows: findFollow(), captures: getAllCaptures(), user: getUser(id), users: getUsers()}).then(function(collections) {
         var user = collections.user;
         $scope.user = user;
@@ -38,6 +42,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
             $scope.captures.push(capture);
         });
 
+        /* ----------------------- Toggle data ----------------------- */
         $scope.profilePic = function(pic) {
             if(user.identities[0].provider == "facebook"){
                 pic = user.picture_large;
@@ -64,11 +69,11 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                       follow.follower_id == auth.profile.user_id) {
                     $scope.following = true;
                 }
-                console.log('do');
             });
             $scope.follow = !$scope.following;
         }
         
+        /* ----------------------- Unfollow ----------------------- */
         $scope.unfollowUser = function(){
             follows.forEach(function(follow) {
                 if(follow.followed_id == id && follow.follower_id == auth.profile.user_id) {
@@ -76,13 +81,14 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                     userApi.unfollowUser(follow_id).then(function(res) {
                         $scope.following = false;
                         $scope.follow = true;
+                        $scope.myFollowers.length--;
                         return;
                     });
                 }
             });
-            
         };
         
+        /* ----------------------- Follow ----------------------- */
         $scope.followUser = function(){ 
             var followObj = {
                     followed_id   : id,
@@ -100,22 +106,74 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
             .then(function(res){
                 $scope.following = true;
                 $scope.follow = false;
+                $scope.myFollowers.length++;
                 var followId = res.data._id;
                 userApi.followNotification(followId, notificationObj).then(function(res){});
             });
         };
         
-        follows.filter(function(myfollow) {
-            return myfollow.followed_id === id;
-            }).forEach(function(myfollow) {
-                users.filter(function(user) {
-                return myfollow.follower_id === user.user_id; 
-            }).forEach(function(user) {
-                $scope.followers.push(user);
+        $scope.mapShow = false;
+        
+        $scope.showFollowers = function() {
+            findFollow().then(function(res) {
+                var currentFollows = res;
+                $scope.follows = [];
+                currentFollows.filter(function(myfollow) {
+                    console.log(id);
+                    console.log(myfollow.followed_id);
+                    return myfollow.followed_id === id;
+                    }).forEach(function(myfollow) {
+                        users.filter(function(user) {
+                        return myfollow.follower_id === user.user_id; 
+                    }).forEach(function(user) {
+                        $scope.follows.push(user);
+                    });
+                });
+                $scope.followShow = true;
             });
-        });
+        }
+        
+        $scope.showFollowing = function() {
+            findFollow().then(function(res) {
+                var currentFollows = res;
+                $scope.follows = [];
+                currentFollows.filter(function(myfollow) {
+                    return myfollow.follower_id === id;
+                    }).forEach(function(myfollow) {
+                        users.filter(function(user) {
+                            
+                        return myfollow.followed_id === user.user_id; 
+                    }).forEach(function(user) {
+                        $scope.follows.push(user);
+                    });
+                });
+                $scope.followShow = true;
+            });
+        }
+        
+        $scope.closeFollow = function() {
+            $scope.followShow = false;
+        };
+        
+        if($scope.captures.length === 0) {
+            $scope.noCaptures = true;
+        }
     });
-                
+    
+    /* ------------------------------- Show Maps ---------------------------------------- */
+    $scope.mapShow = false;
+    $scope.birdLocation = "Antwerpen";
+    
+    $scope.showGoogleMap = function() {
+        $scope.mapShow = true;
+        $scope.birdLocation = this.capture.place;
+    };
+    
+    $scope.closeMap = function() {
+        $scope.mapShow = false;
+    };
+ 
+/* ----------------------- Retrieve Services - Data ----------------------- */                
 function getUser(id) {
     return userApi.getUser(id).then(function(res) {
         return res.data;

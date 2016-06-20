@@ -1,36 +1,42 @@
 <div class="col-md-8">
-    <div class="well main-well">
-        <h3 class="page-header-h3">Following Dashboard:</h3>
+    <div class="well main-well" >
+        <h3 class="page-header-h3">Personal Dashboard</h3>
         <hr />
-        <h4 align="center" ng-show="!captures.length">
+        <h4 align="center" ng-if="nothing">
                             <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>
                             <br /><br />
                             Quickly, go follow more people!</h4>
-        <row>
-            <ul class="dynamic-grid" angular-grid="captures" ag-id="gallery" ag-refresh-on-img-load="true" >
-                <li data-ng-repeat="capture in captures" class="grid">
-                     <a ui-sref="detail({id: capture.capture._id})">
-                         <img ng-src="{{capture.capture.picture}}" class="grid-img" />
-                         <span class="follow-capture-info">
-                            <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 
-                              {{capture.user.name}} 
-                                <span class="following-capture-time">· 
-                                    <span class="glyphicon glyphicon-time"></span> 
-                                    <span am-time-ago="capture.capture.created_at"></span>
-                                </span>
+        <div class="row">
+            <div data-ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="grid" >
+                 <a ui-sref="detail({id: capture._id})">
+                    <img ng-src="{{capture.picture}}" class="grid-img">
+                    </img>
+                    <span class="follow-capture-info">
+                        <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 
+                          {{capture.author}} 
+                            <span class="following-capture-time">· 
+                                <span class="glyphicon glyphicon-time"></span> 
+                                <span am-time-ago="capture.created_at"></span>
                             </span>
                         </span>
-                     </a>
-                </li>
-            </ul>
-        </row>
+                    </span>
+                 </a>
+            </div>
+        </div>
+        <div ng-show="captures.length > pageSize">
+            <hr />
+            <uib-pagination total-items="captures.length"
+                            items-per-page="pageSize"
+                            ng-model="currentPage">
+            </uib-pagination>
+        </div>
     </div>
 </div>
 <div class="col-md-4">
     <div class="well">
-        <h3 class="page-header-h3">Following ({{following.length}}):</h3>
+        <h3 class="page-header-h3">Following · {{following.length}}</h3>
         <hr />
-        <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
+        <ul ng-scrollbars class="list-group">
             <li ng-if="following" ng-repeat="follow in following" class="col-md-6 follow-list" >
                 <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
                     <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" class="follow-pictures">

@@ -17,14 +17,20 @@
                     <span class="header-stats-button" ng-click="unfollowUser()" ng-show="following"><i class="fa fa-user-times"></i> Unfollow</span>
                 </span>
                 <span class="header-stats-info">
-                    <span class="header-stats-count">{{captures.length}}</span>
-                    <span class="header-stats-title">Captures</span>
+                    <span ui-sref="user-captures({id: id})">
+                        <span class="header-stats-count">{{captures.length}}</span>
+                        <span class="header-stats-title clickable">Captures</span>
+                    </span>
                     <span class="header-stats-devider"> | </span>
-                    <span class="header-stats-count">{{meFollowing.length}}</span>
-                    <span class="header-stats-title">Following</span>
+                    <span class="clickable" ng-click="showFollowing()">
+                        <span class="header-stats-count">{{meFollowing.length}}</span>
+                        <span class="header-stats-title">Following</span>
+                    </span>
                     <span class="header-stats-devider"> | </span>
-                    <span class="header-stats-count">{{myFollowers.length}}</span>
-                    <span class="header-stats-title">Followers</span>
+                    <span class="clickable" ng-click="showFollowers()">
+                        <span class="header-stats-count">{{myFollowers.length}}</span>
+                        <span class="header-stats-title">Followers</span>
+                    </span>
                 </span>
             </div>
     </div>
@@ -37,10 +43,9 @@
             <div class="thumbnail no-border no-margin-bottom"> 
                 <h4 class="dash-capture-info">
                     <span>
-                        <a ui-sref="user-profile({id: capture.userId})" class="clickable">
-                            <i class="fa fa-user"></i> {{capture.author}}
-                        </a> captured a photo in 
-                        <span class="fa fa-map-marker"></span> {{capture.place}}
+                        <i class="fa fa-user"></i> 
+                            <strong>{{capture.author}}</strong> captured a photo in 
+                        <span class="fa fa-map-marker"></span> <span ng-click="showGoogleMap(capture.place)" class="clickable location-click"><strong>{{capture.place}}</strong></span>
                     </span>
                 </h4>
                 <a ui-sref="detail({id: capture._id})">
@@ -50,6 +55,11 @@
                 <hr />
             </div>
         </div>
+        <p ng-if='noCaptures' class="no-captures-found">
+            Uh oh! <br />
+            It seems like this user has not posted any captures yet.. <br />
+            <img src="/img/noCaptures.jpg"/>
+        </p>
         <uib-pagination ng-show="captures.length > pageSize"
                         total-items="captures.length"
                         items-per-page="pageSize"
@@ -59,19 +69,42 @@
 </div>
 <div class="col-md-4">
     <div class="well">
-        <h3 class="page-header-h3">Followed By</h3>
+        <h3 class="page-header-h3">{{captures.length}} Photo's Posted</h3>
+        <a ui-sref="user-captures({id: id})" class="view-all-captures">View Full Gallery</a>
         <hr />
-        <ul ng-scrollbars ng-scrollbars-config="config" class="list-group">
-            <li ng-if="followers" ng-repeat="follow in followers" class="col-md-6 follow-list" >
-                <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
-                    <p><img ng-show="follow.identities[0].provider=='facebook'" ng-src="{{follow.picture_large}}" class="follow-pictures">
-                       <img ng-show="follow.identities[0].provider=='google-oauth2'" ng-src="{{follow.picture}}" class="follow-pictures">
-                        <span class="follow-info">
-                            <span class="follow-name">{{follow.name}}</span>
-                        </span>
-                    </p>
+        <div class="row">
+            <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo: 8" class="list-group-item profile-captures-wrapper col-md-6">
+                <a ui-sref="detail({id: capture._id})">
+                    <div class="thumbnail no-border no-margin-bottom profile-captures" style="background-image: url('{{capture.picture}}')"></div>
                 </a>
-            </li>
-        </ul>
+            </div>
+            <p ng-if='noCaptures' class="no-captures-found">
+                No Images Found! :(
+            </p>
+        </div>
     </div>
 </div>
+
+<div class="follow-popup" ng-if="followShow">
+    <div class="follow-header">
+        <h1>Followers</h1>
+        <span class="glyphicon glyphicon-remove close-follow"  ng-click="closeFollow()"></span>
+        <hr/>
+    </div>
+    <ul ng-scrollbars class="list-group follow-content">
+        <li ng-if="follows" ng-repeat="follow in follows" class="follow-list">
+            <a ui-sref="user-profile({id: follow.user_id})" class="captureLink">
+                <p><img ng-src="{{follow.picture}}" class="follow-pictures"><span><span>{{follow.name}}</span></span></p>
+            </a>
+            <hr />
+        </li>
+    </ul>
+</div>
+<div class="follow-wrapper" ng-if="followShow" ng-click="closeFollow()"></div>
+
+
+<div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
+  <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
+  <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
+</div>
+<div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>

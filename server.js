@@ -49,6 +49,15 @@ app.get('/', function(req, res){
     res.render('index.html');
 });
 
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.status(err.status || 404);
+    res.render('error.html', {
+        message: err.message,
+        error: {}
+    });
+});
+
 // API 
 var api = express.Router();
 require('./server/routes/capture')(api);

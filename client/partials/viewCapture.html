@@ -11,44 +11,68 @@
                 ng-confirm-click="Are you sure you want to delete this capture?">
             </span>
         </p>
-        <h3  class="page-header-h3 clickable brand-color-link" popover-placement="bottom-left" popover-trigger="mouseenter" popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl">
-            <span popover-title="{{capture.birdname}}" class="glyphicon glyphicon-info-sign"></span> 
-            {{capture.birdname}}
+        <h3  class="page-header-h3">
+            <a ui-sref="birdlist({bird: capture.birdname})" class="clickable">{{capture.birdname}}</a>
+            <span class="info-popover-image">
+                <span popover-title="{{capture.birdname}}" popover-placement="bottom-left" popover-trigger="mouseenter" ng-if="capture.birdname == 'Unknown'"
+                        popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl" class="glyphicon glyphicon-info-sign icon-popover-image clickable brand-color-link"></span>
+            </span>
         </h3>
-        <h4><a ui-sref="user-profile({id: capture.userId})" class="clickable"><i class="fa fa-user"></i> {{capture.author}}</a> in <span class="fa fa-map-marker"></span> {{capture.place}}</h4>
+        <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="clickable"><strong>{{capture.author}}</strong></a> in <span class="fa fa-map-marker"></span> 
+            <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
+        </h4>
         <h5 ng-if="capture.note"><i>"{{capture.note}}"</i></h5>
         <hr />
         
         <div class="thumbnail no-border view-capture-thumb"> 
-            <img class="captureImg clickable" ng-src="{{capture.picture}}" ng-click="openImageModel()"/>
+                <img class="captureImg clickable" ng-src="{{capture.picture}}" ng-click="openImageModel()"></img>
         </div>
         
             <div class="vote-comment-buttons">
-                <span class="dropdown inline capture-action-buttons">
-                    <span class="dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-share" id="shareDropDown"></i> Share</span>
+                <span class="clickable capture-action-buttons" ng-click="commentsShow()" ng-class="[{'capture-action-active':comments}]"><span class="glyphicon glyphicon-comment clickable"></span> Comment </span>  
+                <span ng-click="likeCapture()" ng-show="like" class="clickable capture-action-buttons"><span class="glyphicon glyphicon-heart"></span> Like</span>
+                <span ng-click="unlikeCapture()" ng-show="liked" class="clickable capture-action-buttons liked-markup"><span class="glyphicon glyphicon-heart"></span> Liked</span>
+                <span class="dropup inline capture-action-buttons">
+                    <span class="dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true"><i class="fa fa-share" id="shareDropDown"></i> Share</span>
                     <ul class="dropdown-menu" aria-labelledby="shareDropDown">
+                        <li><a
+                            socialshare
+                            socialshare-provider="google"
+                            socialshare-url="https://birdspotter-cedricbongaerts.c9users.io/#/detail/{{id}}"
+                            socialshare-popup-height="400"
+                            socialshare-popup-width="400">
+                            <span class="share-buttons google-icon"><i class="fa fa-google-plus share-icon"></i><strong>Google plus</strong></span>
+                            </a>
+                        </li>
+                        <li><a
+                            socialshare
+                            socialshare-provider="twitter"
+                            socialshare-popup-height="400"
+                            socialshare-hashtags="birdspotter"
+                            socialshare-url="https://birdspotter-cedricbongaerts.c9users.io/#/detail/{{id}}"
+                            socialshare-popup-width="400">
+                            <span class="share-buttons twitter-icon"><i class="fa fa-twitter share-icon"></i><strong>Twitter</strong></span>
+                            </a>
+                        </li>
                         <li><a
                             socialshare
                             socialshare-provider="facebook"
                             socialshare-popup-height="400"
                             socialshare-url="https://birdspotter-cedricbongaerts.c9users.io/#/detail/{{id}}"
                             socialshare-popup-width="400">
-                            <span class="share-buttons"><i class="fa fa-facebook-official share-icon"></i>Facebook</span>
+                            <span class="share-buttons facebook-icon"><i class="fa fa-facebook-official share-icon"></i><strong>Facebook</strong></span>
                             </a>
                         </li>
                     </ul>
                 </span> 
-                <span class="clickable capture-action-buttons" ng-click="comments=!comments" ng-class="[{'capture-action-active':comments}]"><span class="glyphicon glyphicon-comment clickable"></span> Comment </span>  
-                <span ng-click="likeCapture()" ng-show="like" class="clickable capture-action-buttons"><span class="glyphicon glyphicon-heart"></span> Like</span>
-                <span ng-click="unlikeCapture()" ng-show="liked" class="clickable capture-action-buttons"><span class="glyphicon glyphicon-heart-empty"></span> Unlike</span>
             </div>
             <div class="vote-amount">
-                <span>This capture has received {{capture.votes.length}} likes</span>
+                <span>{{capture.votes.length}} <i class="fa fa-thumbs-up"></i></span>
             </div>
         <div>
             <hr />
             <div class="row" data-slide-toggle="comments" data-start-shown="false" data-slide-toggle-duration="250">
-            <h4> Comments ({{capture.comments.length}}):</h4>
+            <h4> <strong>Comments · {{capture.comments.length}}</strong></h4>
             <hr />
                 <div class="col-md-4">
             	<form name="addComments" ng-submit="addComment()">
@@ -70,10 +94,12 @@
                 <div class="col-md-8">
                     <ul ng-scrollbars ng-scrollbars-config="config" class="list-group comments">
                         <li ng-repeat="comment in capture.comments" class="list-group-item comment">
-                            <span ng-show="comment.comment"><a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> {{comment.comment}} 
+                            <span ng-show="comment.comment">
+                                <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> 
+                                <span ng-text-truncate="comment.comment" ng-tt-chars-threshold="150">{{comment.comment}}</span> 
                             </span>
-                            <span ng-show="comment.birdSuggestion">Attention: <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> gave the birdname: 
-                            <span><strong>{{comment.birdSuggestion}}</strong></span></span>  
+                            <span ng-show="comment.birdSuggestion"><strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Attention </strong> <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> gave the birdname · 
+                            <span><strong><a ui-sref="birdlist({bird: comment.birdSuggestion})">{{comment.birdSuggestion}}</a></strong></span></span>  
                             <span class="commentActions">
                                 <span am-time-ago="comment.created_at"></span>
                                 <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment($index)"> · <span class="clickable brand-color-link">Delete</span></span>
@@ -83,5 +109,11 @@
                 </div>
             </div>
         </div>
+        <div id="bottom"></div>
     </div>
-</div>    
+</div>
+<div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
+  <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
+  <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
+</div>
+<div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>

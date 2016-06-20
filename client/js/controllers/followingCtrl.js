@@ -1,13 +1,16 @@
 /* global app */
 
-app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureApi', 'angularGridInstance', '$q', function($scope, $http, userApi, auth, captureApi, angularGridInstance, $q) {
-        
+app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureApi', '$q', function($scope, $http, userApi, auth, captureApi, $q) {
+    
+    /* ----------------------- Variables ----------------------- */    
     $scope.auth = auth;
-
-    $scope.users = [];
     $scope.captures = [];
     $scope.following = [];
-    
+    $scope.nothing = false;
+    $scope.pageSize = 10;
+    $scope.currentPage = 1;
+
+    /* ----------------------- Process Data ----------------------- */
     $q.all({follows: findFollow(), users: getUsers(), captures: getAllCaptures()}).then(function(collections) {
     var follows = collections.follows;
     var users = collections.users;
@@ -22,7 +25,6 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
                     $scope.following.push(user);
             });
         });
-        
         follows.filter(function(follow) {
             return follow.follower_id === auth.profile.user_id;
             }).forEach(function(follow) {
@@ -30,20 +32,16 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
             captures.filter(function(capture){
                 return follow.followed_id === capture.userId;
             }).forEach(function(capture){
-                users.filter(function(user){
-                    return capture.userId === user.user_id;
-                }).forEach(function(user){
-                    $scope.captures = captures.map(function(capture){
-                        return {
-                            user: user,
-                            capture: capture
-                        };
-                    });
-                });
+                    console.log(capture);
+                    $scope.captures.push(capture);
             });
         });
+        if($scope.captures.length === 0) {
+            $scope.nothing = true;
+        }
     });
     
+    /* ----------------------- Retrieve Services - Data ----------------------- */
     function findFollow() {
         return userApi.findFollow().then(function(res) {
             return res.data;
@@ -62,47 +60,4 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
         });
     }
     
-    $scope.refresh = function(){
-            angularGridInstance.gallery.refresh();
-    };
 }]);
-
-    
-    // userApi.findFollow().then(function(res) {
-    //     var follows = res.data;
-        
-    //     userApi.getUsers().then(function(res) {
-    //         var users = res.data.users;
-        
-    //         captureApi.getAllCaptures().then(function(res) {
-    //             var captures = res.data;
-                
-    //             for(i=0; i<follows.length; i++) {
-    //                 if(follows[i].follower_id == auth.profile.user_id) {
-    //                     for(f=0; f<users.length; f++){
-    //                         if(follows[i].followed_id == users[f].user_id) {
-    //                              $scope.following.push(users[f]);
-    //                         }
-    //                     }
-                        
-    //                     for(j=0; j<captures.length; j++){
-    //                         if(follows[i].followed_id == captures[j].userId) {
-    //                             for(u=0; u<users.length; u++){
-    //                                 if(captures[j].userId == users[u].user_id) {
-                                        
-    //                                     var captureObj = {
-    //                                         user : users[u],
-    //                                         capture: captures[j]
-    //                                     };
-    //                                     console.log(captureObj);
-    //                                      $scope.captures.push(captureObj);
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //             console.log($scope.following);
-    //         });
-    //     });
-    // })

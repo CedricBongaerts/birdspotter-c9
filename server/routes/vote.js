@@ -19,7 +19,6 @@ module.exports = function(router) {
     			if (err) { return next(err); }
     			
     			res.json(vote);
-    			console.log(vote);
     		});
         });
     });
@@ -40,13 +39,14 @@ module.exports = function(router) {
     			if (err) { throw err;}
     		});
     	});
-    	console.log(req.params.vote);
-         Vote.findByIdAndRemove(req.params.vote, function(err, vote){
+    	
+        Vote.findByIdAndRemove(req.params.vote, function(err, vote){
             if (vote) {
                 Capture.update({_id: vote.capture}, {
-                        $pull : {votes: req.params.id}
+                        $pull : {votes: req.params.vote}
                     }, function(err, data) { if(err) throw err; });
             } if(err) throw err;
         });
+        
      });
 };

@@ -20,7 +20,6 @@ module.exports = function(router) {
         capture.save(function(err, data){
             if(err)
                 throw err;
-            console.log(req.body);
             res.json(data);
         });
     });
@@ -120,7 +119,6 @@ module.exports = function(router) {
             var capture = data;
             capture.type = req.body.type;
             capture.birdname = req.body.birdname;
-            console.log(req.body.birdname);
             capture.note = req.body.note;
             capture.updated_at = new Date();
             

@@ -1,7 +1,7 @@
-<div class="col-md-9">
+<div class="col-md-12">
     <div class="well main-well">
         <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countUnseen" class="notifications-header-count"> · {{countUnseen}} Unseen</h5></h3>
-        <hr />
+        <a src='#' class="clickable mark-as-read" ng-click="seenAll()">Mark all as seen</a>
         <button ng-repeat="notification in notifications | orderBy :'notification.created_at':true | startFrom:currentPage:pageSize" 
                 class="list-group-item notification-link" 
                 ng-class="[{'notification-seen':notification.notification.seen}]"
@@ -21,18 +21,12 @@
                     </div>
                 </div>
         </button>
-        <uib-pagination ng-show="notifications.length > pageSize"
+            <uib-pagination ng-show="notifications.length > pageSize"
                         total-items="notifications.length"
                         items-per-page="pageSize"
                         ng-model="currentPage">
-        </uib-pagination>
+            </uib-pagination>
+        </div>
     </div>
 </div>
-</div>
-</div>
-<div class="col-md-3">
-    <div class="well main-well">
-        <a src='#' class="clickable" ng-click="seenAll()">Mark all as seen</a>
-        <hr />
-    </div>
-</div>
+

@@ -6755,6 +6755,9 @@ body {
 .main-well {
   min-height: 455px;
 }
+a:hover {
+  text-decoration: underline!important;
+}
 hr {
   margin-top: 5px!important;
   margin-bottom: 10px!important;
@@ -6822,6 +6825,77 @@ hr {
 .follow-pictures {
   width: 100%;
 }
+.map-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 99;
+}
+.google-maps {
+  height: 80%;
+  width: 80%;
+  position: fixed;
+  z-index: 100;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px solid #0F7000;
+}
+.close-map {
+  position: fixed;
+  top: 55;
+  right: 20;
+  color: #A4A4A4;
+  font-size: 18px;
+}
+.close-map:hover {
+  color: #fff;
+  cursor: pointer;
+}
+.location-click {
+  color: #0F7000;
+}
+.location-click:hover {
+  color: #000;
+}
+.noResults-typeahead,
+.noPlace {
+  position: absolute;
+  color: #a94442;
+}
+.errorTriangle {
+  width: 0;
+  height: 0;
+  border: 1px solid red;
+  border-width: 0 7.5px 10px 7.5px;
+  border-color: transparent transparent #a94442 transparent;
+  position: relative;
+  left: 8;
+}
+.errorText {
+  background: #a94442;
+  color: #fff;
+  padding: 1 5;
+  position: relative;
+  left: 5;
+  border: 1px solid #A82A28;
+}
+.ErrorSearchBird {
+  position: absolute;
+  z-index: 10;
+  top: 34;
+  left: 5;
+  height: 30px;
+}
+#bottom {
+  display: block;
+  margin-top: 5px;
+}
 @media screen and (max-width: 991px) {
   .follow-pictures {
     max-width: 150px;
@@ -6836,6 +6910,39 @@ hr {
   min-height: 750px;
   margin-top: -54px;
 }
+/* ---------------------- Error -------------------------- */
+.error-main {
+  overflow: hidden;
+}
+.main-error-container {
+  height: 100%;
+  position: relative;
+}
+.error-container {
+  text-align: center;
+  position: static;
+  min-height: 90vh;
+  top: 0;
+  bottom: 0;
+}
+.fourOfour-titel {
+  font-size: 10vw;
+  font-weight: bold;
+  padding-right: 2%;
+}
+.error-titel {
+  font-size: 7.5vw;
+}
+#errorImage img {
+  max-width: 20%;
+  height: auto;
+}
+.pageNotFound {
+  font-size: 2vw;
+}
+.errorMessage {
+  font-size: 1vw;
+}
 /* ---------------------- Navbar ---------------------- */
 .nav-glyph {
   line-height: 26px!important;
@@ -6844,16 +6951,19 @@ hr {
 .navbar-brand {
   margin-left: 0px!important;
 }
+#navbar {
+  overflow: hidden;
+}
 .angular-notifications-icon {
-  right: -14px !important;
+  right: -10 !important;
   top: -5px !important;
-  border-radius: 50%!important;
+  border-radius: 10%!important;
   text-align: center!important;
   padding-left: 0!important;
   padding-right: 0!important;
   padding-top: 0!important;
-  min-width: 20px!important;
-  height: 20px!important;
+  min-width: 16px!important;
+  height: 16px!important;
   background: red!important;
   color: #fff!important;
   -webkit-user-select: none!important;
@@ -6861,8 +6971,36 @@ hr {
   -ms-user-select: none!important;
   user-select: none!important;
   cursor: pointer!important;
-  line-height: 1.6!important;
+  line-height: 1.4!important;
   font-size: 12px!important;
+}
+.search-nav {
+  max-width: 250px;
+  padding: 5px;
+}
+.search-input-nav {
+  height: 30px;
+  width: 210px;
+  background: #fff;
+  border: 1px solid;
+}
+.search-button-nav {
+  height: 30px;
+  background: #fff;
+  border: 1px solid;
+  outline: #0F7000 !important;
+}
+.search-button-nav span {
+  line-height: 0;
+  color: #0F7000;
+}
+.nav-names {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  .nav-names {
+    display: inline;
+  }
 }
 /* ---------------------- Dashboard ---------------------- */
 .dash-posts {
@@ -6877,12 +7015,12 @@ hr {
 }
 .dash-thumb-img {
   opacity: 0;
-  -moz-transition: opacity 2s;
+  -moz-transition: opacity 0.5s;
   /* Firefox 4 */
-  -webkit-transition: opacity 2s;
+  -webkit-transition: opacity 0.5s;
   /* Safari and Chrome */
-  -o-transition: opacity 2s;
-  transition: opacity 2s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
 }
 .top-likes {
   bottom: 3;
@@ -6943,8 +7081,12 @@ hr {
   font-weight: 500;
 }
 /* ---------------------- Users list ---------------------- */
+.users-inline {
+  display: inline;
+}
 .user-search {
-  float: right;
+  display: inline;
+  align: right;
 }
 .sort-icon:hover {
   cursor: pointer;
@@ -6959,6 +7101,18 @@ hr {
 .capture-manage-icons span {
   padding: 3px;
   cursor: pointer;
+}
+.info-popover-image {
+  position: relative;
+  top: -5px;
+  left: 0px;
+  font-size: 15px;
+}
+.popover-inner {
+  min-width: 200px;
+}
+.icon-popover-image {
+  color: #0F7000;
 }
 .captureImg {
   max-height: 800px;
@@ -7022,13 +7176,22 @@ hr {
   position: relative;
   right: 0;
 }
+.ngTruncateToggleText {
+  cursor: pointer;
+}
 .vote-amount {
   display: inline;
   float: right;
   margin-right: 10px;
 }
+.liked-markup {
+  color: #0F7000;
+}
 .capture-action-buttons {
   margin-left: 20px;
+}
+.capture-action-buttons.open {
+  color: #0F7000;
 }
 .capture-action-active {
   color: #0F7000;
@@ -7043,7 +7206,18 @@ hr {
   cursor: pointer;
   line-height: 0.3;
 }
-.fa.fa-facebook-official.share-icon {
+.facebook-icon {
+  color: #3b5998;
+}
+.twitter-icon {
+  color: #0084B4;
+}
+.google-icon {
+  color: #d73d32;
+}
+.fa.fa-facebook-official.share-icon,
+.fa.fa-twitter.share-icon,
+.fa.fa-google-plus.share-icon {
   font-size: 18px;
   margin-right: 10px;
   margin-left: 5px;
@@ -7131,12 +7305,34 @@ hr {
   position: relative;
   top: 4px;
 }
+.profile-captures-wrapper {
+  padding: 7px;
+  width: 50%;
+  float: left;
+}
+.profile-captures {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  background: center;
+  background-size: cover;
+}
+.view-all-captures {
+  position: absolute;
+  top: 20px;
+  right: 26px;
+}
 @media screen and (max-width: 991px) {
   .connected {
     top: 5;
   }
   .profile-user-stats {
     margin-bottom: 0px;
+  }
+  .profile-captures-wrapper {
+    width: 25%;
+    float: left;
   }
 }
 @media screen and (max-width: 767px) {
@@ -7179,6 +7375,40 @@ hr {
     padding-bottom: 10px;
     top: 5;
   }
+}
+/* ----------------------- Birdlist ------------------------*/
+.birdlist-info-wrapper {
+  padding-left: 0;
+  height: 800px;
+}
+.birdlist-search {
+  margin-bottom: 0;
+}
+.birdlist-search-input {
+  width: 100%!important;
+}
+table.navbox {
+  display: none;
+}
+.reflist,
+.mw-editsection,
+.reference,
+.toc,
+.stub {
+  display: none;
+}
+.infobox.biota {
+  padding: 5;
+  border: 1px solid #0F7000;
+  margin-bottom: 10px;
+  float: left;
+  margin-right: 25px;
+}
+.infobox.biota tbody tr th {
+  padding: 5px;
+}
+.infobox.biota tbody tr td {
+  padding: 10px;
 }
 /* ----------------------- Notifications --------------------*/
 .notifications-inline {

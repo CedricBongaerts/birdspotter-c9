@@ -4,8 +4,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     less: {
       development: {
+        options: {
+          compress: true,
+          yuicompress: true,
+          optimization: 2
+        },
         files: {
-          "client/lib/bootstrap/dist/css/bootstrap.css": "client/layout/style.less",
+          "client/lib/bootstrap/dist/css/bootstrap.min.css": "client/layout/style.less",
         }
       }
     },
@@ -14,7 +19,8 @@ module.exports = function(grunt) {
         files: ['client/layout/style.less'],
         tasks: ['less'],
         options: {
-          nospawn: true
+          nospawn: true,
+          minify: true,
         }
       }
     }

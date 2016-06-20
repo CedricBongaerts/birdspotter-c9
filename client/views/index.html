@@ -4,21 +4,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <link rel="icon" href="img/favicon.ico">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <link rel="icon" href="img/logo.png">
     <title ng-bind="$state.current.data.pageTitle">Birdspotter</title>
     
     <!-- Lato Font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato">
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     
     <!-- Loadingbar CSS -->
     <link rel="stylesheet" href="/lib/angular-loading-bar/build/loading-bar.min.css">
     
     <!-- Notifications CSS -->
     <link rel="stylesheet" href="/lib/angular-notification-icons/dist/angular-notification-icons.min.css">
-    
     
     <!-- Bootstrap core JavaScript -->
     <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -30,7 +31,7 @@
     <!-- Custom Scrollbar -->
     <link rel="stylesheet" href="/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" type="text/css"/>
     
-    <!-- Google places Api -->
+    <!-- Google places Api & Maps-->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4WM_531qnWnu1lNM824QE0ITMBvzjMqU&libraries=places"></script>
     
     <!-- AngularJS libraries-->
@@ -58,6 +59,9 @@
     <script type='text/javascript' src="/lib/angular-loading-bar/build/loading-bar.min.js"></script>
     <script type='text/javascript' src="/lib/angular-animate/angular-animate.min.js"></script>
     <script type='text/javascript' src="/lib/angular-notification-icons/dist/angular-notification-icons.min.js"></script>
+    <script type='text/javascript' src="/lib/ngmap/build/scripts/ng-map.min.js"></script>
+    <script type='text/javascript' src="/lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type='text/javascript' src="/lib/ng-text-truncate/ng-text-truncate.js"></script>
     
     <!-- Filestack -->
     <script type="text/javascript" src="/lib/filepicker-js/filepicker.min.js"></script>
@@ -84,12 +88,14 @@
     <script  type="text/javascript" src="/js/controllers/usersCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/notificationsCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/errorCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/birdlistCtrl.js"></script>
     
     <!-- Directives -->
     <script  type="text/javascript" src="/js/directives/ngEnter.js"></script>
     <script  type="text/javascript" src="/js/directives/ngConfirmClick.js"></script>
     <script  type="text/javascript" src="/js/directives/ngSlideToggle.js"></script>
-    
+    <script  type="text/javascript" src="/js/directives/wikiContent.js"></script>
+    <script  type="text/javascript" src="/js/directives/anchorSmoothScroll.js"></script>
     
     <!-- Services -->
     <script  type="text/javascript" src="/js/services/captureService.js"></script>
@@ -100,41 +106,80 @@
     <script  type="text/javascript" src="/js/services/notificationService.js"></script>
   </head>
 
-  <body class="ng-cloak" ng-cloak>
+  <body ng-cloak ng-class="[{'error-main':$state.current.name === 'error'}]">
     <!-- Navbar -->
-      <nav class="navbar navbar-default navbar-fixed-top" ng-controller="navCtrl" ng-if="$state.current.name !== 'home'">
+      <nav class="navbar navbar-default navbar-static-top" ng-controller="navCtrl" id="top">
+      <span class="navbar-brand center-brand" ng-if="!auth.isAuthenticated"><img src="/img/logo.png" width="30px" /><span>Birdspotter</span></span>
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-if="auth.isAuthenticated">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" ui-sref="home">Birdspotter</a>
+          <a class="navbar-brand" ui-sref="dashboard" ng-if="auth.isAuthenticated"><img src="/img/logo.png" width="30px" /><span>Birdspotter</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> Dashboard</a></li>
-            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span> Capture</a></li>
-            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span> Following</a></li>
-            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span> Users</a></li>
+            <!--<li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> <span class="nav-names"> Dashboard</span></a></li>-->
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span> <span class="nav-names"> Capture</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span> <span class="nav-names"> Following</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span> <span class="nav-names" >Users</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/birdlist')}"><a ui-sref="birdlist"><img src="/img/bird-nav-icon.png" id="bird-icon" /><span class="nav-names">Unnamed birds</span></a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"> <notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon></a></li>
+            <li ng-if="auth.isAuthenticated">
+              <div class="input-group search-nav" ng-class="{ 'has-error': noResults }">
+                 <input type="text" class="form-control search-input-nav" placeholder="Birdname" autocomplete="off" ng-model="findBird" typeahead-no-results="noResults"
+                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-select-on-blur="true" ng-enter="findBirdlist(findBird, noResults)">
+                 <div class="ErrorSearchBird" ng-if="noResults">
+                   <div class="errorTriangle"></div>
+                   <div class="errorText">Please pick a valid birdname</div>
+                 </div>
+                 <span class="input-group-btn">
+                     <button class="btn btn-default search-button-nav" type="button" ng-click="findBirdlist(findBird, noResults)"><span class="glyphicon glyphicon-search"></span></button>
+                 </span>
+              </div>
+            </li>
+            <li data-toggle="collapse" ng-if="auth.isAuthenticated" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"> <notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon><span class="nav-names"Notifications</span></a></li>
+            <li class="dropdown inline navbar-drop-tag clickable" ng-if="auth.isAuthenticated">
+             <span class="dropdown-toggle clickable navbar-toggle-dropdown" data-toggle="dropdown">{{auth.profile.given_name}}</span>
+                    <ul class="dropdown-menu nav-dropdown" aria-labelledby="navDropDown">
+                        <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"><i class="fa fa-user nav-glyph glyph-drop"></i><span class="nav-names-drop">Profile</span></a></li>
+                        <li data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()"><i class="fa fa-sign-out nav-glyph glyph-drop"></i><span class="nav-names-drop">Logout</span></a></li>
+                    </ul>
+            </li>
             <!--<li data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="login()">Register & Login</a></li>-->
-            <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"> {{auth.profile.given_name}}</a></li>
-            <li data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()">Logout</a></li>
+            <!--<li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"> {{auth.profile.given_name}}</a></li>-->
+            <!--<li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()">Logout</a></li>-->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
       <div id="loading-bar-container"></div>
     </nav>
     <!-- Container -->
-    <div class="container" id="main-container" >
-      <div ui-view>
-      </div>
+    <div class="container" id="main-container">
+      <div ui-view></div>
     </div>
     <!-- End Container -->
+    </div>
+    <div class="footer" ng-if="$state.current.name === 'home'" ng-controller="homeCtrl">
+        <div class="footer-content container">
+            <div class="footer-logo col-md-4">
+                <img src="/img/logo-transparent.png" class="footer-logo"/>
+                <p>by Cedric Bongaerts</p>
+            </div>
+            <div class="footer-links clickable col-md-8">
+              <div class="links-wrapper">
+                  <span anchor-smooth-scroll="top">Top</span>
+                  <span anchor-smooth-scroll="info-preview">Preview</span>
+                  <span anchor-smooth-scroll="info-details">Features</span>
+                  <span ng-click="login()">Connect</span>
+              <!--<span>© Cedric Bongaerts - 2016</span>-->
+              </div>
+            </div>
+        </div>
+    </div>
   </body>
 </html>
