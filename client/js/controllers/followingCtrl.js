@@ -7,6 +7,7 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
     $scope.captures = [];
     $scope.following = [];
     $scope.nothing = false;
+    $scope.notFollowing = false;
     $scope.pageSize = 10;
     $scope.currentPage = 1;
 
@@ -38,6 +39,10 @@ app.controller('followingCtrl', ['$scope', '$http', 'userApi', 'auth', 'captureA
         });
         if($scope.captures.length === 0) {
             $scope.nothing = true;
+        }
+        
+        if($scope.following.length === 0) {
+            $scope.notFollowing = true;
         }
     });
     

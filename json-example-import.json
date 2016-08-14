@@ -1,0 +1,3 @@
+{ "_id" : { "$oid" : "50906d7fa3c412bb040eb577" }, "student_id" : 0, "type" : "exam", "score" : 54.6535436362647 }
+{ "_id" : { "$oid" : "50906d7fa3c412bb040eb578" }, "student_id" : 0, "type" : "quiz", "score" : 31.95004496742112 }
+{ "_id" : { "$oid" : "50906d7fa3c412bb040eb579" }, "student_id" : 0,       "type" : "homework", "score" : 14.8504576811645 }

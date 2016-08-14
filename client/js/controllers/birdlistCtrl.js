@@ -6,9 +6,10 @@ app.controller('birdlistCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     /* ----------------------- Variables ----------------------- */
     $scope.duckInfo = false;
     $scope.birdname = $stateParams.bird;
-    $scope.namedPageSize = 4;
+    $scope.namedPageSize = 3;
     $scope.unknownPageSize = 10;
     $scope.currentPage = 1;
+    $scope.noBirdCaptures = false;
     
     /* ----------------------- Retrieve BirdApi ----------------------- */
     function getBirdInformation() {
@@ -71,6 +72,10 @@ app.controller('birdlistCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                    $scope.selectedCaptures.push(capture); 
                 });
                 console.log($scope.selectedCaptures);
+                
+                if($scope.selectedCaptures.length === 0) {
+                    $scope.noBirdCaptures = true;
+                }
         }
     });
     

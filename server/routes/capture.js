@@ -7,13 +7,13 @@ var Notification = require('../models/notification');
 module.exports = function(router) {
     router.post('/captures', function(req, res){
         var capture = new Capture();
-        capture.type = req.body.type;
         capture.birdname = req.body.birdname;
         capture.place =  req.body.place;
         capture.note = req.body.note;
         capture.userId = req.body.userId;
         capture.author = req.body.author;
         capture.picture = req.body.picture;
+        capture.picture_uuid = req.body.picture_uuid;
         capture.created_at = new Date();
         
         

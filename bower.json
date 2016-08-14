@@ -35,7 +35,6 @@
     "angular-notification-icons": "^0.4.3",
     "ngmap": "^1.17.3",
     "angular-sanitize": "^1.5.6",
-    "ng-text-truncate": "*",
-    "angular-masonry-directive": "*"
+    "ng-text-truncate": "*"
   }
 }

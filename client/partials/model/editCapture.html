@@ -1,6 +1,6 @@
 <div ng-controller="viewCaptureCtrl">
     <form name="editYourCapture">
-        <div class="form-group" ng-class="{'has-error' : !newBirdname && !checked}">
+        <div class="form-group" ng-class="{ 'has-error': noResults }">
             <label for="birdname">Birdname:</label>
             <div class="input-group">
                 <span class="input-group-addon">
@@ -9,7 +9,7 @@
                 <input type="text" class="form-control" id="birdname" ng-model="capture.birdname" required ng-disabled="checked" autocomplete="off" ng-value="capture.birdname" 
                     uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" typeahead-select-on-blur="true">
             </div>
-            <div ng-show="noResults">
+            <div ng-show="noResults" class="noResults-typeahead">
               <i class="glyphicon glyphicon-remove"></i> No Results Found - Please pick a correct birdname!
             </div>
         </div>

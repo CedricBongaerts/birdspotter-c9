@@ -21,7 +21,7 @@ var app = angular.module('app',
                             'angular-notification-icons',
                             'ngMap',
                             'ngSanitize',
-                            'masonry'
+                            'ng-uploadcare'
                         ]);
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
@@ -159,7 +159,7 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         loginState: 'home'
       }); 
       
-    filepickerProvider.setKey('AF6BvCiTmRHCrRyjpEfhQz');
+    filepickerProvider.setKey('AhTgLagciQByzXpFGRI0Az');
     
   jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
     var idToken = store.get('token');

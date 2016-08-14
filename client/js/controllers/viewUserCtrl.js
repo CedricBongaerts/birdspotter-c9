@@ -1,7 +1,7 @@
 /* global app*/
 
 app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'notificationApi', '$q', 'filterFilter', '$state', '$uibModal',
-                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi, $q, filterFilter, $state, $uibModal) {
+                    function($scope, $stateParams, $http, userApi, auth, captureApi, notificationApi, $q, filterFilter, $state, $uibModal ) {
 
     /* ----------------------- Variables ----------------------- */
     var id = $stateParams.id;
@@ -15,9 +15,9 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.pageSize = 5;
     $scope.currentPage = 1;
     $scope.noCaptures = false;
-    
     $scope.following = false;
     $scope.follow = false;
+    $scope.selectedSearch = "search.$";
     
     /* ----------------------- Process Data ----------------------- */
     $q.all({follows: findFollow(), captures: getAllCaptures(), user: getUser(id), users: getUsers()}).then(function(collections) {
@@ -172,6 +172,19 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.closeMap = function() {
         $scope.mapShow = false;
     };
+    
+    /* ------------------------------- Show Preview ------------------------------------ */
+    $scope.imgPreviewShow = false;
+    
+    $scope.showImgPreview = function() {
+        $scope.imgPreviewShow = true;
+        $scope.thisCapture = this.capture;
+    }
+    
+    $scope.closeImgPreview = function() {
+        console.log('did');
+        $scope.imgPreviewShow = false;
+    }
  
 /* ----------------------- Retrieve Services - Data ----------------------- */                
 function getUser(id) {

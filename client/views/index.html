@@ -9,6 +9,10 @@
     <link rel="icon" href="img/logo.png">
     <title ng-bind="$state.current.data.pageTitle">Birdspotter</title>
     
+    <script>
+      UPLOADCARE_PUBLIC_KEY = '6d9f5c6bd46c84974963';
+    </script>
+    
     <!-- Lato Font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato">
 
@@ -21,15 +25,15 @@
     <!-- Notifications CSS -->
     <link rel="stylesheet" href="/lib/angular-notification-icons/dist/angular-notification-icons.min.css">
     
-    <!-- Fancy Box -->
-    <link rel="stylesheet" href="/lib/fancybox-plus/css/jquery.fancybox-plus.css">
-    
     <!-- Bootstrap core JavaScript -->
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
+    
+    <!-- Masonry -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/masonry/2.1.08/jquery.masonry.min.js"></script>
     
     <!-- Custom Scrollbar -->
     <link rel="stylesheet" href="/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" type="text/css"/>
@@ -65,11 +69,14 @@
     <script type='text/javascript' src="/lib/ngmap/build/scripts/ng-map.min.js"></script>
     <script type='text/javascript' src="/lib/angular-sanitize/angular-sanitize.min.js"></script>
     <script type='text/javascript' src="/lib/ng-text-truncate/ng-text-truncate.js"></script>
-    <script type='text/javascript' src="/lib/angular-masonry-directive/src/angular-masonry-directive.js"></script>
     
     <!-- Filestack -->
     <script type="text/javascript" src="/lib/filepicker-js/filepicker.min.js"></script>
     <script type="text/javascript" src="/lib/angular-filepicker/dist/angular_filepicker.min.js"></script>
+    
+    <!-- Uploadcare -->
+    <script charset="utf-8" src="//ucarecdn.com/widget/2.1.4/uploadcare/uploadcare.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-uploadcare/angular-uploadcare.js"></script>
     
     <!-- Auth0's libraries -->
     <script type="text/javascript" src="https://cdn.auth0.com/js/lock-9.1.js"></script>
@@ -100,6 +107,9 @@
     <script  type="text/javascript" src="/js/directives/ngSlideToggle.js"></script>
     <script  type="text/javascript" src="/js/directives/wikiContent.js"></script>
     <script  type="text/javascript" src="/js/directives/anchorSmoothScroll.js"></script>
+    <script  type="text/javascript" src="/js/directives/ngMasonry.js"></script>
+    <script  type="text/javascript" src="/js/directives/ngReverseGeocode.js"></script>
+    
     
     <!-- Services -->
     <script  type="text/javascript" src="/js/services/captureService.js"></script>
@@ -122,15 +132,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" ui-sref="dashboard" ng-if="auth.isAuthenticated"><img src="/img/logo.png" width="30px" /><span>Birdspotter</span></a>
+          <a class="navbar-brand" ui-sref="dashboard" ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in"><img src="/img/logo.png" width="30px" /><span>Birdspotter</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <!--<li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> <span class="nav-names"> Dashboard</span></a></li>-->
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span> <span class="nav-names"> Capture</span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><span class="glyphicon nav-glyph glyphicon-list-alt"></span> <span class="nav-names"> Following</span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span> <span class="nav-names" >Users</span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/birdlist')}"><a ui-sref="birdlist"><img src="/img/bird-nav-icon.png" id="bird-icon" /><span class="nav-names">Unnamed birds</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span><span class="nav-names">Capture</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/birdlist')}"><a ui-sref="birdlist"><img src="/img/bird-nav-icon.png" class="image-icon bird-icon-nav" /><span class="nav-names">Unknown birds</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span><span class="nav-names">Users</span></a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li ng-if="auth.isAuthenticated">
@@ -146,10 +155,11 @@
                  </span>
               </div>
             </li>
-            <li data-toggle="collapse" ng-if="auth.isAuthenticated" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"> <notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon><span class="nav-names"Notifications</span></a></li>
+            <li data-toggle="collapse" ng-if="auth.isAuthenticated" data-target=".navbar-collapse.in" ng-class="{active: isActive('/notifications')}" ng-click="clearNavNotification()"><a ui-sref="notifications"><notification-icon count="countNotification"><i class="fa nav-glyph fa-bell"></i><notification-icon></notification-icon><span class="nav-names notifications-nav-name">Notifications</span></a></li>
             <li class="dropdown inline navbar-drop-tag clickable" ng-if="auth.isAuthenticated">
-             <span class="dropdown-toggle clickable navbar-toggle-dropdown" data-toggle="dropdown">{{auth.profile.given_name}}</span>
+             <span class="dropdown-toggle clickable navbar-toggle-dropdown" data-toggle="dropdown"><img ng-src="{{auth.profile.picture}}" width="27" /><span class="nav-names user-name-nav">{{auth.profile.given_name}}</span></span>
                     <ul class="dropdown-menu nav-dropdown" aria-labelledby="navDropDown">
+                        <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/following')}"><a ui-sref="following"><img src="/img/personal-nav-icon.png" width="30" class="image-icon glyph-drop" /><span class="nav-names-drop follow-icon-text">Following Dashboard</span></a></li>
                         <li data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/user-profile/{{auth.profile.user_id}}')}"><a ui-sref="user-profile({id: auth.profile.user_id})"><i class="fa fa-user nav-glyph glyph-drop"></i><span class="nav-names-drop">Profile</span></a></li>
                         <li data-toggle="collapse" data-target=".navbar-collapse.in"><a ui-sref="home" ng-click="logout()"><i class="fa fa-sign-out nav-glyph glyph-drop"></i><span class="nav-names-drop">Logout</span></a></li>
                     </ul>
@@ -164,14 +174,15 @@
     </nav>
     <!-- Container -->
     <div class="container" id="main-container">
-      <div ui-view></div>
+      <div ui-view>
+      </div>
     </div>
     <!-- End Container -->
     </div>
     <div class="footer" ng-if="$state.current.name === 'home'" ng-controller="homeCtrl">
         <div class="footer-content container">
             <div class="footer-logo col-md-4">
-                <img src="/img/logo-transparent.png" class="footer-logo"/>
+                <img src="/img/transparent-logo.png" class="footer-logo"/>
                 <p>by Cedric Bongaerts</p>
             </div>
             <div class="footer-links clickable col-md-8">

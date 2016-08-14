@@ -1,30 +1,30 @@
 <div class="col-md-8">
     <div class="well main-well" >
-        <h3 class="page-header-h3">Personal Dashboard</h3>
+        <h3 class="page-header-h3">Following Dashboard</h3>
         <hr />
         <h4 align="center" ng-if="nothing">
-                            <strong>The people that you are following, have not posted anything yet.. Yikes!</strong>
+                            <strong>There are no posts to be shown... Yikes!</strong>
                             <br /><br />
                             Quickly, go follow more people!</h4>
-        <div class="row">
-            <div data-ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="grid" >
-                 <a ui-sref="detail({id: capture._id})">
-                    <img ng-src="{{capture.picture}}" class="grid-img">
-                    </img>
-                    <span class="follow-capture-info">
-                        <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 
-                          {{capture.author}} 
-                            <span class="following-capture-time">· 
-                                <span class="glyphicon glyphicon-time"></span> 
-                                <span am-time-ago="capture.created_at"></span>
-                            </span>
-                        </span>
+        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="list-group-item dash-posts">
+            <div class="thumbnail no-border no-margin-bottom"> 
+                <h4 class="dash-capture-info">
+                    <span>
+                        <i class="fa fa-user"></i> 
+                        <a ui-sref="user-profile({id: capture.userId})" class="clickable">
+                            <strong>{{capture.author}}</strong>
+                        </a> captured a photo in 
+                        <span class="fa fa-map-marker"></span> <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
                     </span>
-                 </a>
+                </h4>
+                <a ui-sref="detail({id: capture._id})">
+                    <img ng-src="{{capture.picture}}" alt="bird" onload="this.style.opacity='1';" class="dash-thumb-img .thumb-min"></img>
+                </a>
+                <h5 class="dash-capture-time"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="capture.created_at"></span></h5>
+                <hr />
             </div>
         </div>
         <div ng-show="captures.length > pageSize">
-            <hr />
             <uib-pagination total-items="captures.length"
                             items-per-page="pageSize"
                             ng-model="currentPage">
@@ -47,6 +47,9 @@
                     </p>
                 </a>
             </li>
+            <h4 align="center" ng-if="notFollowing">
+                <strong>You are not following anyone</strong>
+            </h4>   
         </ul>
     </div>
 </div>

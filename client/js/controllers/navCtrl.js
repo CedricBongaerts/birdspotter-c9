@@ -7,9 +7,7 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
     };
     
     $scope.auth = auth;
-    
-    console.log($state.current.name);
-    
+  
     $scope.getUserId = function() {
       return auth.profile.users;
     };

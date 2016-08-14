@@ -73,10 +73,10 @@
         <a ui-sref="user-captures({id: id})" class="view-all-captures">View Full Gallery</a>
         <hr />
         <div class="row">
-            <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo: 8" class="list-group-item profile-captures-wrapper col-md-6">
-                <a ui-sref="detail({id: capture._id})">
+            <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo: 8" class="list-group-item profile-captures-wrapper col-md-6 clickable">
+                <span ng-click="showImgPreview(capture)">
                     <div class="thumbnail no-border no-margin-bottom profile-captures" style="background-image: url('{{capture.picture}}')"></div>
-                </a>
+                </span>
             </div>
             <p ng-if='noCaptures' class="no-captures-found">
                 No Images Found! :(
@@ -108,3 +108,32 @@
   <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
 </div>
 <div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>
+
+<!--<div class="overlay-image-preview" ng-if="imgPreviewShow">-->
+<!--    <span ng-click="closeImgPreview()">Test</span>-->
+<!--    <img ng-src="{{thisCapture.picture}}" class="preview-image" />-->
+<!--    <div class="preview-text">-->
+<!--        <h4 class="dash-capture-info">-->
+<!--            <span>-->
+<!--                <i class="fa fa-user"></i> -->
+<!--                    <strong>{{thisCapture.author}}</strong> captured a photo in -->
+<!--                <span class="fa fa-map-marker"> </span><strong>{{thisCapture.place}}</strong>-->
+<!--            </span>-->
+<!--        </h4>-->
+<!--        <h5 class="dash-capture-time"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="thisCapture.created_at"></span></h5>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="image-preview-popup" ng-if="imgPreviewShow">
+    <div class="image-preview-content">
+        <img ng-src="{{thisCapture.picture}}" class="preview-image" />
+        <div class="image-preview-text">
+            <span>
+                <a ui-sref="detail({id: thisCapture._id})" class="preview-image-link clickable">{{thisCapture.birdname}}</a> 
+                 · <span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="thisCapture.created_at"></span>
+            </span>
+        </div>
+    </div>
+</div>
+<span class="glyphicon glyphicon-remove close-popup"  ng-click="closeImgPreview()" ng-if="imgPreviewShow"></span>
+<div class="overlay-image-preview " ng-if="imgPreviewShow" ng-click="closeImgPreview()"></div>

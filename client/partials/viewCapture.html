@@ -17,6 +17,7 @@
                 <span popover-title="{{capture.birdname}}" popover-placement="bottom-left" popover-trigger="mouseenter" ng-if="capture.birdname == 'Unknown'"
                         popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl" class="glyphicon glyphicon-info-sign icon-popover-image clickable brand-color-link"></span>
             </span>
+            <!--<span class="text-muted" style="font-size: 12px">Suggestions: Aap - Banaan</span>-->
         </h3>
         <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="clickable"><strong>{{capture.author}}</strong></a> in <span class="fa fa-map-marker"></span> 
             <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
@@ -25,13 +26,13 @@
         <hr />
         
         <div class="thumbnail no-border view-capture-thumb"> 
-                <img class="captureImg clickable" ng-src="{{capture.picture}}" ng-click="openImageModel()"></img>
+                <img class="captureImg clickable" ng-src="{{capture.picture}}" ng-click="showImgPreview(capture)"></img>
         </div>
         
             <div class="vote-comment-buttons">
                 <span class="clickable capture-action-buttons" ng-click="commentsShow()" ng-class="[{'capture-action-active':comments}]"><span class="glyphicon glyphicon-comment clickable"></span> Comment </span>  
-                <span ng-click="likeCapture()" ng-show="like" class="clickable capture-action-buttons"><span class="glyphicon glyphicon-heart"></span> Like</span>
-                <span ng-click="unlikeCapture()" ng-show="liked" class="clickable capture-action-buttons liked-markup"><span class="glyphicon glyphicon-heart"></span> Liked</span>
+                <span ng-click="likeCapture()" ng-show="like" class="clickable capture-action-buttons"><i class="fa fa-thumbs-up"></i> Like</span>
+                <span ng-click="unlikeCapture()" ng-show="liked" class="clickable capture-action-buttons liked-markup"><i class="fa fa-thumbs-up"></i> Liked</span>
                 <span class="dropup inline capture-action-buttons">
                     <span class="dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true"><i class="fa fa-share" id="shareDropDown"></i> Share</span>
                     <ul class="dropdown-menu" aria-labelledby="shareDropDown">
@@ -57,9 +58,7 @@
                         <li><a
                             socialshare
                             socialshare-provider="facebook"
-                            socialshare-popup-height="400"
-                            socialshare-url="https://birdspotter-cedricbongaerts.c9users.io/#/detail/{{id}}"
-                            socialshare-popup-width="400">
+                            socialshare-url="https://birdspotter-cedricbongaerts.c9users.io/#/detail/{{id}}">
                             <span class="share-buttons facebook-icon"><i class="fa fa-facebook-official share-icon"></i><strong>Facebook</strong></span>
                             </a>
                         </li>
@@ -67,28 +66,38 @@
                 </span> 
             </div>
             <div class="vote-amount">
-                <span>{{capture.votes.length}} <i class="fa fa-thumbs-up"></i></span>
+                <span><i class="fa fa-thumbs-up"></i> {{capture.votes.length}} Received</span>
             </div>
         <div>
             <hr />
-            <div class="row" data-slide-toggle="comments" data-start-shown="false" data-slide-toggle-duration="250">
+            <div class="row comments-section" data-slide-toggle="comments" data-start-shown="false" data-slide-toggle-duration="250">
             <h4> <strong>Comments · {{capture.comments.length}}</strong></h4>
             <hr />
                 <div class="col-md-4">
             	<form name="addComments" ng-submit="addComment()">
                         <div class="form-group">
                             <label for="birdname">Comment:</label>
-                            <input type="text" class="form-control" autocomplete="off" id="comment" class="col-md-6" ng-model="comment" placeholder="Leave your comment.." ng-enter="addComment()"> 
+                            <input type="text" class="form-control" autocomplete="off" id="comment" class="col-md-6" ng-model="comment" placeholder="Leave your comment.." ng-enter="addComment()" required>
                         </div>
-                        <div class="form-group" ng-show="capture.birdname=='Unknown'">
-                            <label for="birdname">Birdname:</label>
-                            <input type="text" class="form-control" autocomplete="off" id="birdSuggestion" class="col-md-6" ng-model="birdSuggestion" placeholder="Give the birdname.."
-                                uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" ng-enter="addComment()"
-                                uib-tooltip="The users has not added a birdname to his capture! This is most likely because he does not know the name. If you know it, let him know."
-                                tooltip-placement="top"
-                                tooltip-trigger="mouseenter"
-                                tooltip-enable="!birdname">
-                        </div>
+                        <button type="button" ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addComments.$invalid">Comment</button>
+                </form>
+                
+                <form name="addBirdSuggestions" ng-submit="addBirdSuggestion()" ng-show="capture.birdname=='Unknown'" >
+                    <div class="form-group" ng-class="{ 'has-error': noResults }">
+                        <label for="birdname">Birdname:</label>
+                        <input type="text" class="form-control" autocomplete="off" id="birdSuggestion" class="col-md-6" ng-model="birdSuggestion" placeholder="Give the birdname.."
+                            uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" 
+                            ng-enter="addBirdSuggestion(noResults)" typeahead-no-results="noResults" typeahead-select-on-blur="true"
+                            uib-tooltip="The users has not added a birdname to his capture! This is most likely because he does not know the name. If you know it, let him know."
+                            tooltip-placement="top"
+                            tooltip-trigger="mouseenter"
+                            tooltip-enable="!birdname"
+                            required>
+                            <div ng-show="noResults" class="noResults-typeahead birdname-noResults">
+                              <i class="glyphicon glyphicon-remove"></i> No Results Found - Please pick a correct birdname!
+                            </div>
+                    </div>
+                    <button type="button" ng-click="addBirdSuggestion()" class="btn margin-left btn-success" ng-disabled="addBirdSuggestions.$invalid || noResults">Suggest Birdname</button>
                 </form>
                 </div>
                 <div class="col-md-8">
@@ -98,7 +107,7 @@
                                 <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> 
                                 <span ng-text-truncate="comment.comment" ng-tt-chars-threshold="150">{{comment.comment}}</span> 
                             </span>
-                            <span ng-show="comment.birdSuggestion"><strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Attention </strong> <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> gave the birdname · 
+                            <span ng-show="comment.birdSuggestion"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> gave the birdname · 
                             <span><strong><a ui-sref="birdlist({bird: comment.birdSuggestion})">{{comment.birdSuggestion}}</a></strong></span></span>  
                             <span class="commentActions">
                                 <span am-time-ago="comment.created_at"></span>
@@ -117,3 +126,11 @@
   <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
 </div>
 <div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>
+
+<div class="image-preview-popup" ng-if="imgPreviewShow">
+    <div class="image-preview-content">
+        <img ng-src="{{thisCapture.picture}}" class="preview-image" />
+    </div>
+</div>
+<span class="glyphicon glyphicon-remove close-popup"  ng-click="closeImgPreview()" ng-if="imgPreviewShow"></span>
+<div class="overlay-image-preview " ng-if="imgPreviewShow" ng-click="closeImgPreview()"></div>

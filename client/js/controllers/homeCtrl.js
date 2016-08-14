@@ -14,7 +14,7 @@ app.controller('homeCtrl', function($scope, auth, $http, $location, store, $root
             title: "Login",
           }
         },
-        icon: '/img/logo-transparent.png',
+        icon: '/img/logo.png',
         focusInput: false,
         gravatar: false,
         popup: true,

@@ -2,7 +2,7 @@
     <div class="well main-well">
         <h3 class="page-header-h3">Recent Global Activity</h3>
         <hr />
-        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="list-group-item dash-posts">
+        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
             <div class="thumbnail no-border no-margin-bottom"> 
                 <h4 class="dash-capture-info">
                     <span>
@@ -20,11 +20,6 @@
                 <hr />
             </div>
         </div>
-        <uib-pagination ng-show="captures.length > pageSize"
-                        total-items="captures.length"
-                        items-per-page="pageSize"
-                        ng-model="currentPage">
-        </uib-pagination>
     </div>
 </div>
 <div class="col-md-4">
@@ -45,23 +40,6 @@
         </div>
     </div>
 </div>
-
-<!--<div class="col-md-4 top-captures">-->
-<!--    <div class="well">-->
-<!--        <h3 class="page-header-h3">Top Capturers:</h3>-->
-<!--        <hr />-->
-<!--        <div class="row">-->
-<!--            <div ng-if="captures" ng-repeat="topPoster in topPosters | orderBy:'-amountPosted' | limitTo:3">-->
-<!--                 <a ui-sref="user-profile({id: topPoster.user.user_id})" class="list-group-item col-md-12">-->
-<!--                    <div class="thumbnail no-border no-margin-bottom"> -->
-<!--                        <img ng-show="topPoster.user.identities[0].provider=='facebook'" ng-src="{{topPoster.user.picture_large}}" width="150px">-->
-<!--                        <img ng-show="topPoster.user.identities[0].provider=='google-oauth2'" ng-src="{{topPoster.user.picture}}" width="150px">-->
-<!--                    </div>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
   <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
   <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>

@@ -1,7 +1,7 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$uibModal', '$filter', '$anchorScroll', '$timeout',
-                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $uibModal, $filter, $anchorScroll, $timeout) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$filter', '$anchorScroll', '$timeout',
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $filter, $anchorScroll, $timeout) {
 
     /* ----------------------- Variables ----------------------- */
     var id = $stateParams.id;
@@ -81,12 +81,14 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 
                 /* -------------------------- Check if voted unlike Capture -------------------------- */
                 // Check voted
+                
                 var votes = res.data.votes;
 
                 if(votes.length == 0){$scope.like = true;}
                 votes.forEach(function(vote){
                     if(vote.userId === auth.profile.user_id) {
                         $scope.liked = true;
+                        
                     } 
                 });
                 $scope.like = !$scope.liked;
@@ -95,11 +97,11 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         
                 // Unlike
                 $scope.unlikeCapture = function(){
-                    
+
                     votes.forEach(function(vote){
-                        if(vote.userId === auth.profile.user_id) {
-                            var voteId = vote._id;
-                        
+                    if(vote.userId === auth.profile.user_id) {
+                        var voteId = vote._id;
+                    
                         voteApi.unlikeCapture(voteId).then(function(res) {});
                             $scope.capture.votes.length--;
                             $scope.liked = false;
@@ -114,13 +116,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         .then(function(res) {});
                         $scope.capture.comments.splice(index, 1);
                     };
-                    
-                $scope.openImageModel = function() {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: '/partials/model/birdImageModal.html'
-                    });
-                };
         });
     
     /* --------------------------------- Like Capture ----------------------------------- */              
@@ -160,25 +155,19 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
           
     /* --------------------------------- Add comment ------------------------------------ */       
     $scope.addComment = function(){
+        if($scope.comment === undefined) {
+            return;
+        }
         var commentObj = {
             comment           : $scope.comment,
-            birdSuggestion    : $scope.birdSuggestion,     
             userId            : $scope.auth.profile.user_id,
             author            : $scope.auth.profile.name
         };  
         
-        var notificationType;
-        
-        if(commentObj.birdSuggestion == undefined) {
-            notificationType = 'comment';
-        } else {
-            notificationType = 'birdsuggestion';
-        }
-        
         var notificationObj = {
                             notificationFor     : $scope.capture.userId,
                             notificationFrom    : auth.profile.user_id,
-                            concirning          : notificationType,
+                            concirning          : 'comment',
                             parameter           : id
         };
         
@@ -199,6 +188,46 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         });
         
         $scope.comment = undefined;
+    };
+    
+    $scope.addBirdSuggestion = function(){
+        if(this.noResults === true) {
+            $scope.birdSuggestion = '';
+            return;
+        }
+        
+        if($scope.birdSuggestion === undefined) {
+            return;
+        }
+        var commentObj = {
+            birdSuggestion    : $scope.birdSuggestion,     
+            userId            : $scope.auth.profile.user_id,
+            author            : $scope.auth.profile.name
+        };  
+        
+        var notificationObj = {
+                            notificationFor     : $scope.capture.userId,
+                            notificationFrom    : auth.profile.user_id,
+                            concirning          : 'birdsuggestion',
+                            parameter           : id
+        };
+        
+        
+        captureApi.postComment(id, commentObj)  
+            .then(function(res){
+                console.log(res.data);
+                $scope.capture.comments.push(res.data);
+                var commentId = res.data._id;
+                console.log(commentId);
+            if($scope.capture.userId !== auth.profile.user_id) {    
+                    commentApi.commentNotification(commentId, notificationObj)  
+                    .then(function(res){
+                        console.log(notificationObj);
+                        console.log(commentObj);
+                });
+            }
+        });
+        
         $scope.birdSuggestion = undefined;
     };
     
@@ -239,6 +268,18 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     $scope.searchBird = function() {
       $state.go('birdlist' , {bird: this.capture.birdname});
     };
+    
+    /* ------------------------------- Show Image Preview ------------------------------ */
+    $scope.imgPreviewShow = false;
+    
+    $scope.showImgPreview = function() {
+        $scope.imgPreviewShow = true;
+        $scope.thisCapture = this.capture;
+    }
+    
+    $scope.closeImgPreview = function() {
+        $scope.imgPreviewShow = false;
+    }
     
     /* ------------------------------- Show Maps ---------------------------------------- */
     $scope.mapShow = false;
