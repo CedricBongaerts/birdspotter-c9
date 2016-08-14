@@ -43,13 +43,13 @@
         <!--    <input type="text" ng-model="search" class="form-control" placeholder="Search capture">-->
         <!--</form>-->
         <form class="input-group col-md-4 form-inline">
-          <input type="text" class="form-control" placeholder="Search captures" ng-model="search.place">
+          <input type="text" class="form-control" ng-model="search[filter]" placeholder="Searching by {{searchBy}}..">
           <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Options <span class="glyphicon glyphicon-cog"></span> </button>
                 <ul class="dropdown-menu">
-                    <li><input type="radio"  name="searchoption" value="All" id="All" checked><label for="all">Search through all</label></li>
-                    <li><input type="radio" name="searchoption" value="Birdname" id="Birdname"><label for="birdname">Search by birdname</label></li>
-                    <li><input type="radio" name="searchoption" value="Place" id="Place"><label for="place">Search by place</label></li>
+                    <li><input type="radio" name="searchoption" value="any" id="Any" ng-model="searchBy" ng-click="changeFilterTo('$')" checked><label for="all">Search by Any</label></li>
+                    <li><input type="radio" name="searchoption" value="birdname" id="Birdname" ng-model="searchBy" ng-click="changeFilterTo('birdname')"><label for="birdname">Search by Birdname</label></li>
+                    <li><input type="radio" name="searchoption" value="place" id="Place" ng-model="searchBy" ng-click="changeFilterTo('place')"><label for="place">Search by Place</label></li>
                 </ul>
           </div>
           <span class="input-group-btn">

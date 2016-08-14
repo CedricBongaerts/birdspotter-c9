@@ -11,6 +11,7 @@ var captureSchema = Schema({
     created_at: Date,
     updated_at: Date,
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
+    birdsuggestions: [{ type: Schema.Types.ObjectId, ref: 'Birdsuggestion'}],
     votes: [{ type: Schema.Types.ObjectId, ref: 'Vote'}],
 });
 

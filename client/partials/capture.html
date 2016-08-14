@@ -61,7 +61,7 @@
         <h3 class="page-header-h3">Preview</h3>
         <hr />
         <h3 ng-hide="checked || !birdname">{{birdname}}</h3>
-        <h4><span class="fa fa-map-marker"></span> {{place.formatted_address}}</h4>
+        <h4 ng-show="place"><span class="fa fa-map-marker"></span> {{place.formatted_address}}</h4>
         <!--<h4 ng-show="autoLocation"><span class="fa fa-map-marker"></span> {{autoLocation}}</h4>-->
         <p ng-if="note"><i>"{{note}}"</i></p>
         <!-- Show the thumbnail only when the picture is uploaded -->

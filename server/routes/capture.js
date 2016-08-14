@@ -1,5 +1,6 @@
 var Capture = require('../models/capture');
 var Comment = require('../models/comment');
+var Birdsuggestion = require('../models/birdsuggestion');
 var Vote = require('../models/vote');
 var Notification = require('../models/notification');
 
@@ -7,6 +8,7 @@ var Notification = require('../models/notification');
 module.exports = function(router) {
     router.post('/captures', function(req, res){
         var capture = new Capture();
+        capture.type = req.body.type;
         capture.birdname = req.body.birdname;
         capture.place =  req.body.place;
         capture.note = req.body.note;
@@ -58,13 +60,26 @@ module.exports = function(router) {
     	});
     });  
     
+    // Map logic to route parameter 'birdsuggestion'
+    router.param('birdsuggestion', function (req, res, next, id) {
+    	var query = Birdsuggestion.findById(id);
+    	
+    	query.exec(function (err, birdsuggestion) {
+    		if (err) { return next(err); }
+    		if (!birdsuggestion) { return next(new Error("can't find birdsuggestion")); }
+    		
+    		req.birdsuggestion = birdsuggestion;
+    		return next();
+    	});
+    });  
+    
     // Map logic to route parameter 'vote'
     router.param('vote', function (req, res, next, id) {
     	var query = Vote.findById(id);
     	
     	query.exec(function (err, vote) {
     		if (err) { return next(err); }
-    		if (!vote) { return next(new Error("can't find comment")); }
+    		if (!vote) { return next(new Error("can't find vote")); }
     		
     		req.vote = vote;
     		return next();
@@ -75,17 +90,30 @@ module.exports = function(router) {
 	    req.capture.populate('comments',
 	        function (err, capture) {
 	            if (err) throw err;
-	            req.capture.populate('votes',
-	                function(err, capture) {
-	                    if(err) throw err;
+	            
+	            req.capture.populate('birdsuggestions',
+        	        function (err, capture) {
+        	            if (err) throw err;
+	            
+    	            req.capture.populate('votes',
+    	                function(err, capture) {
+    	                    if(err) throw err;
 	                    
 		            res.json(capture);
+                });
             });
     	});
     });
     
      router.delete('/captures/:capture', function(req, res){
             req.capture.comments.forEach(function(id) {
+        		Comment.remove({
+        			_id: id
+        		}, function(err) {
+        			if (err) { throw err;}
+        		});
+        	});
+        	req.capture.comments.forEach(function(id) {
         		Comment.remove({
         			_id: id
         		}, function(err) {

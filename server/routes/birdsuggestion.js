@@ -1,0 +1,52 @@
+var Birdsuggestion = require('../models/birdsuggestion');
+var Capture = require('../models/capture');
+var Notification = require('../models/notification');
+
+module.exports = function(router) {
+    router.post('/captures/:capture/birdsuggestions', function(req, res, next){
+        var birdsuggestion = new Birdsuggestion();
+        birdsuggestion.birdSuggestion = req.body.birdSuggestion;
+        birdsuggestion.userId = req.body.userId;
+        birdsuggestion.author = req.body.author;
+        birdsuggestion.created_at = new Date();
+        birdsuggestion.capture = req.capture;
+        
+        birdsuggestion.save(function(err, birdsuggestion) {
+    		if (err) { return next(err); }
+    		
+    		req.capture.birdsuggestion.push(birdsuggestion);
+    		req.capture.save(function(err, capture) {
+    			if (err) { return next(err); }
+    			
+    			res.json(birdsuggestion);
+    		});
+        });
+    });
+    
+    router.get('/birdsuggestion', function(req, res){
+        Birdsuggestion.find({}, function(err, data){
+            if(err)
+                throw err;
+            res.json(data);
+        });
+    });
+    
+    router.delete('/birdsuggestion/:birdsuggestion', function(req, res){
+        req.birdsuggestion.notification.forEach(function(id) {
+    		Notification.remove({
+    			_id: id
+    		}, function(err) {
+    			if (err) { throw err;}
+    		});
+    	});
+    	
+        Birdsuggestion.findByIdAndRemove(req.params.birdsuggestion, function(err, birdsuggestion){
+            if (birdsuggestion) {
+                Capture.update({_id: birdsuggestion.capture}, {
+                        $pull : {comments: req.params.birdsuggestion}
+                    }, function(err, data) { if(err) throw err; });
+            } if(err) throw err;
+        });
+        
+     });
+};

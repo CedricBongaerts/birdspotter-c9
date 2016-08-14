@@ -17,7 +17,9 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.noCaptures = false;
     $scope.following = false;
     $scope.follow = false;
-    $scope.selectedSearch = "search.$";
+    $scope.filter = "$";
+    $scope.searchBy = "Any";
+    $scope.search = {$:'', birdname:'', place:''};
     
     /* ----------------------- Process Data ----------------------- */
     $q.all({follows: findFollow(), captures: getAllCaptures(), user: getUser(id), users: getUsers()}).then(function(collections) {
@@ -41,6 +43,13 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
         }).forEach(function(capture) {
             $scope.captures.push(capture);
         });
+        
+    /* ----------------------- Filter options ----------------------- */
+        $scope.changeFilterTo = function(pr) {
+            $scope.filter = pr;
+        }
+    
+
 
         /* ----------------------- Toggle data ----------------------- */
         $scope.profilePic = function(pic) {
