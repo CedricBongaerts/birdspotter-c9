@@ -62,23 +62,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 };
 
                 
-                // $scope.birdSuggestionInfo = function(birdSuggestion) {
-                //     birdApi.getDuckEngine(birdSuggestion)
-                //     .then(function(res) {
-                //         console.log(res.data);
-                //         $scope.suggestionBirdName = res.data.Heading;
-                //         $scope.suggestionBirdImage = res.data.Image;
-                //         $scope.suggestionBirdInfo = res.data.Abstract;
-                //         $scope.suggestionBirdInfoPopover = {
-                //             title: $scope.suggestionBirdName,
-                //             image: $scope.suggestionBirdImage,
-                //             content: $scope.suggestionBirdInfo,
-                //             templateUrl: '/partials/model/birdPopover.html'
-                //       };
-                //     });
-                // };
-                
-                
                 /* -------------------------- Check if voted unlike Capture -------------------------- */
                 // Check voted
                 
@@ -190,6 +173,22 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         $scope.comment = undefined;
     };
     
+    $scope.birdSuggestionInfo = function(birdSuggestion,noResults) {
+        if(noResults === false ){
+        birdApi.getDuckEngine(birdSuggestion)
+        .then(function(res) {
+            console.log(res.data);
+            $scope.suggestionBirdName = res.data.Heading;
+            $scope.suggestionBirdImage = res.data.Image;
+            $scope.suggestionBirdInfo = res.data.Abstract;
+        });
+        } else {
+            $scope.birdSuggestion = '';
+            console.log(noResults
+            )
+        }
+    };
+    
     $scope.addBirdSuggestion = function(){
         if(this.noResults === true) {
             $scope.birdSuggestion = '';
@@ -199,33 +198,32 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         if($scope.birdSuggestion === undefined) {
             return;
         }
-        var commentObj = {
+        var birdsuggestionObj = {
             birdSuggestion    : $scope.birdSuggestion,     
             userId            : $scope.auth.profile.user_id,
             author            : $scope.auth.profile.name
         };  
         
-        var notificationObj = {
-                            notificationFor     : $scope.capture.userId,
-                            notificationFrom    : auth.profile.user_id,
-                            concirning          : 'birdsuggestion',
-                            parameter           : id
-        };
+        // var notificationObj = {
+        //                     notificationFor     : $scope.capture.userId,
+        //                     notificationFrom    : auth.profile.user_id,
+        //                     concirning          : 'birdsuggestion',
+        //                     parameter           : id
+        // };
         
         
-        captureApi.postComment(id, commentObj)  
+        captureApi.postBirdsuggestion(id, birdsuggestionObj)  
             .then(function(res){
                 console.log(res.data);
-                $scope.capture.comments.push(res.data);
-                var commentId = res.data._id;
-                console.log(commentId);
-            if($scope.capture.userId !== auth.profile.user_id) {    
-                    commentApi.commentNotification(commentId, notificationObj)  
-                    .then(function(res){
-                        console.log(notificationObj);
-                        console.log(commentObj);
-                });
-            }
+                var birdsuggestionId = res.data._id;
+                console.log(birdsuggestionId);
+            // if($scope.capture.userId !== auth.profile.user_id) {    
+            //         commentApi.commentNotification(commentId, notificationObj)  
+            //         .then(function(res){
+            //             console.log(notificationObj);
+            //             console.log(birdsuggestionObj);
+            //     });
+            // }
         });
         
         $scope.birdSuggestion = undefined;

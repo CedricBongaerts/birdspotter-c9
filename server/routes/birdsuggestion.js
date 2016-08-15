@@ -14,7 +14,7 @@ module.exports = function(router) {
         birdsuggestion.save(function(err, birdsuggestion) {
     		if (err) { return next(err); }
     		
-    		req.capture.birdsuggestion.push(birdsuggestion);
+    		req.capture.birdsuggestions.push(birdsuggestion);
     		req.capture.save(function(err, capture) {
     			if (err) { return next(err); }
     			
@@ -23,7 +23,7 @@ module.exports = function(router) {
         });
     });
     
-    router.get('/birdsuggestion', function(req, res){
+    router.get('/birdsuggestions', function(req, res){
         Birdsuggestion.find({}, function(err, data){
             if(err)
                 throw err;
@@ -31,7 +31,7 @@ module.exports = function(router) {
         });
     });
     
-    router.delete('/birdsuggestion/:birdsuggestion', function(req, res){
+    router.delete('/birdsuggestions/:birdsuggestion', function(req, res){
         req.birdsuggestion.notification.forEach(function(id) {
     		Notification.remove({
     			_id: id
@@ -43,7 +43,7 @@ module.exports = function(router) {
         Birdsuggestion.findByIdAndRemove(req.params.birdsuggestion, function(err, birdsuggestion){
             if (birdsuggestion) {
                 Capture.update({_id: birdsuggestion.capture}, {
-                        $pull : {comments: req.params.birdsuggestion}
+                        $pull : {birdsuggestions: req.params.birdsuggestion}
                     }, function(err, data) { if(err) throw err; });
             } if(err) throw err;
         });

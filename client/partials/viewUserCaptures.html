@@ -47,9 +47,9 @@
           <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Options <span class="glyphicon glyphicon-cog"></span> </button>
                 <ul class="dropdown-menu">
-                    <li><input type="radio" name="searchoption" value="any" id="Any" ng-model="searchBy" ng-click="changeFilterTo('$')" checked><label for="all">Search by Any</label></li>
-                    <li><input type="radio" name="searchoption" value="birdname" id="Birdname" ng-model="searchBy" ng-click="changeFilterTo('birdname')"><label for="birdname">Search by Birdname</label></li>
-                    <li><input type="radio" name="searchoption" value="place" id="Place" ng-model="searchBy" ng-click="changeFilterTo('place')"><label for="place">Search by Place</label></li>
+                    <li ng-click="changeFilterTo('$')"><input type="radio" name="searchoption" value="any" id="Any" ng-model="searchBy" checked><label for="all">Search by Any</label></li>
+                    <li ng-click="changeFilterTo('birdname')"><input type="radio" name="searchoption" value="birdname" id="Birdname" ng-model="searchBy"><label for="birdname">Search by Birdname</label></li>
+                    <li ng-click="changeFilterTo('place')"><input type="radio" name="searchoption" value="place" id="Place" ng-model="searchBy"><label for="place">Search by Place</label></li>
                 </ul>
           </div>
           <span class="input-group-btn">

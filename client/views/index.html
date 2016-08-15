@@ -145,7 +145,7 @@
             <li ng-if="auth.isAuthenticated">
               <div class="input-group search-nav" ng-class="{ 'has-error': noResults }">
                  <input type="text" class="form-control search-input-nav" placeholder="Birdname" autocomplete="off" ng-model="findBird" typeahead-no-results="noResults"
-                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-select-on-blur="true" ng-enter="findBirdlist(findBird, noResults)">
+                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-select-on-blur="false" typeahead-template-url="/partials/model/birdTypeahead.html" ng-enter="findBirdlist(findBird, noResults)">
                  <div class="ErrorSearchBird" ng-if="noResults">
                    <div class="errorTriangle"></div>
                    <div class="errorText">Please pick a valid birdname</div>

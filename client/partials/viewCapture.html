@@ -13,12 +13,17 @@
         </p>
         <h3  class="page-header-h3">
             <a ui-sref="birdlist({bird: capture.birdname})" class="clickable">{{capture.birdname}}</a>
-            <span class="info-popover-image">
-                <span popover-title="{{capture.birdname}}" popover-placement="bottom-left" popover-trigger="mouseenter" ng-if="capture.birdname == 'Unknown'"
-                        popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl" class="glyphicon glyphicon-info-sign icon-popover-image clickable brand-color-link"></span>
+            <span class="suggest-birdname-button" ng-if="capture.birdname == 'Unknown'">
+                <span popover-title="{{capture.birdname}}" popover-placement="bottom-left" popover-trigger="mouseenter"
+                      popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl" class="suggestion-button-text clickable"
+                      ng-bootbox-title="Suggest Birdname"
+                      ng-bootbox-custom-dialog
+                      ng-bootbox-custom-dialog-template="/partials/model/suggestBirdname.html">Suggest Birdname <span class="glyphicon glyphicon-pencil"></span></span>
             </span>
-            <!--<span class="text-muted" style="font-size: 12px">Suggestions: Aap - Banaan</span>-->
         </h3>
+        <h2 class="text-muted" style="font-size: 12px">Suggestions:
+                <span ng-repeat="birdsuggestion in capture.birdsuggestions"> -  {{birdsuggestion.birdSuggestion}}</span>
+        </h2>
         <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="clickable"><strong>{{capture.author}}</strong></a> in <span class="fa fa-map-marker"></span> 
             <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
         </h4>
@@ -81,24 +86,6 @@
                         </div>
                         <button type="button" ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addComments.$invalid">Comment</button>
                 </form>
-                
-                <form name="addBirdSuggestions" ng-submit="addBirdSuggestion()" ng-show="capture.birdname=='Unknown'" >
-                    <div class="form-group" ng-class="{ 'has-error': noResults }">
-                        <label for="birdname">Birdname:</label>
-                        <input type="text" class="form-control" autocomplete="off" id="birdSuggestion" class="col-md-6" ng-model="birdSuggestion" placeholder="Give the birdname.."
-                            uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" 
-                            ng-enter="addBirdSuggestion(noResults)" typeahead-no-results="noResults" typeahead-select-on-blur="true"
-                            uib-tooltip="The users has not added a birdname to his capture! This is most likely because he does not know the name. If you know it, let him know."
-                            tooltip-placement="top"
-                            tooltip-trigger="mouseenter"
-                            tooltip-enable="!birdname"
-                            required>
-                            <div ng-show="noResults" class="noResults-typeahead birdname-noResults">
-                              <i class="glyphicon glyphicon-remove"></i> No Results Found - Please pick a correct birdname!
-                            </div>
-                    </div>
-                    <button type="button" ng-click="addBirdSuggestion()" class="btn margin-left btn-success" ng-disabled="addBirdSuggestions.$invalid || noResults">Suggest Birdname</button>
-                </form>
                 </div>
                 <div class="col-md-8">
                     <ul ng-scrollbars ng-scrollbars-config="config" class="list-group comments">
@@ -107,8 +94,8 @@
                                 <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> 
                                 <span ng-text-truncate="comment.comment" ng-tt-chars-threshold="150">{{comment.comment}}</span> 
                             </span>
-                            <span ng-show="comment.birdSuggestion"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> gave the birdname · 
-                            <span><strong><a ui-sref="birdlist({bird: comment.birdSuggestion})">{{comment.birdSuggestion}}</a></strong></span></span>  
+                            <!--<span ng-show="comment.birdSuggestion"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> <a ui-sref="user-profile({id: comment.userId})" class="captureLink"><strong>{{comment.author}}</strong></a> gave the birdname · -->
+                            <!--<span><strong><a ui-sref="birdlist({bird: comment.birdSuggestion})">{{comment.birdSuggestion}}</a></strong></span></span>  -->
                             <span class="commentActions">
                                 <span am-time-ago="comment.created_at"></span>
                                 <span ng-if="comment.userId == auth.profile.user_id" ng-click="deleteComment($index)"> · <span class="clickable brand-color-link">Delete</span></span>

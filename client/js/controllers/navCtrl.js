@@ -38,6 +38,11 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
       });
     };
     
+    $scope.getImage = function(test) {
+      $scope.imageBird = test;
+      return $scope.imageBird;
+    }
+    
     $scope.logout = function() {
         auth.signout();
         store.remove('token');

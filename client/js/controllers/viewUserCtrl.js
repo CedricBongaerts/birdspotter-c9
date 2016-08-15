@@ -18,7 +18,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.following = false;
     $scope.follow = false;
     $scope.filter = "$";
-    $scope.searchBy = "Any";
+    $scope.searchBy = "any";
     $scope.search = {$:'', birdname:'', place:''};
     
     /* ----------------------- Process Data ----------------------- */
@@ -47,6 +47,11 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     /* ----------------------- Filter options ----------------------- */
         $scope.changeFilterTo = function(pr) {
             $scope.filter = pr;
+            if(pr==='$') {
+                $scope.searchBy = "any"
+            } else {
+                $scope.searchBy = pr;
+            }
         }
     
 

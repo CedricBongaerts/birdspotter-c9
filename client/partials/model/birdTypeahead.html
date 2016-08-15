@@ -1,0 +1,6 @@
+<div ng-controller="navCtrl">
+    <a class="clickable">
+      <span>{{imageBird}}</span>
+      <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    </a>
+</div>

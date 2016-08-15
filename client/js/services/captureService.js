@@ -28,12 +28,16 @@ app.factory('captureApi', ['$http', '$location', function($http, $location){
             return $http.delete(urlBase + '/' + id);
         },
         
+        likeCapture : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/votes', data);
+        },
+        
         postComment : function(id, data) {
             return $http.post(urlBase + '/' + id + '/comments', data);
         },
         
-        likeCapture : function(id, data) {
-            return $http.post(urlBase + '/' + id + '/votes', data);
+        postBirdsuggestion : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/birdsuggestions', data);
         },
         
     };
