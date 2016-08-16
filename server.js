@@ -32,9 +32,10 @@ app.use(function(req, res, next) {
 var mongoose = require('mongoose');
 var configDB = require('./server/config/database.js');
 require('./server/routes/capture');
+require('./server/routes/vote');
 require('./server/routes/comment');
 require('./server/routes/birdsuggestion');
-require('./server/routes/vote');
+require('./server/routes/suggestionVote');
 require('./server/routes/follow');
 require('./server/routes/notification');
 mongoose.connect(configDB.url);
@@ -63,8 +64,9 @@ app.use(function(err, req, res, next) {
 var api = express.Router();
 require('./server/routes/capture')(api);
 require('./server/routes/comment')(api);
-require('./server/routes/birdsuggestion')(api);
 require('./server/routes/vote')(api);
+require('./server/routes/birdsuggestion')(api);
+require('./server/routes/suggestionVote')(api);
 require('./server/routes/follow')(api); 
 require('./server/routes/notification')(api); 
 app.use('/api', api);
