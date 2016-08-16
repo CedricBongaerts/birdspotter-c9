@@ -1,47 +1,49 @@
-<div class="col-md-8">
-    <div class="well main-well">
-        <h3 class="page-header-h3">Recent Global Activity</h3>
-        <hr />
-        <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
-            <div class="thumbnail no-border no-margin-bottom"> 
-                <h4 class="dash-capture-info">
-                    <span>
-                        <i class="fa fa-user"></i> 
-                        <a ui-sref="user-profile({id: capture.userId})" class="clickable">
-                            <strong>{{capture.author}}</strong>
-                        </a> captured a photo in 
-                        <span class="fa fa-map-marker"></span> <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
-                    </span>
-                </h4>
-                <a ui-sref="detail({id: capture._id})">
-                    <img ng-src="{{capture.picture}}" alt="bird" onload="this.style.opacity='1';" class="dash-thumb-img .thumb-min"></img>
-                </a>
-                <h5 class="dash-capture-time"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="capture.created_at"></span></h5>
-                <hr />
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-4">
-    <div class="well">
-        <h3 class="page-header-h3">Most Liked Captures</h3>
-        <hr />
-        <div class="row">
-            <div ng-if="captures" ng-repeat="capture in captures | orderBy:'-votes.length' | limitTo:3">
-                <a ui-sref="detail({id: capture._id})" class="list-group-item col-md-12">
-                    <div class="thumbnail no-border no-margin-bottom"> 
-                        <img ng-src="{{capture.picture}}" onload="this.style.opacity='1';" class="dash-thumb-img top-liked-captures" alt="bird"/>
-                        <span class="top-likes-container">
-                            <h5 class="no-margin-top top-likes"><strong>{{capture.votes.length}}</strong> <i class="fa fa-thumbs-o-up"></i><strong> Received</strong></h5>
+<div class="container" id="main-container">
+    <div class="col-md-8">
+        <div class="well main-well">
+            <h3 class="page-header-h3">Recent Global Activity</h3>
+            <hr />
+            <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
+                <div class="thumbnail no-border no-margin-bottom"> 
+                    <h4 class="dash-capture-info">
+                        <span>
+                            <i class="fa fa-user"></i> 
+                            <a ui-sref="user-profile({id: capture.userId})" class="clickable">
+                                <strong>{{capture.author}}</strong>
+                            </a> captured a photo in 
+                            <span class="fa fa-map-marker"></span> <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
                         </span>
-                    </div>
-                </a>
+                    </h4>
+                    <a ui-sref="detail({id: capture._id})">
+                        <img ng-src="{{capture.picture}}" alt="bird" onload="this.style.opacity='1';" class="dash-thumb-img .thumb-min"></img>
+                    </a>
+                    <h5 class="dash-capture-time"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="capture.created_at"></span></h5>
+                    <hr />
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="well">
+            <h3 class="page-header-h3">Most Liked Captures</h3>
+            <hr />
+            <div class="row">
+                <div ng-if="captures" ng-repeat="capture in captures | orderBy:'-votes.length' | limitTo:3">
+                    <a ui-sref="detail({id: capture._id})" class="list-group-item col-md-12">
+                        <div class="thumbnail no-border no-margin-bottom"> 
+                            <img ng-src="{{capture.picture}}" onload="this.style.opacity='1';" class="dash-thumb-img top-liked-captures feed-image" alt="bird"/>
+                            <span class="top-likes-container">
+                                <h5 class="no-margin-top top-likes"><strong>{{capture.votes.length}}</strong> <i class="fa fa-thumbs-o-up"></i><strong> Received</strong></h5>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
+      <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
+      <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
+    </div>
+    <div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>
 </div>
-<div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
-  <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
-  <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
-</div>
-<div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>

@@ -1,39 +1,41 @@
-<div class="col-md-12">
-    <div class="well main-well">
-        <h3 class="page-header-h3 users-inline col-md-10">Users list  ·  {{users.length}} Users</h3>
-        <form class="form-inline users-search">
-            <input type="text" ng-model="search" class="form-control" placeholder="Search User">
-        </form>
-        <hr />
-        
-        <table class="table table-striped">
-            <thead>
-                    <tr>
-                        <th class="sort-icon" ng-click="sort('name')">Name
-                            <span class="glyphicon" ng-show="sortKey=='name'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
-                        </th>
-                        <th class="sort-icon" ng-click="sort('last_login')"> Last login
-                            <span class="glyphicon" ng-show="sortKey=='last_login'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
-                        </th>
-                        <th class="sort-icon" ng-click="sort('created_at')">Joined on
-                            <span class="glyphicon" ng-show="sortKey=='created_at'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
-                        </th>
+<div class="container" id="main-container">
+    <div class="col-md-12">
+        <div class="well main-well">
+            <h3 class="page-header-h3 users-inline col-md-10">Users list  ·  {{users.length}} Users</h3>
+            <form class="form-inline users-search">
+                <input type="text" ng-model="search" class="form-control" placeholder="Search User">
+            </form>
+            <hr />
+            
+            <table class="table table-striped">
+                <thead>
+                        <tr>
+                            <th class="sort-icon" ng-click="sort('name')">Name
+                                <span class="glyphicon" ng-show="sortKey=='name'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                            </th>
+                            <th class="sort-icon" ng-click="sort('last_login')"> Last login
+                                <span class="glyphicon" ng-show="sortKey=='last_login'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                            </th>
+                            <th class="sort-icon" ng-click="sort('created_at')">Joined on
+                                <span class="glyphicon" ng-show="sortKey=='created_at'" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span>
+                            </th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users|filter:search|orderBy:sortKey:reverse|startFrom:currentPage:pageSize">
+                        <td><img ng-src="{{user.picture}}" width="35px" class="user-list-image"> <a ui-sref="user-profile({id: user.user_id})" class="clickable"><strong class="user-list-name">{{user.name}}</strong></a></td>
+                        <td><span am-time-ago="user.last_login"></span></td>
+                        <td>{{user.created_at | date:'MMM dd, yyyy'}}</td>
                     </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="user in users|filter:search|orderBy:sortKey:reverse|startFrom:currentPage:pageSize">
-                    <td><img ng-src="{{user.picture}}" width="35px" class="user-list-image"> <a ui-sref="user-profile({id: user.user_id})" class="clickable"><strong class="user-list-name">{{user.name}}</strong></a></td>
-                    <td><span am-time-ago="user.last_login"></span></td>
-                    <td>{{user.created_at | date:'MMM dd, yyyy'}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div ng-if="users.length > pageSize">
-            <uib-pagination 
-                    total-items="users.length"
-                    items-per-page="pageSize"
-                    ng-model="currentPage">
-            </uib-pagination>
+                </tbody>
+            </table>
+            <div ng-if="users.length > pageSize">
+                <uib-pagination 
+                        total-items="users.length"
+                        items-per-page="pageSize"
+                        ng-model="currentPage">
+                </uib-pagination>
+            </div>
         </div>
     </div>
 </div>

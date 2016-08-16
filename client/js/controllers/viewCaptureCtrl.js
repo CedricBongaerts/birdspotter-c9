@@ -1,7 +1,7 @@
 /* global app */
 
-app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$filter', '$anchorScroll', '$timeout',
-                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $filter, $anchorScroll, $timeout) {
+app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureApi', 'auth', 'voteApi', '$location', '$ngBootbox', 'birdApi', 'commentApi', '$state', '$filter', '$anchorScroll', '$timeout', 'birdsuggestionApi',
+                function($scope, $stateParams, $http, captureApi, auth, voteApi, $location, $ngBootbox, birdApi, commentApi, $state, $filter, $anchorScroll, $timeout, birdsuggestionApi) {
 
     /* ----------------------- Variables ----------------------- */
     var id = $stateParams.id;
@@ -36,7 +36,22 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                             console.log('Deleted Capture');
                     });
                 };
-               
+                
+                // Check suggestions
+                var currentSuggestions = res.data.birdsuggestions;
+                $scope.showsuggestions = currentSuggestions.some(function(suggestion){
+                  return suggestion.userId === auth.profile.user_id && $scope.capture.birdname==='Unknown';
+                });
+                
+                // var currentSuggestions = res.data.birdsuggestions;
+                // if(var i=0; i<currentSuggestions.length;i++) {
+                //     if(currentSuggestions[i].userId === auth.profile.user_id && $scope.capture.birdname==='Unknown') { 
+                //   //is $scope.capture.birdname==='Unknown' check needed here, cause it has nothing to do with loop variables?
+                //         $scope.showSuggestionButton = false;
+                //         break;
+                //     }
+                // }
+                               
                /* ----------------------------- Edit Options ----------------------------- */
                $scope.toggleBirdname = function() {
                     if($scope.checked)
@@ -172,7 +187,17 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         
         $scope.comment = undefined;
     };
+    $scope.commentsShow = function() {
+        $scope.comments=!$scope.comments;
+        $timeout(function() {
+            $location.hash('bottom');
+            $anchorScroll();
+            console.log('scrolling down');
+        }, 250);
+    };
     
+    /* --------------------------------- Add Birdsuggestion ----------------------------------- */
+        
     $scope.birdSuggestionInfo = function(birdSuggestion,noResults) {
         if(noResults === false ){
         birdApi.getDuckEngine(birdSuggestion)
@@ -212,31 +237,47 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         // };
         
         
+        
         captureApi.postBirdsuggestion(id, birdsuggestionObj)  
             .then(function(res){
-                console.log(res.data);
-                var birdsuggestionId = res.data._id;
-                console.log(birdsuggestionId);
-            // if($scope.capture.userId !== auth.profile.user_id) {    
-            //         commentApi.commentNotification(commentId, notificationObj)  
-            //         .then(function(res){
-            //             console.log(notificationObj);
-            //             console.log(birdsuggestionObj);
-            //     });
-            // }
+                $ngBootbox.hideAll();
+                $state.transitionTo($state.current, $stateParams, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    });
+                $scope.birdSuggestion = undefined;
         });
-        
-        $scope.birdSuggestion = undefined;
     };
     
-    $scope.commentsShow = function() {
-        $scope.comments=!$scope.comments;
-        $timeout(function() {
-            $location.hash('bottom');
-            $anchorScroll();
-            console.log('scrolling down');
-        }, 250);
+    $scope.addBirdSuggestion = function(){
+        if(this.noResults === true) {
+            $scope.birdSuggestion = '';
+            return;
+        }
+        
+        if($scope.birdSuggestion === undefined) {
+            return;
+        }
+        var birdsuggestionObj = {
+            birdSuggestion    : $scope.birdSuggestion,     
+            userId            : $scope.auth.profile.user_id,
+            author            : $scope.auth.profile.name
+        };  
+        
+        
+        captureApi.postBirdsuggestion(id, birdsuggestionObj)  
+            .then(function(res){
+                $ngBootbox.hideAll();
+                $state.transitionTo($state.current, $stateParams, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    });
+                $scope.birdSuggestion = undefined;
+        });
     };
+    
     
     /* --------------------------------- Edit Capture ----------------------------------- */
     $scope.editCapture = function(){  

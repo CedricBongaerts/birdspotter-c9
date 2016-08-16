@@ -6,6 +6,7 @@ var birdsuggestionSchema = Schema({
     author: String,
     created_at: Date,
     capture: { type: Schema.Types.ObjectId, ref: 'Capture'},
+    suggestionVote: [{ type: Schema.Types.ObjectId, ref: 'Suggestionvote'}],
     notification: [{ type: Schema.Types.ObjectId, ref: 'Notification'}]
 });
 

@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="mobile-web-app-capable" content="yes">
-    
     <link rel="icon" href="img/logo.png">
     <title ng-bind="$state.current.data.pageTitle">Birdspotter</title>
-    
-    <script>
-      UPLOADCARE_PUBLIC_KEY = '6d9f5c6bd46c84974963';
-    </script>
     
     <!-- Lato Font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato">
@@ -77,7 +72,7 @@
     <!-- Uploadcare -->
     <script charset="utf-8" src="https://ucarecdn.com/widget/2.1.4/uploadcare/uploadcare.min.js"></script>
     <script type="text/javascript" src="/lib/angular-uploadcare/angular-uploadcare.js"></script>
-    
+    <script>UPLOADCARE_PUBLIC_KEY = '6d9f5c6bd46c84974963';</script>
     <!-- Auth0's libraries -->
     <script type="text/javascript" src="https://cdn.auth0.com/js/lock-9.1.js"></script>
     <script type="text/javascript" src="https://cdn.auth0.com/w2/auth0-angular-4.js"></script>
@@ -117,6 +112,7 @@
     <script  type="text/javascript" src="/js/services/userService.js"></script>
     <script  type="text/javascript" src="/js/services/voteService.js"></script>
     <script  type="text/javascript" src="/js/services/commentService.js"></script>
+    <script  type="text/javascript" src="/js/services/birdsuggestionService.js"></script>
     <script  type="text/javascript" src="/js/services/notificationService.js"></script>
   </head>
 
@@ -173,10 +169,8 @@
       <div id="loading-bar-container"></div>
     </nav>
     <!-- Container -->
-    <div class="container" id="main-container">
       <div ui-view>
       </div>
-    </div>
     <!-- End Container -->
     </div>
     <div class="footer" ng-if="$state.current.name === 'home'" ng-controller="homeCtrl">

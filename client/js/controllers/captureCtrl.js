@@ -9,6 +9,7 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
     $scope.details = "";
     $scope.options = {};
     $scope.options.watchEnter = true;
+    $scope.locationMessage = undefined;
     
     /* ----------------------- Birdname Operations ----------------------- */
     $scope.toggleBirdname = function() {
@@ -29,6 +30,7 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
         $scope.capture.info = info;
         console.log(info.originalImageInfo.geo_location);
         if(info.originalImageInfo.geo_location !== null) {
+            $scope.locationMessage = "Location found! Loading"
             var latLng = new google.maps.LatLng(info.originalImageInfo.geo_location.latitude, info.originalImageInfo.geo_location.longitude);
             $scope.capture.latitude = info.originalImageInfo.geo_location.latitude;
             $scope.capture.longitude = info.originalImageInfo.geo_location.longitude;
@@ -38,22 +40,25 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
                     if (status == google.maps.GeocoderStatus.OK) {
                         if (results[1]) {
                             var geoLocation = results[1];
-                            console.log(geoLocation.formatted_address);
                             $scope.place = geoLocation;
+                            $scope.locationMessage = undefined;
+                            $scope.$apply();
                         } 
                     }
                 });
         }
         
+        if(info.originalImageInfo.geo_location === null) {
+            $scope.place = undefined;
+            $scope.$apply();
+        }
+        
         console.log('------ Capture Info ------');
         console.log($scope.capture.info);
         console.log('------Capture Info End------');
-        $scope.$apply();
     }
     
-    /* ---------------------- Retrieve data uplaoded image ---------------- */
 
-    
     /* ----------------------- Populate Birds input ----------------------- */
     birdApi.getBirds().then(function(res) {
         $scope.birds = res.data;
