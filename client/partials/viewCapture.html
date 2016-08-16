@@ -14,7 +14,7 @@
             </p>
             <h3  class="page-header-h3">
                 <a ui-sref="birdlist({bird: capture.birdname})" class="clickable">{{capture.birdname}}</a>
-                <span class="suggest-birdname-button" ng-show="showSuggestionButton">
+                <span class="suggest-birdname-button" ng-if="showSuggestionButton && checkedAllSuggestions">
                     <span popover-title="{{capture.birdname}}" popover-placement="bottom-left" popover-trigger="mouseenter"
                           popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl" class="suggestion-button-text clickable"
                           ng-bootbox-title="Suggest Birdname"

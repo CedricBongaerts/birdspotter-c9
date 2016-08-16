@@ -38,19 +38,21 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 };
                 
                 // Check suggestions
-                var currentSuggestions = res.data.birdsuggestions;
-                $scope.showsuggestions = currentSuggestions.some(function(suggestion){
-                  return suggestion.userId === auth.profile.user_id && $scope.capture.birdname==='Unknown';
-                });
-                
-                // var currentSuggestions = res.data.birdsuggestions;
-                // if(var i=0; i<currentSuggestions.length;i++) {
-                //     if(currentSuggestions[i].userId === auth.profile.user_id && $scope.capture.birdname==='Unknown') { 
-                //   //is $scope.capture.birdname==='Unknown' check needed here, cause it has nothing to do with loop variables?
-                //         $scope.showSuggestionButton = false;
-                //         break;
-                //     }
-                // }
+                if($scope.capture.birdname!=='Unknown') {
+                    $scope.showSuggestionButton = false;
+                } else {
+                    $scope.showSuggestionButton = true;
+                    $scope.checkedAllSuggestions = false;
+                    var currentSuggestions = res.data.birdsuggestions;
+                    
+                    for(var i=0; i<currentSuggestions.length;i++) {
+                        if(currentSuggestions[i].userId ===  auth.profile.user_id) { 
+                            $scope.showSuggestionButton = false;
+                            break;
+                        }
+                    }
+                    $scope.checkedAllSuggestions = true;
+                }
                                
                /* ----------------------------- Edit Options ----------------------------- */
                $scope.toggleBirdname = function() {
