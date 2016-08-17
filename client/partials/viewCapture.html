@@ -22,6 +22,8 @@
                           ng-bootbox-custom-dialog-template="/partials/model/suggestBirdname.html">Suggest Birdname <span class="glyphicon glyphicon-pencil"></span></span>
                 </span>
             </h3>
+            
+            <button ng-click="voteSuggestion()">test</button>
             <h2 class="text-muted" style="font-size: 12px">Suggestions:
                     <span ng-repeat="birdsuggestion in capture.birdsuggestions"> -  {{birdsuggestion.birdSuggestion}}</span>
             </h2>

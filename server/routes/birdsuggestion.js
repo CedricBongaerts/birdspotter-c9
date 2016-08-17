@@ -1,4 +1,5 @@
 var Birdsuggestion = require('../models/birdsuggestion');
+var VoteBirdsuggestion = require('../models/voteBirdsuggestion');
 var Capture = require('../models/capture');
 var Notification = require('../models/notification');
 
@@ -29,6 +30,39 @@ module.exports = function(router) {
                 throw err;
             res.json(data);
         });
+    });
+    
+    // Map logic to route parameter 'birdsuggestion'
+    router.param('birdsuggestion', function(req, res, next, id) {
+    	var query = Birdsuggestion.findById(id);
+    	
+    	query.exec(function (err, birdsuggestion) {
+    		if (err) { return next(err); }
+    		if (!birdsuggestion) { return next(new Error("can't find birdsuggestion")); }
+    		
+    		req.birdsuggestion = birdsuggestion;
+    		return next();
+    	});
+    });
+    
+    // Map logic to route parameter 'voteBirdsuggestion'
+    router.param('voteBirdsuggestion', function (req, res, next, id) {
+    	var query = VoteBirdsuggestion.findById(id);
+    	
+    	query.exec(function (err, voteBirdsuggestion) {
+    		if (err) { return next(err); }
+    		if (!voteBirdsuggestion) { return next(new Error("can't find voteBirdsuggestion")); }
+    		
+    		req.voteBirdsuggestion = voteBirdsuggestion;
+    		return next();
+    	});
+    });
+    
+    router.get('/birdsuggestions/:birdsuggestion', function(req, res) {
+	    req.birdsuggestion.populate('voteBirdsuggestions',
+	        function (err, birdsuggestion) {
+	            if (err) throw err;
+    	});
     });
     
     router.delete('/birdsuggestions/:birdsuggestion', function(req, res){

@@ -14,6 +14,10 @@ app.factory('birdsuggestionApi', ['$http', function($http){
         
         deleteSuggestion : function(id) {
             return $http.delete(urlBase + '/' + id, {ignoreLoadingBar: true});
+        },
+        
+        voteSuggestion : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/votesbirdsuggestion', data);
         }
     };
 }]);
