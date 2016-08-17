@@ -55,11 +55,17 @@ app.controller('navCtrl', ['$scope', 'auth', 'store', '$location', '$state', 'no
     $scope.findBirdlist = function() {
       if(this.noResults) {
         console.log('error');
-        this.findBird = '';
+        this.findBird = undefined;
       } else {
-        console.log(this.findBird);
-        $state.go('birdlist' , {bird: this.findBird});
-        this.findBird = '';
+        if(this.findBird===undefined||this.findBird === null||this.findBird === 'Unknown') {
+          console.log(this.findBird);
+          console.log('triggered');
+          $state.go('dashboard');
+        } else {
+          console.log(this.findBird);
+          $state.go('birdlist' , {bird: this.findBird});
+          this.findBird = undefined;
+        }
       }
     };
     

@@ -216,15 +216,17 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         }
     };
     
-    $scope.voteSuggestion = function() {
-        var dataObj = {
-                userId          : "facebook|10153403872376529",
-                voteFrom        : "Cedric Bongaerts"
-        }
-        birdsuggestionApi.voteSuggestion('57b3191222db0c79146bad97', dataObj)
-        .then(function(res) {
-            console.log(res.data);
-        })
+    $scope.voteSuggestion = function(birdsuggestion) {
+        // var dataObj = {
+        //         userId          : "facebook|10153403872376529",
+        //         voteFrom        : "Cedric Bongaerts"
+        // }
+        
+        console.log(birdsuggestion);
+        // birdsuggestionApi.voteSuggestion('57b3191222db0c79146bad97', dataObj)
+        // .then(function(res) {
+        //     console.log(res.data);
+        // })
     }
     
     $scope.addBirdSuggestion = function(){

@@ -95,6 +95,7 @@
     <script  type="text/javascript" src="/js/controllers/notificationsCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/errorCtrl.js"></script>
     <script  type="text/javascript" src="/js/controllers/birdlistCtrl.js"></script>
+    <script  type="text/javascript" src="/js/controllers/birdcapturesCtrl.js"></script>
     
     <!-- Directives -->
     <script  type="text/javascript" src="/js/directives/ngEnter.js"></script>
@@ -134,7 +135,7 @@
           <ul class="nav navbar-nav">
             <!--<li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> <span class="nav-names"> Dashboard</span></a></li>-->
             <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span><span class="nav-names">Capture</span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/birdlist')}"><a ui-sref="birdlist"><img src="/img/bird-nav-icon.png" class="image-icon bird-icon-nav" /><span class="nav-names">Unknown birds</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/birdlist')}"><a ui-sref="birdcaptures"><img src="/img/bird-nav-icon.png" class="image-icon bird-icon-nav" /><span class="nav-names">Bird Captures</span></a></li>
             <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span><span class="nav-names">Users</span></a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

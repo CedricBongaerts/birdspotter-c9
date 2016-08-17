@@ -131,6 +131,16 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         }
       })
       
+    .state('birdcaptures', {
+        url: '/birdcaptures',
+        templateUrl: 'partials/birdcaptures.html',
+        controller: 'birdcapturesCtrl',
+        data: {
+          requiresLogin: true,
+            pageTitle: 'Bird captures | Birdspotter'
+        }
+      })
+      
     .state('birdlist', {
         url: '/birdlist',
         templateUrl: 'partials/birdlist.html',

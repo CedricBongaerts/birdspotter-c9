@@ -3,6 +3,7 @@
 app.factory('captureApi', ['$http', '$location', function($http, $location){
     
     var urlBase = 'https://birdspotter-cedricbongaerts.c9users.io/api/captures';
+    var unknownUrlBase = 'https://birdspotter-cedricbongaerts.c9users.io/api/unknowncaptures';
     
     return {
         getAllCaptures : function () {
@@ -11,6 +12,10 @@ app.factory('captureApi', ['$http', '$location', function($http, $location){
         
         insertCapture : function(data) {
             return $http.post(urlBase, data);
+        },
+        
+        insertUnknownCapture : function(data) {
+            return $http.post(unknownUrlBase, data);
         },
         
         findCapture : function(id) {

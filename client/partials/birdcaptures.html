@@ -1,0 +1,21 @@
+<div class="container" id="main-container">
+    <div class="col-md-12">
+        <div class="well main-well">
+            <h3 class="page-header-h3">Bird Captures:</h3>
+            
+            <hr />
+            <div class="row">
+                <ul masonry="true">
+                        <li ng-repeat="capture in captures|filter:{birdname:$, place:$}|orderBy:'created_at':false" class="masonry-item clickable">
+                            <img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="showImgPreview(capture)"></img>
+                        </li>
+                </ul>
+                <p ng-if='noCaptures' class="no-captures-found">
+                    Uh oh! <br />
+                    It seems like this user has not posted any captures yet.. <br />
+                    <img src="/img/noCaptures.jpg"/>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

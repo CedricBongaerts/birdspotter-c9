@@ -9,7 +9,6 @@ module.exports = function(router) {
         voteBirdsuggestion.voteFrom = req.body.voteFrom;
         voteBirdsuggestion.birdsuggestion = req.birdsuggestion;
         
-        console.log(voteBirdsuggestion);
         voteBirdsuggestion.save(function(err, data){
             if(err)
                 throw err;

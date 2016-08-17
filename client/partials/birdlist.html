@@ -1,4 +1,10 @@
 <div class="container" id="main-container">
+    <div class="col-md-12" ng-if="birdname === 'Unknown'">
+        <div class="well">
+            <h3 class="page-header-h3">Search a birdname:</h3>
+            <hr />
+        </div>
+    </div>
     <div class="col-md-8" ng-if="birdname !== 'Unknown'">
         <div class="well">
             <h3 class="page-header-h3">General Info:</h3>
@@ -46,38 +52,38 @@
         </div>
     </div>
     
-    <div class="col-md-12" ng-if="birdname === 'Unknown'">
-        <div class="well main-well">
-            <h3 class="page-header-h3">All unknown captures</h3>
-            <hr />
-            <div class="row">
-                <ul masonry="true">
-                    <li ng-repeat="capture in selectedCaptures | orderBy :'created_at':true | startFrom:currentPage:unknownPageSize" class="masonry-item">
-                        <a ui-sref="detail({id: capture._id})">
-                            <img ng-src="{{capture.picture}}" imageonload onload="this.style.opacity='1';" class="masonry-image"></img>
-                            <span class="follow-capture-info">
-                                <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 
-                                  {{capture.author}} 
-                                    <span class="following-capture-time">· 
-                                        <span class="glyphicon glyphicon-time"></span> 
-                                        <span am-time-ago="capture.created_at"></span>
-                                    </span>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
+    <!--<div class="col-md-12" ng-if="birdname === 'Unknown'">-->
+    <!--    <div class="well main-well">-->
+    <!--        <h3 class="page-header-h3">All unknown captures</h3>-->
+    <!--        <hr />-->
+    <!--        <div class="row">-->
+    <!--            <ul masonry="true">-->
+    <!--                <li ng-repeat="capture in selectedCaptures | orderBy :'created_at':true | startFrom:currentPage:unknownPageSize" class="masonry-item">-->
+    <!--                    <a ui-sref="detail({id: capture._id})">-->
+    <!--                        <img ng-src="{{capture.picture}}" imageonload onload="this.style.opacity='1';" class="masonry-image"></img>-->
+    <!--                        <span class="follow-capture-info">-->
+    <!--                            <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> -->
+    <!--                              {{capture.author}} -->
+    <!--                                <span class="following-capture-time">· -->
+    <!--                                    <span class="glyphicon glyphicon-time"></span> -->
+    <!--                                    <span am-time-ago="capture.created_at"></span>-->
+    <!--                                </span>-->
+    <!--                            </span>-->
+    <!--                        </span>-->
+    <!--                    </a>-->
+    <!--                </li>-->
+    <!--            </ul>-->
                 <!--<p ng-if='noCaptures' class="no-captures-found">-->
                 <!--    Uh oh! <br />-->
                 <!--    It seems like this user has not posted any captures yet.. <br />-->
                 <!--    <img src="/img/noCaptures.jpg"/>-->
                 <!--</p>-->
-                <uib-pagination ng-show="selectedCaptures.length > unknownPageSize"
-                                total-items="selectedCaptures.length"
-                                items-per-page="unknownPageSize"
-                                ng-model="currentPage">
-                </uib-pagination>
-            </div>
-        </div>
-    </div>
+    <!--            <uib-pagination ng-show="selectedCaptures.length > unknownPageSize"-->
+    <!--                            total-items="selectedCaptures.length"-->
+    <!--                            items-per-page="unknownPageSize"-->
+    <!--                            ng-model="currentPage">-->
+    <!--            </uib-pagination>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
 </div>

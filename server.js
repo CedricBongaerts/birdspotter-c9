@@ -32,6 +32,7 @@ app.use(function(req, res, next) {
 var mongoose = require('mongoose');
 var configDB = require('./server/config/database.js');
 require('./server/routes/capture');
+require('./server/routes/unknowncapture');
 require('./server/routes/vote');
 require('./server/routes/comment');
 require('./server/routes/birdsuggestion');
@@ -63,6 +64,7 @@ app.use(function(err, req, res, next) {
 // API 
 var api = express.Router();
 require('./server/routes/capture')(api);
+require('./server/routes/unknowncapture')(api);
 require('./server/routes/comment')(api);
 require('./server/routes/vote')(api);
 require('./server/routes/birdsuggestion')(api);

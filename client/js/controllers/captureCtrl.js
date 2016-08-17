@@ -77,6 +77,18 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
                 picture_uuid    : $scope.capture.uuid
         };
         
+        if($scope.birdname==="Unknown") {
+            var unknownDataObj = {
+                place           : $scope.place.formatted_address,
+                author          : $scope.auth.profile.name,
+                picture         : $scope.capture.picture,
+                picture_uuid    : $scope.capture.uuid
+            };
+            
+            captureApi.insertUnknownCapture(unknownDataObj)
+            .then(function(res){});
+        }
+        
         captureApi.insertCapture(dataObj)
             .then(function(res){
                 var id = res.data._id;
