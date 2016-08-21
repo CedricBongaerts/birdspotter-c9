@@ -45,5 +45,9 @@ app.factory('captureApi', ['$http', '$location', function($http, $location){
             return $http.post(urlBase + '/' + id + '/birdsuggestions', data);
         },
         
+        captureNotification : function(id, data) {
+            return $http.post(urlBase + '/' + id + '/notifications', data);
+        }
+        
     };
 }]);

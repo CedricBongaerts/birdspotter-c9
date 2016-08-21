@@ -6,6 +6,7 @@ var unknowncaptureSchema = Schema({
     picture: Schema.Types.Mixed,
     picture_uuid: String,
     created_at: Date,
+    original_id: String,
 });
 
 module.exports = mongoose.model('UnknownCapture', unknowncaptureSchema);

@@ -13,6 +13,7 @@ var captureSchema = Schema({
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
     birdsuggestions: [{ type: Schema.Types.ObjectId, ref: 'Birdsuggestion'}],
     votes: [{ type: Schema.Types.ObjectId, ref: 'Vote'}],
+    notification: [{ type: Schema.Types.ObjectId, ref: 'Notification'}]
 });
 
 module.exports = mongoose.model('Capture', captureSchema);

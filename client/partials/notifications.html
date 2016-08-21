@@ -1,32 +1,28 @@
 <div class="container" id="main-container">
     <div class="col-md-12">
-        <div class="well main-well">
+        <div class="well main-well" infinite-scroll="getMoreData()">
             <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countUnseen" class="notifications-header-count"> · {{countUnseen}} Unseen</h5></h3>
             <a src='#' class="clickable mark-as-read" ng-click="seenAll()">Mark all as seen</a>
-            <button ng-repeat="notification in notifications | orderBy :'notification.created_at':true | startFrom:currentPage:pageSize" 
+            <button ng-repeat="notification in notificationData"
                     class="list-group-item notification-link" 
                     ng-class="[{'notification-seen':notification.notification.seen}]"
                     ng-click="seeNotification(notification)">
-                <div class="row">
-                    <div>
-                        <div class="col-md-1">
-                            <img ng-src="{{notification.user.picture}}" max-width="40px" width="50px">
-                        </div>
-                        <div class="col-md-11" ng-switch="notification.notification.concirning">
-                            <a ui-sref="user-profile({id: notification.user.user_id})" class="clickable"><span class="notification-user-name">{{notification.user.name}}</span></a>
-                            <span ng-switch-when="follow"> has just started following you.</span> 
-                            <span ng-switch-when="birdsuggestion"> has given a birdname to your capture. Go check it out!</span>
-                            <span ng-switch-when="like"> has liked your capture.</span>
-                            <span ng-switch-when="comment"> has left a comment on your capture.</span>
-                            <div><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="notification.notification.created_at"></span></div>
-                        </div>
+            <div class="row">
+                <div>
+                    <div class="col-md-1">
+                        <img ng-src="{{notification.user.picture}}" max-width="40px" width="50px">
                     </div>
+                    <div class="col-md-11" ng-switch="notification.notification.concirning">
+                        <a ui-sref="user-profile({id: notification.user.user_id})" class="clickable"><span class="notification-user-name">{{notification.user.name}}</span></a>
+                        <span ng-switch-when="follow"> has just started following you.</span> 
+                        <span ng-switch-when="birdsuggestion"> has given a birdname to your capture. Go check it out!</span>
+                        <span ng-switch-when="like"> has liked your capture.</span>
+                        <span ng-switch-when="capture">(following) has posted a capture.</span>
+                        <span ng-switch-when="comment"> has left a comment on your capture.</span>
+                        <div><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="notification.notification.created_at"></span></div>
+                    </div>
+                </div>
             </button>
-                <uib-pagination ng-show="notifications.length > pageSize"
-                            total-items="notifications.length"
-                            items-per-page="pageSize"
-                            ng-model="currentPage">
-                </uib-pagination>
             </div>
         </div>
     </div>

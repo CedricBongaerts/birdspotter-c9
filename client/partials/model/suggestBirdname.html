@@ -13,12 +13,14 @@
                 <div ng-show="noResults" class="noResults-typeahead birdname-noResults">
                   <i class="glyphicon glyphicon-remove"></i> No Results Found - Please pick a correct birdname!
                 </div>
-                <br />
-                <hr>
-                {{suggestionBirdName}}<br />
-                <img ng-src="{{suggestionBirdImage}}">
+                <div ng-if="suggestionPreview">
+                    <hr>
+                        <p><strong>You want to suggest:</strong> <br/><span style="font-size:16px">{{suggestionBirdName}}</span></p>
+                        <p><img ng-src="{{suggestionBirdImage}}"></p>
+                        <p>{{suggestionBirdInfo}}</p>
+                    <hr />
+                </div>
         </div>
         <button type="button" ng-click="addBirdSuggestion()" class="btn margin-left btn-success" ng-disabled="addBirdSuggestions.$invalid || noResults">Suggest Birdname</button>
     </form>
-    <button ng-click="TestSuggestion()">Test Suggestion</button>
 </div>

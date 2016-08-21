@@ -2,19 +2,31 @@
     <div class="col-md-12">
         <div class="well main-well">
             <h3 class="page-header-h3">Bird Captures:</h3>
-            
+            <form class="input-group col-md-4 form-inline">
+              <input type="text" class="form-control" ng-model="searchPlace" placeholder="Searching by place">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"> </span></button>
+              </span>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="checked" ng-click="toggleUnknown()"> Show all unknown birds
+                </label>
+              </div>
+            </form>
             <hr />
-            <div class="row">
-                <ul masonry="true">
-                        <li ng-repeat="capture in captures|filter:{birdname:$, place:$}|orderBy:'created_at':false" class="masonry-item clickable">
-                            <img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="showImgPreview(capture)"></img>
-                        </li>
-                </ul>
-                <p ng-if='noCaptures' class="no-captures-found">
-                    Uh oh! <br />
-                    It seems like this user has not posted any captures yet.. <br />
-                    <img src="/img/noCaptures.jpg"/>
-                </p>
+            <div class="constrained">
+                <div class="row" infinite-scroll="loadMore()" infinite-scroll-distance="1">
+                    <ul masonry="true" reload-on-show reload-on-resize>
+                            <li ng-repeat="capture in captureFilter = (captures | filter:{birdname:searchUnknown, place:searchPlace}:strict | limitTo:numberToDisplay) track by $index" class="masonry-item clickable">
+                                <a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="getInfo(capture)"></img></a>
+                            </li>
+                    </ul>
+                    <p ng-if='noCaptures' class="no-captures-found">
+                        Uh oh! <br />
+                        It seems like this user has not posted any captures yet.. <br />
+                        <img src="/img/noCaptures.jpg"/>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

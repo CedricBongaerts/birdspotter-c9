@@ -8,6 +8,7 @@ app.controller('usersCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'aut
     $scope.users = [];
     $scope.pageSize = 25;
     $scope.currentPage = 1;
+    $scope.reverse = true;
     
     /* ----------------------- Retrieve Users ----------------------- */
     userApi.getUsers().then(function(res) {

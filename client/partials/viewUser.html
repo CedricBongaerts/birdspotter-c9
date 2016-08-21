@@ -105,7 +105,9 @@
     
     
     <div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
-      <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
+      <ng-map center="{{birdLocation}}" zoom="12">
+          <marker position="{{birdLocation}}" centered="true"></marker>
+      </ng-map>
       <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
     </div>
     <div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>

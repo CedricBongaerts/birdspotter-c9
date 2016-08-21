@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="mobile-web-app-capable" content="yes">
+    <meta property="og:title" content="Birdspotter" />
+    <meta property="og:image" content="https://i.imgur.com/j4b0PFF.png" />
+    <meta property="og:description" content="Discover & Share your avian photos" />
+    <meta property="og:url" content="https://birdspotter-cedricbongaerts.c9users.io/" />
     <link rel="icon" href="img/logo.png">
     <title ng-bind="$state.current.data.pageTitle">Birdspotter</title>
     
@@ -134,15 +138,14 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <!--<li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/dashboard')}"><a ui-sref="dashboard"><span class="glyphicon nav-glyph glyphicon-globe"></span> <span class="nav-names"> Dashboard</span></a></li>-->
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span><span class="nav-names">Capture</span></a></li>
+            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/capture')}"><a ui-sref="capture"><span class="glyphicon nav-glyph glyphicon-camera"></span><span class="nav-names">Post a Capture</span></a></li>
             <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/birdlist')}"><a ui-sref="birdcaptures"><img src="/img/bird-nav-icon.png" class="image-icon bird-icon-nav" /><span class="nav-names">Bird Captures</span></a></li>
-            <li ng-if="auth.isAuthenticated" data-toggle="collapse" data-target=".navbar-collapse.in" ng-class="{active: isActive('/users')}"><a ui-sref="users"><span class="nav-glyph fa fa-users"></span><span class="nav-names">Users</span></a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li ng-if="auth.isAuthenticated">
               <div class="input-group search-nav" ng-class="{ 'has-error': noResults }">
                  <input type="text" class="form-control search-input-nav" placeholder="Birdname" autocomplete="off" ng-model="findBird" typeahead-no-results="noResults"
-                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-select-on-blur="false" typeahead-template-url="/partials/model/birdTypeahead.html" ng-enter="findBirdlist(findBird, noResults)">
+                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-select-on-blur="false" ng-enter="findBirdlist(findBird, noResults)">
                  <div class="ErrorSearchBird" ng-if="noResults">
                    <div class="errorTriangle"></div>
                    <div class="errorText">Please pick a valid birdname</div>
@@ -188,6 +191,21 @@
                   <span ng-click="login()">Connect</span>
               <!--<span>© Cedric Bongaerts - 2016</span>-->
               </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainfooter" ng-if="$state.current.name !== 'home'" ng-controller="navCtrl">
+        <div class="mainfooter-content container">
+            <div class="col-md-4">
+              <span>© 2016 Birdspotter. By Cedric Bongaerts</span>
+            </div>
+            <div class="col-md-4">
+              <img src="/img/transparent-logo.png" width="30px" />        
+            </div>
+            <div class="col-md-4">
+              <a ui-sref="home" class="mainfooter-links clickable">Home</a> | 
+              <a ui-sref="users" class="mainfooter-links clickable">Userlist</a> | 
+              <a href="mailto:Cedric.bongaerts@hotmail.com" class="mainfooter-links clickable">Contact</a>
             </div>
         </div>
     </div>

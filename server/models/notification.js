@@ -10,7 +10,9 @@ var notificationSchema = Schema({
     created_at: Date,
     vote: { type: Schema.Types.ObjectId, ref: 'Vote'},
     comment: { type: Schema.Types.ObjectId, ref: 'Comment'},
-    follow: { type: Schema.Types.ObjectId, ref: 'Follow'}
+    birdsuggestion: { type: Schema.Types.ObjectId, ref: 'Birdsuggestion'},
+    follow: { type: Schema.Types.ObjectId, ref: 'Follow'},
+    capture: {type: Schema.Types.ObjectId, ref: 'Capture'},
 });
 
 module.exports = mongoose.model('Notification', notificationSchema);

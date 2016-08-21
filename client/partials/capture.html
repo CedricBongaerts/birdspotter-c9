@@ -28,7 +28,7 @@
                         <input type="checkbox" ng-model="checked" ng-click="toggleBirdname()">
                     </span>
                     <input type="text" class="form-control" id="birdname" ng-model="birdname" required ng-disabled="checked" autocomplete="off" placeholder="Check the box if you don't know!" 
-                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" typeahead-select-on-blur="true"
+                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-no-results="noResults" typeahead-select-on-blur="true" ng-enter="birdPreviewInfo(birdname,noResults)"
                         uib-tooltip="Pick a bird or check the box if unsure!"
                         tooltip-placement="top-right"
                         tooltip-trigger="mouseenter"
@@ -61,7 +61,13 @@
             </div>
             <h3 class="page-header-h3">Preview</h3>
             <hr />
-            <h3 ng-hide="checked || !birdname">{{birdname}}</h3>
+            <h3 ng-hide="checked || !birdname" class="previewBirdHeader">{{birdname}}</h3>
+            <div ng-if="birdPreview" ng-click="showBirdPreview()" class="clickable preview-information-bird">Preview Information <span class="glyphicon" ng-class="[{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}]"></span></div>
+            <div ng-if="birdPreview" data-slide-toggle="birdPreviews" class="birdPreview">
+                <p><strong>This birdname that you chose for is:</strong> <br/><span style="font-size:16px">{{previewBirdName}}</span></p>
+                <p><img ng-src="{{previewBirdImage}}"></p>
+                <p>{{previewBirdInfo}}</p>
+            </div>
             <h4 ng-show="place"><span class="fa fa-map-marker"></span> {{place.formatted_address}}</h4>
             <!--<h4 ng-show="autoLocation"><span class="fa fa-map-marker"></span> {{autoLocation}}</h4>-->
             <p ng-if="note"><i>"{{note}}"</i></p>

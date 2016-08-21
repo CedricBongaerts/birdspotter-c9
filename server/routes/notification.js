@@ -71,6 +71,53 @@ module.exports = function(router) {
         });
     });
     
+    router.post('/captures/:capture/notifications', function(req, res, next){
+        var notification = new Notification();
+        notification.notificationFor = req.body.notificationFor;
+        notification.notificationFrom = req.body.notificationFrom;
+        notification.concirning = req.body.concirning;
+        notification.parameter = req.body.parameter;
+        notification.detected = false,
+        notification.seen = false;
+        notification.created_at = new Date();
+        notification.capture = req.capture;
+        
+        notification.save(function(err, notification) {
+    		if (err) { return next(err); }
+    		req.capture.notification.push(notification);
+    		req.capture.save(function(err, capture) {
+    			if (err) { return next(err); }
+    			
+    			res.json(notification);
+    		});
+        });
+    });
+    
+    router.post('/birdsuggestions/:birdsuggestion/notifications', function(req, res, next){
+        var notification = new Notification();
+        notification.notificationFor = req.body.notificationFor;
+        notification.notificationFrom = req.body.notificationFrom;
+        notification.concirning = req.body.concirning;
+        notification.parameter = req.body.parameter;
+        notification.detected = false,
+        notification.seen = false;
+        notification.created_at = new Date();
+        notification.birdsuggestion = req.birdsuggestion;
+        
+        console.log(req.birdsuggestion);
+        
+        notification.save(function(err, notification) {
+    		if (err) { return next(err); }
+    		
+    		req.birdsuggestion.notification.push(notification);
+    		req.birdsuggestion.save(function(err, birdsuggestion) {
+    			if (err) { return next(err); }
+    			
+    			res.json(notification);
+    		});
+        });
+    });
+    
     router.get('/notifications', function(req, res){
         Notification.find({}, function(err, data){
             if(err)

@@ -24,7 +24,11 @@
             </h3>
         
             <ul class="text-muted" style="font-size: 14px">Suggestions:
-                    <li ng-repeat="birdsuggestion in capture.birdsuggestions"> <div ng-click="voteSuggestion(birdsuggestion)">Vote Up</div>  <span>{{birdsuggestion.birdSuggestion}}</span></li>
+                    <li ng-repeat="birdsuggestion in capture.birdsuggestions"> 
+                        <span ng-click="voteSuggestion(birdsuggestion)" ng-if="showVoteButton && checkedAllVotes">[Vote Up]</span>  
+                        <span>{{birdsuggestion.birdSuggestion}}</span> 
+                        - <span> {{birdsuggestion.votesBirdsuggestion.length}} votes recieved</span>
+                    </li>
             </ul>
             <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="clickable"><strong>{{capture.author}}</strong></a> in <span class="fa fa-map-marker"></span> 
                 <strong class="clickable location-click" ng-click="showGoogleMap(capture.place)">{{capture.place}}</strong>
@@ -112,7 +116,9 @@
     </div>
 </div>
     <div map-lazy-load="https://maps.google.com/maps/api/js" class="google-maps" ng-if="mapShow">
-      <ng-map center="{{birdLocation}}" zoom="11"></ng-map>
+      <ng-map center="{{birdLocation}}" zoom="12">
+          <marker position="{{birdLocation}}" centered="true"></marker>
+      </ng-map>
       <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
     </div>
     <div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>

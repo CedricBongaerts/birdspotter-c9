@@ -1,7 +1,7 @@
-/* global app */
+/* global app google */
 
-app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', '$location', 'birdApi',
-function($scope, captureApi, auth, $http, $timeout, filepickerService, $location, birdApi){
+app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', '$location', 'birdApi', 'userApi',
+function($scope, captureApi, auth, $http, $timeout, filepickerService, $location, birdApi, userApi){
     
     /* ----------------------- Variables ----------------------- */
     $scope.form = {};
@@ -10,6 +10,8 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
     $scope.options = {};
     $scope.options.watchEnter = true;
     $scope.locationMessage = undefined;
+    $scope.birdPreview = false;
+    $scope.reverse = true;
     
     /* ----------------------- Birdname Operations ----------------------- */
     $scope.toggleBirdname = function() {
@@ -17,6 +19,7 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
         {
             $scope.birdname = 'Unknown';
             $scope.noResults = false;
+            $scope.birdPreview = false;
         } else {
             $scope.birdname = null;
         }
@@ -30,7 +33,7 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
         $scope.capture.info = info;
         console.log(info.originalImageInfo.geo_location);
         if(info.originalImageInfo.geo_location !== null) {
-            $scope.locationMessage = "Location found! Loading"
+            $scope.locationMessage = "Location found! Loading";
             var latLng = new google.maps.LatLng(info.originalImageInfo.geo_location.latitude, info.originalImageInfo.geo_location.longitude);
             $scope.capture.latitude = info.originalImageInfo.geo_location.latitude;
             $scope.capture.longitude = info.originalImageInfo.geo_location.longitude;
@@ -64,9 +67,38 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
         $scope.birds = res.data;
     });
     
+    /* ----------------------- Bird Preview Infomation -------------------- */
+    
+    $scope.birdPreviewInfo = function(birdname,noResults) {
+        if(noResults === false ){
+        birdApi.getDuckEngine(birdname)
+        .then(function(res) {
+            console.log(res.data);
+            $scope.birdPreview = true;
+            $scope.previewBirdName = res.data.Heading;
+            if(res.data.Image===""){
+                $scope.previewBirdImage = '/img/NoPreview.jpg'
+            } else {
+                $scope.previewBirdImage = res.data.Image;
+            }
+            $scope.previewBirdInfo = res.data.Abstract;
+        });
+        } else {
+            $scope.birdPreview = false;
+            $scope.birdname = null;
+            console.log(noResults);
+        }
+        console.log($scope.birdPreviews);
+    };
+    
+    $scope.showBirdPreview = function() {
+        $scope.birdPreviews=!$scope.birdPreviews;
+        $scope.reverse = !$scope.reverse;
+    }
+    
         
     /* ----------------------- Post Capture to Database ----------------------- */
-    $scope.addToDatabase = function(){  
+    $scope.addToDatabase = function() {  
         var dataObj = {
                 birdname        : $scope.birdname,
                 place           : $scope.place.formatted_address,
@@ -77,22 +109,50 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
                 picture_uuid    : $scope.capture.uuid
         };
         
-        if($scope.birdname==="Unknown") {
-            var unknownDataObj = {
-                place           : $scope.place.formatted_address,
-                author          : $scope.auth.profile.name,
-                picture         : $scope.capture.picture,
-                picture_uuid    : $scope.capture.uuid
-            };
-            
-            captureApi.insertUnknownCapture(unknownDataObj)
-            .then(function(res){});
-        }
+    
         
         captureApi.insertCapture(dataObj)
             .then(function(res){
                 var id = res.data._id;
+                
+                if(res.data.birdname==="Unknown") {
+                    var unknownDataObj = {
+                        place           : $scope.place.formatted_address,
+                        author          : $scope.auth.profile.name,
+                        picture         : $scope.capture.picture,
+                        picture_uuid    : $scope.capture.uuid,
+                        original_id     : id
+                    };
+                    
+                    captureApi.insertUnknownCapture(unknownDataObj)
+                    .then(function(res){
+                        console.log(res.data.original_id);
+                    });
+                };
+                
+                // NOT WORKING FULLY
+                
+                userApi.findFollow()
+                    .then(function(res){
+                        var follows = res.data;
+                        console.log(follows);
+                        follows.filter(function(follow) {
+                            return follow.followed_id === auth.profile.user_id;
+                            }).forEach(function(follow) {
+                            var followerId = follow.follower_id;
+                            var notiObj = {
+                                notificationFor     : followerId,
+                                notificationFrom    : auth.profile.user_id,
+                                concirning          : 'capture',
+                                parameter           : id
+                            }
+                            captureApi.captureNotification(id, notiObj).then(function(res){});    
+                    });
+                });
+                
+                
+                
                 $location.path('detail/' + id);
             });
-    };
+        };
 }]);

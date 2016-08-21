@@ -417,6 +417,33 @@ hr {
 //     border-top: 1px solid @brand-primary;
 // }
 
+
+// Main Footer 
+
+.mainfooter {
+    position:relative;
+    left:0;
+    width:100%;
+    min-height: 50px;   
+    background-color: #0a4a00;
+    border-color: @navbar-default-border;
+    color: @brand-primary;
+    vertical-align: baseline;
+    bottom: 0px;
+    
+    .mainfooter-content {
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 5px;
+        color: #fff;
+        .mainfooter-links {
+            color: #fff!important;
+            text-decoration: none!important;
+            margin: 0 5;
+        }
+    }
+}
+
 // Masonry
 
 .masonry {
@@ -487,7 +514,8 @@ ul.masonry {
     box-sizing: border-box;
     background: transparent url('/img/Background.jpg') bottom center no-repeat;
     background-size: cover;
-    min-height: 773;
+    height: 900px;
+    min-height: 773px;
     position: relative;
     margin-top: -14px;
 }
@@ -526,7 +554,7 @@ ul.masonry {
     }
     
     .join {
-        background-color: #2574ab;
+        background-color: @brand-primary;
         font-size: 1.6em;
         font-weight: 600;
         color: #fff;
@@ -535,10 +563,12 @@ ul.masonry {
         padding: 12px 35px 15px;
         border-radius: 6px;
         margin-bottom: 30px;
+        border: 1px solid rgba(255,255,255, 0.6);
+        box-shadow: 0px 0px 6px rgba(255,255,255,0.5);
     }
     
     .join:hover {
-        background-color: #0074ab;
+        background-color: #0a4a00;
         text-decoration: none!important;
     }
     
@@ -718,7 +748,7 @@ ul.masonry {
     text-align: center;
     
     .join {
-        background-color: #2574ab;
+        background-color: @brand-primary;
         font-size: 1.6em;
         font-weight: 600;
         color: #fff;
@@ -727,10 +757,12 @@ ul.masonry {
         padding: 12px 35px 15px;
         border-radius: 6px;
         margin-bottom: 60;
+        border: 1px solid rgba(255,255,255, 0.6);
+        box-shadow: 0px 0px 6px rgba(255,255,255,0.5);
     }
     
     .join:hover {
-        background-color: #0074ab;
+        background-color: #0a4a00;
         text-decoration: none!important;
     }
     
@@ -761,7 +793,7 @@ ul.masonry {
         
         .footer-logo {
             margin-top: 2px;
-            height: 50px;
+            height: 30px;
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -785,6 +817,7 @@ ul.masonry {
                 span {
                     font-size: 1.3em;
                     margin: 3%;
+                    color: white;
                 }
             }
         }
@@ -1223,6 +1256,21 @@ ul.masonry {
     background: #0F7000;
     border-radius: 0;
     padding: 15px;
+}
+
+.birdPreview {
+    display: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.previewBirdHeader {
+    display: inline;
+}
+
+.preview-information-bird {
+    display: inline;
+    margin-left: 10px;
 }
 
 

@@ -8,6 +8,7 @@ module.exports = function(router) {
         unknownCapture.picture = req.body.picture;
         unknownCapture.picture_uuid = req.body.picture_uuid;
         unknownCapture.created_at = new Date();
+        unknownCapture.original_id = req.body.original_id;
         
         
         unknownCapture.save(function(err, data){

@@ -11,6 +11,10 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
      
     $scope.liked = false;
     $scope.like = false;
+    
+    $scope.suggestionPreview = false;
+    $scope.showVoteButton = true; 
+    $scope.checkedAllVotes = false;
      
     /* ----------------------- Process Data ----------------------- */
     birdApi.getBirds().then(function(res) {
@@ -116,6 +120,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         .then(function(res) {});
                         $scope.capture.comments.splice(index, 1);
                     };
+                    
         });
     
     /* --------------------------------- Like Capture ----------------------------------- */              
@@ -205,63 +210,55 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         birdApi.getDuckEngine(birdSuggestion)
         .then(function(res) {
             console.log(res.data);
+            $scope.suggestionPreview = true;
             $scope.suggestionBirdName = res.data.Heading;
-            $scope.suggestionBirdImage = res.data.Image;
+            if(res.data.Image===""){
+                $scope.suggestionBirdImage = '/img/NoPreview.jpg';
+            } else {
+                $scope.suggestionBirdImage = res.data.Image;
+            }
             $scope.suggestionBirdInfo = res.data.Abstract;
         });
         } else {
+            $scope.suggestionPreview = false;
             $scope.birdSuggestion = '';
-            console.log(noResults
-            )
+            console.log(noResults);
         }
     };
+    
+    /* --------------------------------- Get Birdsuggestions/Votes ---------------------------- */
+
+        captureApi.findCapture(id)
+            .then(function(res){
+                var birdSuggestions = res.data.birdsuggestions;
+                birdsuggestionApi.findVoteSuggestions()
+                    .then(function(res){
+                        var votesBirdsuggestion = res.data;
+                        birdSuggestions.forEach(function(birdsuggestion){
+                            votesBirdsuggestion.filter(function(voteBirdsuggestion){
+                                if(voteBirdsuggestion.birdsuggestion === birdsuggestion._id && voteBirdsuggestion.userId === auth.profile.user_id) {
+                                    $scope.showVoteButton = false;
+                                }
+                        });
+                        $scope.checkedAllVotes = true;
+                    });
+            });
+        });
+            
+            console.log(auth.profile);
     
     $scope.voteSuggestion = function(birdsuggestion) {
-        // var dataObj = {
-        //         userId          : "facebook|10153403872376529",
-        //         voteFrom        : "Cedric Bongaerts"
-        // }
         
-        console.log(birdsuggestion);
-        // birdsuggestionApi.voteSuggestion('57b3191222db0c79146bad97', dataObj)
-        // .then(function(res) {
-        //     console.log(res.data);
-        // })
-    }
-    
-    $scope.addBirdSuggestion = function(){
-        if(this.noResults === true) {
-            $scope.birdSuggestion = '';
-            return;
-        }
+        var birdSuggestionId = birdsuggestion._id;
+        console.log(birdSuggestionId);
+        var dataObj = {
+                userId          : auth.profile.user_id,
+                voteFrom        : auth.profile.name
+        };
         
-        if($scope.birdSuggestion === undefined) {
-            return;
-        }
-        var birdsuggestionObj = {
-            birdSuggestion    : $scope.birdSuggestion,     
-            userId            : $scope.auth.profile.user_id,
-            author            : $scope.auth.profile.name
-        };  
-        
-        // var notificationObj = {
-        //                     notificationFor     : $scope.capture.userId,
-        //                     notificationFrom    : auth.profile.user_id,
-        //                     concirning          : 'birdsuggestion',
-        //                     parameter           : id
-        // };
-        
-        
-        
-        captureApi.postBirdsuggestion(id, birdsuggestionObj)  
-            .then(function(res){
-                $ngBootbox.hideAll();
-                $state.transitionTo($state.current, $stateParams, {
-                        reload: true,
-                        inherit: false,
-                        notify: true
-                    });
-                $scope.birdSuggestion = undefined;
+        birdsuggestionApi.voteSuggestion(birdSuggestionId, dataObj)
+        .then(function(res) {
+            console.log(res.data);
         });
     };
     
@@ -280,9 +277,20 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             author            : $scope.auth.profile.name
         };  
         
-        
         captureApi.postBirdsuggestion(id, birdsuggestionObj)  
             .then(function(res){
+                var birdId = res.data._id;
+                var notiObj = {
+                            notificationFor     : $scope.capture.userId,
+                            notificationFrom    : auth.profile.user_id,
+                            concirning          : 'birdsuggestion',
+                            parameter           : id
+                };
+                
+                 birdsuggestionApi.suggestionNotification(birdId, notiObj)
+                            .then(function(res){
+                             console.log(res.data);   
+                            });
                 $ngBootbox.hideAll();
                 $state.transitionTo($state.current, $stateParams, {
                         reload: true,
@@ -292,7 +300,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 $scope.birdSuggestion = undefined;
         });
     };
-    
     
     /* --------------------------------- Edit Capture ----------------------------------- */
     $scope.editCapture = function(){  

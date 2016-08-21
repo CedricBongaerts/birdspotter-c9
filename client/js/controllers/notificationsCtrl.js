@@ -6,12 +6,10 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
     /* ----------------------- Variables ----------------------- */
     $scope.notifications = [];
     var unseenNotifications = [];
-    $scope.pageSize = 10;
-    $scope.currentPage = 1;
     
     /* ----------------------- Process Data ----------------------- */
     $q.all({notifications: findNotifications(), users: getUsers()}).then(function(collections) {
-        var notifications = collections.notifications;
+        var notifications = collections.notifications.reverse();
         var users = collections.users;
         
         notifications.filter(function(notification) {
@@ -32,6 +30,12 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
                 });
             });
             console.log($scope.notifications);
+            
+            $scope.notificationData = $scope.notifications.slice(0, 5);
+            $scope.getMoreData = function () {
+                console.log($scope.notificationData);
+                $scope.notificationData = $scope.notifications.slice(0, $scope.notificationData.length + 5);
+            }
 
             $scope.notifications.forEach(function(notification) {
                 if(notification.notification.seen == false){
