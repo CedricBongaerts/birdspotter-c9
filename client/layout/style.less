@@ -189,6 +189,17 @@ hr {
     margin-left: 5px !important;
 }
 
+//Dashboard/Following Toggle
+.dash-toggle:link {
+    text-decoration: none!important;
+    font-size: 17px;
+}
+
+.header-devider {
+    font-size: 18px;
+    margin: 0px 5px;
+}
+
 //autocomplete angular module
 .autocomplete {
     display: block;
@@ -584,12 +595,9 @@ ul.masonry {
         margin-top: 20px;
         .or {
             font-size: 1.5em;
-            margin: 8px 16px ;
+            margin: 5px 2px ;
             padding: 3px 6px 6px;
-            // border: 2px solid rgba(255,255,255,0.6);
-            // border-radius: 50%;
             font-weight: 700;
-            color: rgba(255,255,255,0.6);
         }
         .fa {
             border-radius: 3px;
@@ -613,7 +621,6 @@ ul.masonry {
 
 #info-preview {
     background: @brand-primary;
-    border-top: 1px solid #fff;
     border-bottom: 1px solid #fff;
     padding: 50;
     .info-preview-video {
@@ -684,7 +691,8 @@ ul.masonry {
             display: block;
             margin-left: auto;
             margin-right: auto;
-            max-width: 90vw;
+            max-width: 385px;
+            padding: 20px 0;
         }
     }
     
@@ -789,10 +797,10 @@ ul.masonry {
         display: block;
         margin-left: auto;
         margin-right: auto;
-        padding: 0 7;
+        padding: 5px 7px;
         
         .footer-logo {
-            margin-top: 2px;
+            margin-top: 7px;
             height: 30px;
             display: block;
             margin-left: auto;
@@ -829,7 +837,7 @@ ul.masonry {
         width: 100%;
         
         h1 {
-            margin-top: 150px;
+            margin-top: 260px;
             font-size: 3.5em;
         }
         
@@ -849,7 +857,7 @@ ul.masonry {
         .register-connections {
             margin-top: 20px;
             .or {
-                font-size: 0.7em;
+                font-size: 1.2em;
             }
             .fa {
                 font-size:  2em;
@@ -866,12 +874,16 @@ ul.masonry {
             }
         }
     }
+    
+    .footer-logo {
+        margin-top: 30px!important;
+    }
     .footer-links {
         display: block;
         text-align: center;
         .links-wrapper {
-                text-align: center!important;
-        
+            text-align: center!important;
+            margin-top: 20px;
         }
     }
 }
@@ -1216,7 +1228,7 @@ ul.masonry {
 .follow-capture-info {
     background: @brand-primary;
     color: #fff;
-    padding: 5px;
+    padding: 8px;
     width: 100%;
     display: inline-block;
 }
@@ -1271,6 +1283,20 @@ ul.masonry {
 .preview-information-bird {
     display: inline;
     margin-left: 10px;
+}
+
+//notification
+.share-text {
+    text-align: center;
+    font-size: 15px;
+}
+.share-buttons-noti {
+    text-align: center;
+}
+
+.share-noti-button {
+    width: 80px;
+    display: inline;
 }
 
 
@@ -1392,6 +1418,7 @@ ul.masonry {
     font-size: 1.3em;
     margin-right: 10px!important;
 }
+
 @media screen and (max-width: 480px) {
     .vote-comment-buttons{
         display: block;
@@ -1719,6 +1746,35 @@ ul.masonry {
         text-align: center;
         padding-bottom: 10px;
         top: 5;
+    }
+}
+
+/* ----------------------- Birdcaptures --------------------*/
+.capture-header {
+    margin-top: 8px;
+}
+
+.unknown-drop-button{
+    padding: 6px;
+    font-size: 14px;
+}
+
+.unknown-drop-pick {
+    padding: 5px 10px;
+    left: -120px;
+}
+
+.checkbox-unknown {
+    width: 15px;
+    height: 15px;
+    vertical-align: sub;
+}
+
+.place-capture-info {
+    font-weight: 500;
+    margin-left: 3px;
+    span {
+        margin-left: 3px;
     }
 }
 

@@ -1,7 +1,7 @@
 /* global app angular*/
 
-app.controller('birdcapturesCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'birdApi', '$filter', '$q',
-                function($scope, $stateParams, $http, userApi, auth, captureApi, birdApi, $filter, $q) {
+app.controller('birdcapturesCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'birdApi', '$filter', '$q', '$rootScope',
+                function($scope, $stateParams, $http, userApi, auth, captureApi, birdApi, $filter, $q, $rootScope) {
 
         $scope.numberToDisplay = 2;
         $scope.unknownFilter = "$";
@@ -18,10 +18,6 @@ app.controller('birdcapturesCtrl', ['$scope',  '$stateParams', '$http', 'userApi
                     $scope.numberToDisplay = $scope.captures.length;
                 }
         };
-        
-        $scope.getInfo = function(capture) {
-            console.log(capture);
-        };
     });
     
     /* ---------------------- Filter Options ---------------------*/
@@ -33,7 +29,6 @@ app.controller('birdcapturesCtrl', ['$scope',  '$stateParams', '$http', 'userApi
             $scope.searchUnknown = '';
             console.log('false');
         }
-        console.log($scope.searchUnknown);
         return $scope.searchUnknown;
         
     };

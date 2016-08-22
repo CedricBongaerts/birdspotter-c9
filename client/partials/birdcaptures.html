@@ -1,16 +1,14 @@
 <div class="container" id="main-container">
     <div class="col-md-12">
         <div class="well main-well">
-            <h3 class="page-header-h3">Bird Captures:</h3>
+            <h3 class="page-header-h3 col-md-8 capture-header">Bird Captures:</h3>
             <form class="input-group col-md-4 form-inline">
               <input type="text" class="form-control" ng-model="searchPlace" placeholder="Searching by place">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"> </span></button>
-              </span>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" ng-model="checked" ng-click="toggleUnknown()"> Show all unknown birds
-                </label>
+              <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-chevron-down unknown-drop-button"></span> </button>
+                    <ul class="dropdown-menu unknown-drop-pick">
+                        <li><input type="checkbox" ng-model="checked" ng-click="toggleUnknown()" class="checkbox-unknown"> <span class="show-unknown">Show all unknown birds</span></input></li>
+                    </ul>
               </div>
             </form>
             <hr />
@@ -18,7 +16,21 @@
                 <div class="row" infinite-scroll="loadMore()" infinite-scroll-distance="1">
                     <ul masonry="true" reload-on-show reload-on-resize>
                             <li ng-repeat="capture in captureFilter = (captures | filter:{birdname:searchUnknown, place:searchPlace}:strict | limitTo:numberToDisplay) track by $index" class="masonry-item clickable">
-                                <a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="getInfo(capture)"></img></a>
+                                <!--<a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="getInfo(capture)"></img></a>-->
+                                
+                                <a ui-sref="detail({id: capture._id})">
+                                    <img ng-src="{{capture.picture}}"  class="masonry-image">
+                                    </img>
+                                    <span class="follow-capture-info">
+                                        <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 
+                                          {{capture.author}} 
+                                            <div class="place-capture-info">
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i> <span>{{capture.place}}</span> 
+                                            </div>
+                                        </span>
+                                    </span>
+                                 </a>
+                                
                             </li>
                     </ul>
                     <p ng-if='noCaptures' class="no-captures-found">

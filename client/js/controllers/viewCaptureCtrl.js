@@ -24,7 +24,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
      captureApi.findCapture(id)
           .then(function(res) {
                $scope.capture = res.data;
-                //console.log(res.data);
                 
                 /* ---------------- Check owner Capture & Delete Capture ----------------- */
                 // Check owner
@@ -37,17 +36,18 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                     captureApi.deleteCapture(id)
                         .then(function(res) {
                             $location.path('/dashboard');
-                            console.log('Deleted Capture');
                     });
                 };
                 
                 // Check suggestions
-                if($scope.capture.birdname!=='Unknown') {
+                console.log($scope.capture.birdname);
+                if($scope.capture.birdname!=='Unknown' || $scope.capture.userId === auth.profile.user_id) {
                     $scope.showSuggestionButton = false;
                 } else {
                     $scope.showSuggestionButton = true;
                     $scope.checkedAllSuggestions = false;
-                    var currentSuggestions = res.data.birdsuggestions;
+                    $scope.capture;
+                    var currentSuggestions = $scope.capture.birdsuggestions;
                     
                     for(var i=0; i<currentSuggestions.length;i++) {
                         if(currentSuggestions[i].userId ===  auth.profile.user_id) { 
@@ -73,15 +73,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                 if($scope.capture.birdname == 'Unknown'){
                     $scope.checked = true;
                 }
-                
-                /* ----------------------------- POPOVER BIRDINFORMATION ----------------------------- */
-                
-                $scope.birdInfoPopover = {
-                    content: "The user doesn't know the birdname. If you know it, give it down below!",
-                    templateUrl: '/partials/model/birdPopover.html',
-                    title: $scope.capture.birdname,
-                };
-
                 
                 /* -------------------------- Check if voted unlike Capture -------------------------- */
                 // Check voted
@@ -146,12 +137,9 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                     $scope.like = false;
                     
                     var likeId = res.data._id;
-                    console.log(likeId);
                 if($scope.capture.userId !== auth.profile.user_id) {
                     voteApi.voteNotification(likeId, notificationObj)  
                     .then(function(res){
-                        console.log(notificationObj);
-                        console.log(likeId);
                     });
                 }
             });
@@ -179,15 +167,11 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         
         captureApi.postComment(id, commentObj)  
             .then(function(res){
-                console.log(res.data);
                 $scope.capture.comments.push(res.data);
                 var commentId = res.data._id;
-                console.log(commentId);
             if($scope.capture.userId !== auth.profile.user_id) {    
                     commentApi.commentNotification(commentId, notificationObj)  
                     .then(function(res){
-                        console.log(notificationObj);
-                        console.log(commentObj);
                 });
             }
         });
@@ -199,7 +183,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         $timeout(function() {
             $location.hash('bottom');
             $anchorScroll();
-            console.log('scrolling down');
         }, 250);
     };
     
@@ -209,7 +192,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         if(noResults === false ){
         birdApi.getDuckEngine(birdSuggestion)
         .then(function(res) {
-            console.log(res.data);
             $scope.suggestionPreview = true;
             $scope.suggestionBirdName = res.data.Heading;
             if(res.data.Image===""){
@@ -222,7 +204,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         } else {
             $scope.suggestionPreview = false;
             $scope.birdSuggestion = '';
-            console.log(noResults);
         }
     };
     
@@ -236,7 +217,7 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
                         var votesBirdsuggestion = res.data;
                         birdSuggestions.forEach(function(birdsuggestion){
                             votesBirdsuggestion.filter(function(voteBirdsuggestion){
-                                if(voteBirdsuggestion.birdsuggestion === birdsuggestion._id && voteBirdsuggestion.userId === auth.profile.user_id) {
+                                if(voteBirdsuggestion.birdsuggestion === birdsuggestion._id || voteBirdsuggestion.userId === auth.profile.user_id) {
                                     $scope.showVoteButton = false;
                                 }
                         });
@@ -245,12 +226,10 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             });
         });
             
-            console.log(auth.profile);
     
     $scope.voteSuggestion = function(birdsuggestion) {
-        
         var birdSuggestionId = birdsuggestion._id;
-        console.log(birdSuggestionId);
+        var currentBirdsuggestion = this.birdsuggestion;
         var dataObj = {
                 userId          : auth.profile.user_id,
                 voteFrom        : auth.profile.name
@@ -258,7 +237,8 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         
         birdsuggestionApi.voteSuggestion(birdSuggestionId, dataObj)
         .then(function(res) {
-            console.log(res.data);
+            $scope.showVoteButton = false;
+            currentBirdsuggestion.votesBirdsuggestion.length++;
         });
     };
     
@@ -279,18 +259,20 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         
         captureApi.postBirdsuggestion(id, birdsuggestionObj)  
             .then(function(res){
-                var birdId = res.data._id;
-                var notiObj = {
-                            notificationFor     : $scope.capture.userId,
-                            notificationFrom    : auth.profile.user_id,
-                            concirning          : 'birdsuggestion',
-                            parameter           : id
-                };
                 
-                 birdsuggestionApi.suggestionNotification(birdId, notiObj)
-                            .then(function(res){
-                             console.log(res.data);   
-                            });
+                if($scope.capture.userId === auth.profile.user_id) {
+                    var birdId = res.data._id;
+                    var notiObj = {
+                                notificationFor     : $scope.capture.userId,
+                                notificationFrom    : auth.profile.user_id,
+                                concirning          : 'birdsuggestion',
+                                parameter           : id
+                        };
+                    
+                     birdsuggestionApi.suggestionNotification(birdId, notiObj)
+                                .then(function(res){
+                                });
+                }
                 $ngBootbox.hideAll();
                 $state.transitionTo($state.current, $stateParams, {
                         reload: true,
@@ -308,7 +290,6 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             note     : $scope.capture.note
         };
         
-        console.log(dataObj);
         captureApi.editCapture(id, dataObj)
         .then(function(res) {
             $state.transitionTo($state.current, $stateParams, {
@@ -349,11 +330,9 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     $scope.showGoogleMap = function() {
         $scope.mapShow = true;
         $scope.birdLocation = this.capture.place;
-        console.log($scope.birdLocation);
     };
     
     $scope.closeMap = function() {
         $scope.mapShow = false;
-        console.log('did something');
     };
 }]);

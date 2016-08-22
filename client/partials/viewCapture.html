@@ -15,8 +15,7 @@
             <h3  class="page-header-h3">
                 <a ui-sref="birdlist({bird: capture.birdname})" class="clickable">{{capture.birdname}}</a>
                 <span class="suggest-birdname-button" ng-if="showSuggestionButton && checkedAllSuggestions">
-                    <span popover-title="{{capture.birdname}}" popover-placement="bottom-left" popover-trigger="mouseenter"
-                          popover-append-to-body uib-popover-template="birdInfoPopover.templateUrl" class="suggestion-button-text clickable"
+                    <span class="suggestion-button-text clickable"
                           ng-bootbox-title="Suggest Birdname"
                           ng-bootbox-custom-dialog
                           ng-bootbox-custom-dialog-template="/partials/model/suggestBirdname.html">Suggest Birdname <span class="glyphicon glyphicon-pencil"></span></span>
@@ -84,16 +83,7 @@
                 <div class="row comments-section" data-slide-toggle="comments" data-start-shown="true" data-slide-toggle-duration="250">
                 <h4> <strong>Comments · {{capture.comments.length}}</strong></h4>
                 <hr />
-                    <div class="col-md-4">
-                	<form name="addComments" ng-submit="addComment()">
-                            <div class="form-group">
-                                <label for="birdname">Comment:</label>
-                                <input type="text" class="form-control" autocomplete="off" id="comment" class="col-md-6" ng-model="comment" placeholder="Leave your comment.." ng-enter="addComment()" required>
-                            </div>
-                            <button type="button" ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addComments.$invalid">Comment</button>
-                    </form>
-                    </div>
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <ul ng-scrollbars ng-scrollbars-config="config" class="list-group comments">
                             <li ng-repeat="comment in capture.comments" class="list-group-item comment">
                                 <span ng-show="comment.comment">
@@ -108,6 +98,15 @@
                                 </span>
                         	</li>
                     	</ul>
+                    </div>
+                    <div class="col-md-12">
+                	<form name="addComments" ng-submit="addComment()">
+                            <div class="form-group">
+                                <label for="birdname">Comment:</label>
+                                <input type="text" class="form-control" autocomplete="off" id="comment" ng-model="comment" placeholder="Leave your comment.." ng-enter="addComment()" required>
+                            </div>
+                            <button type="button" ng-click="addComment()" class="btn margin-left btn-success" ng-disabled="addComments.$invalid">Comment</button>
+                    </form>
                     </div>
                 </div>
             </div>

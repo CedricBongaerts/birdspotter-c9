@@ -1,7 +1,7 @@
 <div class="container" id="main-container">
     <div class="col-md-8">
         <div class="well main-well">
-            <h3 class="page-header-h3">Recent Global Activity</h3>
+            <h3 class="page-header-h3">Recent Global Activity <span class="header-devider">|</span> <a ui-sref="following" class="dash-toggle">Following Dashboard</a></h3>
             <hr />
             <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | limitTo:10" class="list-group-item dash-posts">
                 <div class="thumbnail no-border no-margin-bottom"> 

@@ -1,7 +1,7 @@
 /* global app google */
 
-app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', '$location', 'birdApi', 'userApi',
-function($scope, captureApi, auth, $http, $timeout, filepickerService, $location, birdApi, userApi){
+app.controller('captureCtrl',[ '$scope', 'captureApi', 'auth', '$http', '$timeout', 'filepickerService', '$location', 'birdApi', 'userApi', 'Notification',
+function($scope, captureApi, auth, $http, $timeout, filepickerService, $location, birdApi, userApi, Notification){
     
     /* ----------------------- Variables ----------------------- */
     $scope.form = {};
@@ -150,9 +150,12 @@ function($scope, captureApi, auth, $http, $timeout, filepickerService, $location
                     });
                 });
                 
-                
-                
                 $location.path('detail/' + id);
-            });
+                Notification.success({
+                    message:'<div class="share-buttons-noti">' +
+                    '<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//birdspotter-cedricbongaerts.c9users.io/%23/detail/' + id + '" target="_blank"><img src="/img/facebook-share.png" class="share-noti-button" /></a>' +
+                    '<a href="https://twitter.com/home?status=https%3A//birdspotter-cedricbongaerts.c9users.io/%23/detail/' + id + '" target="_blank"><img src="/img/twitter-share.png" class="share-noti-button"/></a>' +
+                    '</div>' , title: 'Your capture was placed!'});
+                });
         };
 }]);

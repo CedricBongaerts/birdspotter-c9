@@ -21,11 +21,12 @@ var app = angular.module('app',
                             'angular-notification-icons',
                             'ngMap',
                             'ngSanitize',
-                            'ng-uploadcare'
+                            'ng-uploadcare',
+                            'ui-notification'
                         ]);
                         
 app.config(function($stateProvider, authProvider, $httpProvider,
-  jwtInterceptorProvider, $urlRouterProvider, $locationProvider, filepickerProvider, ScrollBarsProvider){
+  jwtInterceptorProvider, $urlRouterProvider, $locationProvider, filepickerProvider, ScrollBarsProvider, NotificationProvider){
     
   $urlRouterProvider.otherwise("/");
  
@@ -201,6 +202,17 @@ app.config(function($stateProvider, authProvider, $httpProvider,
         theme: 'dark-3',
         setHeight: 350
     };
+    
+    NotificationProvider.setOptions({
+            delay: 10000,
+            startTop: 60,
+            startRight: 25,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'right',
+            positionY: 'top',
+            closeOnClick: false
+        });
     
 });
 
