@@ -1,21 +1,35 @@
 <div class="container" id="main-container">
     <div class="col-md-12" ng-if="birdname === 'Unknown'">
-        <div class="well">
-            <h3 class="page-header-h3">Search a birdname:</h3>
+        <div class="well main-well">
+            <h3 class="page-header-h3">Search for bird information:</h3>
             <hr />
+            <p>Please provide a bird's name below to search up any information about it.</p>
+            <div class="input-group" ng-class="{ 'has-error': noResults }">
+                 <input type="text" class="form-control" placeholder="Birdname" autocomplete="off" ng-model="findBird" typeahead-no-results="noResults"
+                        uib-typeahead="bird for bird in birds | filter:$viewValue | limitTo:8" typeahead-select-on-blur="false" ng-enter="findBirdlist(findBird, noResults)">
+                 <div class="ErrorSearchBird" ng-if="noResults">
+                   <div class="errorTriangle"></div>
+                   <div class="errorText">Please pick a valid birdname</div>
+                 </div>
+                 <span class="input-group-btn">
+                     <button class="btn btn-default" type="button" ng-click="findBirdlist(findBird, noResults)"><span class="glyphicon glyphicon-search search-glyph-edit"></span></button>
+                 </span>
+            </div>
         </div>
     </div>
     <div class="col-md-8" ng-if="birdname !== 'Unknown'">
         <div class="well">
             <h3 class="page-header-h3">General Info:</h3>
             <hr />
-            <div ng-if="duckInfo">
-                <h4><strong>{{birdname}}</strong></h4>
-                <img ng-src="{{birdImage}}" />
-                <p>{{abstractInfo}}</p>
-                <p>All the information can be found on the wikipedia page <a href="{{abstractUrl}}" class="clickable" target="_blank">here</a>.</p>
+            <div class="row">
+                <div ng-if="duckInfo">
+                    <h4><strong>{{birdname}}</strong></h4>
+                    <img ng-src="{{birdImage}}" />
+                    <p>{{abstractInfo}}</p>
+                    <p>All the information can be found on the wikipedia page <a href="{{abstractUrl}}" class="clickable" target="_blank">here</a>.</p>
+                </div>
+                <div ng-bind-html="html" class="info-bird-html"></div>
             </div>
-            <div ng-bind-html="html" class="info-bird-html"></div>
         </div>
     </div>
     
@@ -29,7 +43,7 @@
                 </h4>
                 <div data-ng-repeat="capture in selectedCaptures | orderBy :'created_at':true | startFrom:currentPage:namedPageSize" class="grid-container birdlist-named">
                      <a ui-sref="detail({id: capture._id})" target="_blank">
-                        <img ng-src="{{capture.picture}}" class="grid-img">
+                        <img ng-src="{{capture.picture}}-/resize/340x/" class="grid-img">
                         </img>
                         <span class="follow-capture-info">
                             <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 

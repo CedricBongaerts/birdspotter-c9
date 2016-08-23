@@ -12,8 +12,9 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
     $scope.captures = [];
     $scope.meFollowing = [];
     $scope.myFollowers = [];
-    $scope.pageSize = 5;
-    $scope.currentPage = 1;
+    // $scope.pageSize = 5;
+    // $scope.currentPage = 1;
+    $scope.numberToDisplay = 2; 
     $scope.noCaptures = false;
     $scope.following = false;
     $scope.follow = false;
@@ -27,7 +28,7 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
         $scope.user = user;
         var users = collections.users;
         var follows = collections.follows;
-        var captures = collections.captures;
+        var captures = collections.captures.reverse();
         
         follows.forEach(function(follow) {
             if(follow.followed_id === id) {
@@ -43,6 +44,14 @@ app.controller('viewUserCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
         }).forEach(function(capture) {
             $scope.captures.push(capture);
         });
+        
+        $scope.loadMore = function() {
+            if ($scope.numberToDisplay + 1 < $scope.captures.length) {
+                $scope.numberToDisplay += 1;
+            } else {
+                $scope.numberToDisplay = $scope.captures.length;
+            }
+        };
         
     /* ----------------------- Filter options ----------------------- */
         $scope.changeFilterTo = function(pr) {

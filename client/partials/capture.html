@@ -74,7 +74,7 @@
             <!-- Show the thumbnail only when the picture is uploaded -->
             <div class="thumbnail" ng-if="capture.picture">
             <!-- the picture is rendered with width: 500 and sharpened -->
-                <img ng-src="{{capture.picture}}">
+                <img ng-src="{{capture.picture}}-/resize/800x/">
             </div>
             <div class="form-group">
                 <button type="button" class="btn margin-left btn-success" ng-click="addToDatabase()" ng-disabled="addCapture.$invalid || !capture.picture ||  noResults">Place your capture</button>

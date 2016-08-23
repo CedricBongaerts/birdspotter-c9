@@ -3,7 +3,7 @@
         <div class="well main-well" infinite-scroll="getMoreData()">
             <h3 class="page-header-h3 notifications-inline">Notifications <h5 ng-if="countUnseen" class="notifications-header-count"> · {{countUnseen}} Unseen</h5></h3>
             <a src='#' class="clickable mark-as-read" ng-click="seenAll()">Mark all as seen</a>
-            <button ng-repeat="notification in notificationData"
+            <button ng-repeat="notification in notificationData | orderBy:'created_at':false"
                     class="list-group-item notification-link" 
                     ng-class="[{'notification-seen':notification.notification.seen}]"
                     ng-click="seeNotification(notification)">

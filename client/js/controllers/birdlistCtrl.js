@@ -1,7 +1,7 @@
 /* global app angular*/
 
-app.controller('birdlistCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'birdApi', '$filter', '$q',
-                function($scope, $stateParams, $http, userApi, auth, captureApi, birdApi, $filter, $q) {
+app.controller('birdlistCtrl', ['$scope',  '$stateParams', '$http', 'userApi', 'auth', 'captureApi', 'birdApi', '$filter', '$q', '$state',
+                function($scope, $stateParams, $http, userApi, auth, captureApi, birdApi, $filter, $q, $state) {
                     
     /* ----------------------- Variables ----------------------- */
     $scope.duckInfo = false;
@@ -78,6 +78,24 @@ app.controller('birdlistCtrl', ['$scope',  '$stateParams', '$http', 'userApi', '
                 }
         }
     });
+    
+    /* --------------------------- Search --------------------------------*/
+    $scope.findBirdlist = function() {
+      if(this.noResults) {
+        console.log('error');
+        this.findBird = undefined;
+      } else {
+        if(this.findBird===undefined||this.findBird === null||this.findBird === 'Unknown') {
+          console.log(this.findBird);
+          console.log('triggered');
+          $state.go('dashboard');
+        } else {
+          console.log(this.findBird);
+          $state.go('birdlist' , {bird: this.findBird});
+          this.findBird = undefined;
+        }
+      }
+    };
     
     /* ----------------------- Retrieve Services - Data ----------------------- */
     function getBirds() {

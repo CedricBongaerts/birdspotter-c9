@@ -18,8 +18,6 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
                 users.filter(function(user){
                     return notification.notificationFrom === user.user_id;
                 }).forEach(function(user) {
-                    console.log(user);
-                    console.log(notification);
                     var dataObj = {
                         user: user,
                         notification: notification
@@ -29,13 +27,11 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
                 
                 });
             });
-            console.log($scope.notifications);
             
             $scope.notificationData = $scope.notifications.slice(0, 5);
             $scope.getMoreData = function () {
-                console.log($scope.notificationData);
                 $scope.notificationData = $scope.notifications.slice(0, $scope.notificationData.length + 5);
-            }
+            };
 
             $scope.notifications.forEach(function(notification) {
                 if(notification.notification.seen == false){
@@ -44,12 +40,10 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
             });
             
             $scope.countUnseen = unseenNotifications.length;
-            console.log(unseenNotifications);
     
             $scope.seenAll = function() {
                 unseenNotifications.forEach(function(unseenNotification) {
                     var notificationId = unseenNotification.notification._id;
-                    console.log(notificationId);
                     var dataObj = {seen:true};
                     notificationApi.readNotification(notificationId, dataObj)
                     .then(function(res) {
@@ -59,15 +53,11 @@ app.controller('notificationsCtrl', [ '$scope', 'auth', 'notificationApi', '$sta
             };
             
             $scope.seeNotification = function() {
-                console.log(this.notification.notification);
                 if(this.notification.notification.seen === false) {
                     var dataObj = {seen:true};
                     var notificationId = this.notification.notification._id;
-                    console.log(dataObj);
-                    console.log(notificationId);
                     notificationApi.readNotification(notificationId, dataObj)
                     .then(function(res) {
-                    console.log(res.data.seen);
                     });
                 } 
                 if(this.notification.notification.concirning == "follow") {

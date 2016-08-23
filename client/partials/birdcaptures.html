@@ -14,12 +14,12 @@
             <hr />
             <div class="constrained">
                 <div class="row" infinite-scroll="loadMore()" infinite-scroll-distance="1">
-                    <ul masonry="true" reload-on-show reload-on-resize>
+                    <ul masonry="true">
                             <li ng-repeat="capture in captureFilter = (captures | filter:{birdname:searchUnknown, place:searchPlace}:strict | limitTo:numberToDisplay) track by $index" class="masonry-item clickable">
                                 <!--<a ui-sref="detail({id: capture._id})"><img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="getInfo(capture)"></img></a>-->
                                 
                                 <a ui-sref="detail({id: capture._id})">
-                                    <img ng-src="{{capture.picture}}"  class="masonry-image">
+                                    <img ng-src="{{capture.picture}}-/resize/350x/"  class="masonry-image">
                                     </img>
                                     <span class="follow-capture-info">
                                         <span class="follow-capture-name"><span class="glyphicon glyphicon-user"></span> 

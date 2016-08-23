@@ -37,10 +37,10 @@
         </div>
     </div>
     <div class="col-md-8">
-        <div class="well main-well">
+        <div class="well main-well" infinite-scroll="loadMore()">
             <h3 class="page-header-h3">Recent Activity</h3>
             <hr />
-            <div ng-if="captures" ng-repeat="capture in captures | orderBy :'created_at':true | startFrom:currentPage:pageSize" class="list-group-item dash-posts">
+            <div ng-if="captures" ng-repeat="capture in captures | limitTo:numberToDisplay" class="list-group-item dash-posts">
                 <div class="thumbnail no-border no-margin-bottom"> 
                     <h4 class="dash-capture-info">
                         <span>
@@ -50,7 +50,7 @@
                         </span>
                     </h4>
                     <a ui-sref="detail({id: capture._id})">
-                        <img ng-src="{{capture.picture}}" alt="bird" onload="this.style.opacity='1';" class="dash-thumb-img .thumb-min feed-image"></img>
+                        <img ng-src="{{capture.picture}}-/resize/670x/" alt="bird" onload="this.style.opacity='1';" class="dash-thumb-img .thumb-min feed-image"></img>
                     </a>
                     <h5 class="dash-capture-time"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="capture.created_at"></span></h5>
                     <hr />
@@ -111,21 +111,6 @@
       <span class="glyphicon glyphicon-remove close-popup"  ng-click="closeMap()"></span>
     </div>
     <div class="map-wrapper" ng-if="mapShow" ng-click="closeMap()"></div>
-    
-    <!--<div class="overlay-image-preview" ng-if="imgPreviewShow">-->
-    <!--    <span ng-click="closeImgPreview()">Test</span>-->
-    <!--    <img ng-src="{{thisCapture.picture}}" class="preview-image" />-->
-    <!--    <div class="preview-text">-->
-    <!--        <h4 class="dash-capture-info">-->
-    <!--            <span>-->
-    <!--                <i class="fa fa-user"></i> -->
-    <!--                    <strong>{{thisCapture.author}}</strong> captured a photo in -->
-    <!--                <span class="fa fa-map-marker"> </span><strong>{{thisCapture.place}}</strong>-->
-    <!--            </span>-->
-    <!--        </h4>-->
-    <!--        <h5 class="dash-capture-time"><span class="glyphicon glyphicon-time"></span>&#160;<span am-time-ago="thisCapture.created_at"></span></h5>-->
-    <!--    </div>-->
-    <!--</div>-->
     
     <div class="image-preview-popup" ng-if="imgPreviewShow">
         <div class="image-preview-content">

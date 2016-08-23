@@ -39,12 +39,12 @@
     
     <div class="col-md-12">
         <div class="well main-well">
-            <h3 class="page-header-h3 header-inline col-md-8">Captures:</h3>
+            <h3 class="page-header-h3 header-inline col-md-8 capture-header">Captures:</h3>
             <form class="input-group col-md-4 form-inline">
               <input type="text" class="form-control" ng-model="search[filter]" placeholder="Searching by {{searchBy}}..">
               <div class="input-group-btn">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Options <span class="glyphicon glyphicon-cog"></span> </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu usercapture-drop">
                         <li ng-click="changeFilterTo('$')"><input type="radio" name="searchoption" value="any" id="Any" ng-model="searchBy" checked><label for="all">Search by Any</label></li>
                         <li ng-click="changeFilterTo('birdname')"><input type="radio" name="searchoption" value="birdname" id="Birdname" ng-model="searchBy"><label for="birdname">Search by Birdname</label></li>
                         <li ng-click="changeFilterTo('place')"><input type="radio" name="searchoption" value="place" id="Place" ng-model="searchBy"><label for="place">Search by Place</label></li>
@@ -52,10 +52,10 @@
               </div>
             </form>
             <hr />
-            <div class="row">
+            <div class="row" infinite-scroll="loadMore()">
                 <ul masonry="true">
-                        <li ng-repeat="capture in captures|filter:search:strict|orderBy:'created_at':true|startFrom:currentPage:10" class="masonry-item clickable">
-                            <img ng-src="{{capture.picture}}" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="showImgPreview(capture)"></img>
+                        <li ng-repeat="capture in captures|filter:search:strict|limitTo:numberToDisplay" class="masonry-item clickable">
+                            <img ng-src="{{capture.picture}}-/resize/350x/" imageonload alt="bird" onload="this.style.opacity='1';" class="masonry-image" ng-click="showImgPreview(capture)"></img>
                         </li>
                 </ul>
                 <p ng-if='noCaptures' class="no-captures-found">
@@ -63,11 +63,6 @@
                     It seems like this user has not posted any captures yet.. <br />
                     <img src="/img/noCaptures.jpg"/>
                 </p>
-                <uib-pagination ng-show="captures.length > 10"
-                                total-items="captures.length"
-                                items-per-page="10"
-                                ng-model="currentPage">
-                </uib-pagination>
             </div>
         </div>
     </div>

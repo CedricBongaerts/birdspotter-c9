@@ -15,6 +15,8 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
     $scope.suggestionPreview = false;
     $scope.showVoteButton = true; 
     $scope.checkedAllVotes = false;
+    
+    $scope.birdIsTaken = false;
      
     /* ----------------------- Process Data ----------------------- */
     birdApi.getBirds().then(function(res) {
@@ -212,12 +214,13 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
         captureApi.findCapture(id)
             .then(function(res){
                 var birdSuggestions = res.data.birdsuggestions;
+                console.log(res.data);  
                 birdsuggestionApi.findVoteSuggestions()
                     .then(function(res){
                         var votesBirdsuggestion = res.data;
                         birdSuggestions.forEach(function(birdsuggestion){
                             votesBirdsuggestion.filter(function(voteBirdsuggestion){
-                                if(voteBirdsuggestion.birdsuggestion === birdsuggestion._id || voteBirdsuggestion.userId === auth.profile.user_id) {
+                                if(voteBirdsuggestion.birdsuggestion === birdsuggestion._id && voteBirdsuggestion.userId === auth.profile.user_id) {
                                     $scope.showVoteButton = false;
                                 }
                         });
@@ -241,46 +244,63 @@ app.controller('viewCaptureCtrl', ['$scope',  '$stateParams', '$http', 'captureA
             currentBirdsuggestion.votesBirdsuggestion.length++;
         });
     };
+
     
     $scope.addBirdSuggestion = function(){
-        if(this.noResults === true) {
-            $scope.birdSuggestion = '';
-            return;
-        }
+        var checkedAllPreviousSuggestions = false;
+        var enableSuggestion = true
         
-        if($scope.birdSuggestion === undefined) {
-            return;
-        }
-        var birdsuggestionObj = {
-            birdSuggestion    : $scope.birdSuggestion,     
-            userId            : $scope.auth.profile.user_id,
-            author            : $scope.auth.profile.name
-        };  
-        
-        captureApi.postBirdsuggestion(id, birdsuggestionObj)  
-            .then(function(res){
-                
-                if($scope.capture.userId === auth.profile.user_id) {
-                    var birdId = res.data._id;
-                    var notiObj = {
-                                notificationFor     : $scope.capture.userId,
-                                notificationFrom    : auth.profile.user_id,
-                                concirning          : 'birdsuggestion',
-                                parameter           : id
-                        };
-                    
-                     birdsuggestionApi.suggestionNotification(birdId, notiObj)
-                                .then(function(res){
+        captureApi.findCapture(id)
+                  .then(function(res) {
+                       var previousBirdsuggestions = res.data.birdsuggestions;
+                       $scope.enableSuggestion = true;
+                       console.log(previousBirdsuggestions);
+                       previousBirdsuggestions.forEach(function(birdsuggestion) {
+                           if(birdsuggestion.birdSuggestion === $scope.birdSuggestion) {
+                               $scope.suggestionPreview = false;
+                               enableSuggestion = false;
+                           }
+                       });
+                       checkedAllPreviousSuggestions = true;
+                       
+                       if(checkedAllPreviousSuggestions === true && enableSuggestion === true) {
+                           var birdsuggestionObj = {
+                                birdSuggestion    : $scope.birdSuggestion,     
+                                userId            : $scope.auth.profile.user_id,
+                                author            : $scope.auth.profile.name
+                            }; 
+                            
+                                captureApi.postBirdsuggestion(id, birdsuggestionObj)  
+                                    .then(function(res){
+                                        
+                                        if($scope.capture.userId === auth.profile.user_id) {
+                                            var birdId = res.data._id;
+                                            var notiObj = {
+                                                        notificationFor     : $scope.capture.userId,
+                                                        notificationFrom    : auth.profile.user_id,
+                                                        concirning          : 'birdsuggestion',
+                                                        parameter           : id
+                                                };
+                                            
+                                             birdsuggestionApi.suggestionNotification(birdId, notiObj)
+                                                        .then(function(res){
+                                                        });
+                                        }
+                                        $ngBootbox.hideAll();
+                                        $state.transitionTo($state.current, $stateParams, {
+                                                reload: true,
+                                                inherit: false,
+                                                notify: true
+                                            });
+                                        $scope.birdSuggestion = undefined;
                                 });
-                }
-                $ngBootbox.hideAll();
-                $state.transitionTo($state.current, $stateParams, {
-                        reload: true,
-                        inherit: false,
-                        notify: true
-                    });
-                $scope.birdSuggestion = undefined;
-        });
+                       } else {
+                           console.log("bird is taken");
+                           $scope.birdSuggestion = '';
+                           $scope.birdIsTaken = true;
+                           $timeout(function () { $scope.birdIsTaken = false; }, 3000);   
+                       }
+                  });
     };
     
     /* --------------------------------- Edit Capture ----------------------------------- */

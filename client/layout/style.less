@@ -707,38 +707,47 @@ ul.masonry {
     }
 }
 
-#info-phone {
-    background-image: url('/img/phone-details.jpg');
+#info-noti{
+    background-image: url('/img/info-notificiations.jpg');
     background-position: bottom center;
-    background-size: 1440px 546px;
+    background-size: 1440px 700px;
     background-repeat: no-repeat;
     background-size: cover;
     border-top: 1px solid #fff;
     border-bottom: 1px solid #fff;
     
-    .info-phone-inner {
+    .info-noti-inner {
         max-width: 1154px;
         width: 100%;
         margin: 0 auto;
         position: relative;
+        min-height: 200px;
         
-        .info-phone-scaler {
+        .info-noti-scaler {
             padding-top: 50%;
         }
         
-        .info-phone-text {
+        .info-noti-text {
             position: absolute;
             top: 20%;
             left: 0;
             color: #fff;
-            width: 58%;
+            width: 45%;
             letter-spacing: 1px;
-            margin-left: 5%;
                 
             p {
                 font-size: 2.4em;
                 line-height: 1.3em;
                 text-align: center;
+            }
+            .noti-buttons {
+                margin-top: 30px;
+                text-align: center;
+                
+                .noti-button-home {
+                    width: 250px;
+                    margin: 3px;
+                }
             }
         }
     }
@@ -864,12 +873,19 @@ ul.masonry {
             }
         }
     }
-    #info-phone {
-        .info-phone-inner {
-            .info-phone-text {
+    #info-noti {
+        .info-noti-inner {
+            .info-noti-text {
                 top: 10%;
                 p {
                     font-size: 2em;
+                }
+                
+                .noti-buttons {
+                    margin-top: none;
+                    .noti-button-home {
+                        width: 124px;
+                    }
                 }
             }
         }
@@ -889,12 +905,20 @@ ul.masonry {
 }
 
 @media screen and (max-width: 767px) {
-    #info-phone {
-        .info-phone-inner {
-            .info-phone-text {
+    #info-noti {
+        .info-noti {
+            .info-noti {
                 top: 10%;
                 p {
                     font-size: 1.5em;
+                }
+                
+                .noti-buttons {
+                    margin-top: 5px;
+                    .noti-button-home {
+                        width: 130px;
+                        margin: 5px;
+                    }
                 }
             }
         }
@@ -902,12 +926,21 @@ ul.masonry {
 }
 
 @media screen and (max-width: 580px) {
-    #info-phone {
-        .info-phone-inner {
-            .info-phone-text {
+    #info-noti{
+        .info-noti-inner {
+            .info-noti-text {
                 top: 7%;
                 p {
                     font-size: 1.1em;
+                }
+                
+                
+                .noti-buttons {
+                    margin-top: 10px;
+                    .noti-button-home {
+                        width: 120px;
+                        margin: 3px;
+                    }
                 }
             }
         }
@@ -916,9 +949,9 @@ ul.masonry {
 
 
 @media screen and (max-width: 350px) {
-    #info-phone {
-        .info-phone-inner {
-            .info-phone-text {
+    #info-noti {
+        .info-noti-inner {
+            .info-noti-text {
                 top: 5%;
                 p {
                     font-size: 1em;
@@ -1331,6 +1364,10 @@ ul.masonry {
     color: fff;
 }
 
+.suggestBirdnameBtn {
+    margin-top: 30px;
+}
+
 // Main image
 .captureImg {
     max-height: 800px;
@@ -1418,6 +1455,33 @@ ul.masonry {
     font-size: 1.3em;
     margin-right: 10px!important;
 }
+
+//Suggestions
+.suggestion-header {
+    font-size: 16px;
+    font-weight: 700;
+    padding-left: 15px;
+    margin: 30px 0px;
+}
+
+.suggestion-list {
+    font-size: 14px;
+    list-style-type: none;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.suggestion-vote, .suggestion-inactive {
+    font-size: 25px;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.suggestion-vote:hover {
+    color: @brand-primary;
+}
+
+
 
 @media screen and (max-width: 480px) {
     .vote-comment-buttons{
@@ -1604,7 +1668,7 @@ ul.masonry {
 }
 
 .follow-popup {
-    height: 500px;
+    height: 420px;
     width: 350px;
     position: fixed;
     z-index: 100;
@@ -1754,7 +1818,7 @@ ul.masonry {
     margin-top: 8px;
 }
 
-.unknown-drop-button{
+.unknown-drop-button, .search-glyph-edit{
     padding: 6px;
     font-size: 14px;
 }
@@ -1827,7 +1891,7 @@ table.navbox {
 }
 
 .birdlist-named {
-    margin-bottom: 5px;
+    margin: 20px 0px;
 }
 
 /* ----------------------- Notifications --------------------*/

@@ -22,11 +22,13 @@
                 </span>
             </h3>
         
-            <ul class="text-muted" style="font-size: 14px">Suggestions:
-                    <li ng-repeat="birdsuggestion in capture.birdsuggestions"> 
-                        <span ng-click="voteSuggestion(birdsuggestion)" ng-if="showVoteButton && checkedAllVotes">[Vote Up]</span>  
-                        <span>{{birdsuggestion.birdSuggestion}}</span> 
-                        - <span> {{birdsuggestion.votesBirdsuggestion.length}} votes recieved</span>
+            <ul class="text-muted suggestion-header" ng-show="capture.birdname==='Unknown'">Suggestions:
+                    <li ng-repeat="birdsuggestion in capture.birdsuggestions|orderBy:'-votesBirdsuggestion.length'" class="suggestion-list">
+                        <span ng-show="auth.profile.user_id===birdsuggestion.userId" ng-if="showVoteButton && checkedAllVotes" class="suggestion-inactive"><span class="glyphicon glyphicon glyphicon-minus"></span></span>
+                        <span ng-if="!showVoteButton && checkedAllVotes" class="suggestion-inactive"><span class="glyphicon glyphicon glyphicon-minus"></span></span>
+                        <span ng-click="voteSuggestion(birdsuggestion)" ng-hide="auth.profile.user_id===birdsuggestion.userId" ng-if="showVoteButton && checkedAllVotes" class="suggestion-vote"><span class="glyphicon glyphicon glyphicon-triangle-top clickable"></span></span>
+                        <span><a ui-sref="birdlist({bird: birdsuggestion.birdSuggestion})" class="clickable">{{birdsuggestion.birdSuggestion}}</a></span> 
+                        <span> [ {{birdsuggestion.votesBirdsuggestion.length}} <span ng-if="birdsuggestion.votesBirdsuggestion.length===1">vote</span><span ng-if="birdsuggestion.votesBirdsuggestion.length!==1">votes</span> recieved ]</span>
                     </li>
             </ul>
             <h4><i class="fa fa-user"></i> <a ui-sref="user-profile({id: capture.userId})" class="clickable"><strong>{{capture.author}}</strong></a> in <span class="fa fa-map-marker"></span> 
@@ -36,7 +38,7 @@
             <hr />
             
             <div class="thumbnail no-border view-capture-thumb"> 
-                    <img class="captureImg clickable" ng-src="{{capture.picture}}" ng-click="showImgPreview(capture)"></img>
+                    <img class="captureImg clickable" ng-src="{{capture.picture}}-/resize/800x/" ng-click="showImgPreview(capture)"></img>
             </div>
             
                 <div class="vote-comment-buttons">
